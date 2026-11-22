@@ -1,0 +1,79 @@
+{
+  "metadata": {
+    "timestamp_utc": "2026-11-22T01:52:13+00:00",
+    "git_commit": "6b79534b96aa975acf5c8c1d54e2e4a255ff4764",
+    "git_dirty": false,
+    "seed": 0,
+    "dataset_revisions": {},
+    "python": "3.12.4",
+    "platform": "macOS-27.0-arm64-arm-64bit",
+    "packages": {
+      "torch": "2.15.0",
+      "transformers": "5.24.0",
+      "datasets": "5.2.0",
+      "sentence-transformers": "6.3.0",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "numpy": "2.5.5"
+    },
+    "config": {
+      "seeds": [
+        0
+      ],
+      "candidates": [
+        "sentence-transformers/all-MiniLM-L6-v2",
+        "sentence-transformers/all-mpnet-base-v2"
+      ],
+      "selection": {
+        "min_f1_gap": 0.5
+      },
+      "checkpoint": "",
+      "batch_size": 64
+    }
+  },
+  "latency_machine": "arm64 macOS-27.0-arm64-arm-64bit, torch threads 5",
+  "rule": {
+    "min_f1_gap": 0.5
+  },
+  "candidates": {
+    "sentence-transformers/all-MiniLM-L6-v2": {
+      "status": "ok",
+      "val_metrics": {
+        "accuracy": 0.918,
+        "macro_precision": 0.9265818902705235,
+        "macro_recall": 0.9224433421666143,
+        "macro_f1": 0.9211317251527035,
+        "weighted_precision": 0.9244093284467509,
+        "weighted_recall": 0.918,
+        "weighted_f1": 0.9178466376777734
+      },
+      "cpu_latency": {
+        "n_queries": 200,
+        "mean_ms": 6.317251657601446,
+        "p50_ms": 6.135666975751519,
+        "p95_ms": 8.25652910280041
+      }
+    },
+    "sentence-transformers/all-mpnet-base-v2": {
+      "status": "ok",
+      "val_metrics": {
+        "accuracy": 0.913,
+        "macro_precision": 0.9222162901251999,
+        "macro_recall": 0.9165842502781107,
+        "macro_f1": 0.9149270176049685,
+        "weighted_precision": 0.9200781758661016,
+        "weighted_recall": 0.913,
+        "weighted_f1": 0.912114884553362
+      },
+      "cpu_latency": {
+        "n_queries": 200,
+        "mean_ms": 34.01852061448153,
+        "p50_ms": 33.222124504391104,
+        "p95_ms": 40.89000239619054
+      }
+    }
+  },
+  "winner": "sentence-transformers/all-MiniLM-L6-v2",
+  "reason": "macro-F1 higher by 0.62 points (> 0.5)",
+  "notes": []
+}

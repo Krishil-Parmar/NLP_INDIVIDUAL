@@ -13,6 +13,7 @@ selection:
   min_f1_gap: 0.5
 
 # Chosen model, filled in by hand from results/s2_selection.json. S3 uses it as its retriever.
-checkpoint: ""
+# 22 Nov 2026: MiniLM-L6 won on macro-F1 (0.9211 vs 0.9149, gap 0.62 > 0.5) and is also faster.
+checkpoint: sentence-transformers/all-MiniLM-L6-v2
 
 batch_size: 64

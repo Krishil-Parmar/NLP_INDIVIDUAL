@@ -1,0 +1,37 @@
+{
+  "metadata": {
+    "timestamp_utc": "2026-11-22T01:51:05+00:00",
+    "git_commit": "6b79534b96aa975acf5c8c1d54e2e4a255ff4764",
+    "git_dirty": false,
+    "seed": 0,
+    "dataset_revisions": {},
+    "python": "3.12.4",
+    "platform": "macOS-27.0-arm64-arm-64bit",
+    "packages": {
+      "torch": "2.15.0",
+      "transformers": "5.24.0",
+      "datasets": "5.2.0",
+      "sentence-transformers": "6.3.0",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "numpy": "2.5.5"
+    },
+    "config": {
+      "seeds": [
+        0
+      ],
+      "candidates": [
+        "sentence-transformers/all-MiniLM-L6-v2",
+        "sentence-transformers/all-mpnet-base-v2"
+      ],
+      "selection": {
+        "min_f1_gap": 0.5
+      },
+      "checkpoint": "",
+      "batch_size": 64
+    }
+  },
+  "checkpoint": "sentence-transformers/all-MiniLM-L6-v2",
+  "device": "mps",
+  "seconds": 6.71124354202766
+}
