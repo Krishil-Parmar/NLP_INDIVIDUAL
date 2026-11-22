@@ -177,7 +177,9 @@ def draw_roc(tables: dict, cfg: dict, split: str) -> str | None:
     ax.set_ylim(0, 1.01)
     ax.set_xlabel("In-scope queries wrongly flagged as out of scope", color=INK, fontsize=9)
     ax.set_ylabel("Out-of-scope queries caught", color=INK, fontsize=9)
-    ax.set_title(f"Out-of-scope detection on {split} (seed {min(next(iter(tables.values())))})",
+    split_name = {"val": "validation, raw text", "val_fmt": "validation, format-controlled text",
+                  "test": "test, raw text", "test_fmt": "test, format-controlled text"}[split]
+    ax.set_title(f"Out-of-scope detection ({split_name}, seed {min(next(iter(tables.values())))})",
                  color=INK, fontsize=10, loc="left")
     ax.grid(color=GRID, linewidth=0.6)
     ax.tick_params(colors=MUTED, labelsize=8)
