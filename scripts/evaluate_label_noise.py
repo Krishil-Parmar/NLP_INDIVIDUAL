@@ -15,7 +15,9 @@ Definitions (README section 8.1, fixed before any cleaned run):
   - S4 evaluation effect: S4's in-scope accuracy and mixed-set error rate (the
     E6 matched risk) on format-controlled validation, all rows versus flagged
     rows removed. From cached replies only: no API calls.
-  - Audit: scored once every verdict in results/e2_audit.csv is filled in.
+  - Audit: scored once every verdict in results/e2_audit.csv is filled in, for
+    all items together and for each annotator (owner, Claude judge) on their own
+    items, plus the owner-vs-judge agreement on the items both judged.
 
 Writes results/e2_<split>.json and results/e2_<split>.md.
 Test splits are refused until results/preregistration.md exists (rigour rule 1).
@@ -124,17 +126,6 @@ def write_markdown(out: dict, meta: dict) -> str:
                 "in-scope accuracy, all": f"{100 * s['all']['in_scope_accuracy']:.2f}%",
                 "in-scope accuracy, flagged removed": f"{100 * s['flagged removed']['in_scope_accuracy']:.2f}%"}
                for s in out["s4_evaluation_effect"]]
-    audit = out["audit"]
-    if audit is None:
-        audit_text = "No audit sheet found."
-    elif not audit["complete"]:
-        audit_text = f"Not scored yet: {audit['n_done']} of {audit['n_items']} items have a verdict."
-    else:
-        low, high = audit["real_error_ci95"]
-        audit_text = (f"{audit['real_error']} of {audit['n_items']} audited items are real label errors "
-                      f"({100 * audit['real_error_share']:.0f}%, 95% Wilson interval {100 * low:.0f} to {100 * high:.0f}%): "
-                      f"{audit['picked_suggestion']} where the suggested label fits better, {audit['neither']} where neither fits. "
-                      f"Ambiguous (both fit): {audit['ambiguous']}. False flags (the given label fits): {audit['false_flag']}.")
     few = out["fewshot_examples"]
     parts = [
         f"# E2 results on {split}: label noise",
@@ -159,10 +150,70 @@ def write_markdown(out: dict, meta: dict) -> str:
         "No flagged row is out of scope, so removing flagged rows only removes in-scope rows.",
         md_table(s4_rows) if s4_rows else "No S4 predictions found.",
         f"Few-shot S4 prompt examples that are flagged train rows: {few['n_flagged']} of {few['n_examples']}.",
-        "## Audit (owner, blind)",
-        audit_text,
+        "## Audit (blind)",
+        *audit_markdown(out["audit"], out["audit_by_annotator"], out["audit_agreement"]),
     ]
     return "\n\n".join(parts) + "\n"
+
+
+def score_the_audit() -> tuple[dict | None, dict, dict | None]:
+    """(all items together, each annotator on their own items, owner-vs-judge agreement).
+
+    The agreement compares the owner's verdicts with the Claude judge's verdicts on
+    the same items (results/e2_audit_claude.csv), which the judge made without
+    seeing the owner's.
+    """
+    sheet_path = data.RESULTS_DIR / label_noise.AUDIT_FILE
+    if not sheet_path.exists():
+        return None, {}, None
+    sheet = pd.read_csv(sheet_path, keep_default_na=False)
+    key = pd.read_csv(data.RESULTS_DIR / label_noise.AUDIT_KEY_FILE, keep_default_na=False)
+    judge_path = data.RESULTS_DIR / label_noise.AUDIT_JUDGE_FILE
+    agreement = None
+    if judge_path.exists() and "annotator" in sheet.columns:
+        owner_part = sheet[sheet["annotator"] == label_noise.OWNER]
+        agreement = label_noise.audit_agreement(owner_part, pd.read_csv(judge_path, keep_default_na=False), key)
+    return label_noise.score_audit(sheet, key), label_noise.score_audit_by_annotator(sheet, key), agreement
+
+
+def audit_markdown(audit: dict | None, by_annotator: dict, agreement: dict | None) -> list[str]:
+    """The audit section of e2_<split>.md."""
+    if audit is None:
+        return ["No audit sheet found."]
+    if not audit["complete"]:
+        return [f"Not scored yet: {audit['n_done']} of {audit['n_items']} items have a verdict."]
+
+    def sentence(a: dict) -> str:
+        low, high = a["real_error_ci95"]
+        return (f"{a['real_error']} of {a['n_items']} are real label errors "
+                f"({100 * a['real_error_share']:.0f}%, 95% Wilson interval {100 * low:.0f} to {100 * high:.0f}%): "
+                f"{a['picked_suggestion']} where the suggested label fits better, {a['neither']} where neither fits. "
+                f"Ambiguous (both fit): {a['ambiguous']}. False flags (the given label fits): {a['false_flag']}.")
+
+    parts = []
+    if by_annotator:
+        parts.append(
+            "Who judged each item is in the `annotator` column of `results/e2_audit.csv` "
+            f"(\"{label_noise.OWNER}\" or \"{label_noise.JUDGE}\"). The Claude judge saw only the sheet (query, two options in random order, "
+            "three examples each), never the key or the owner's verdicts; its verdicts on every item are in "
+            f"`results/{label_noise.AUDIT_JUDGE_FILE}`. README section 8.1 has the procedure.")
+        rows = [{"annotator": name, "items": a["n_items"], "real errors": a["real_error"],
+                 "suggestion fits": a["picked_suggestion"], "neither fits": a["neither"],
+                 "ambiguous": a["ambiguous"], "false flags": a["false_flag"],
+                 "real-error share (95% Wilson)": f"{100 * a['real_error_share']:.0f}% "
+                 f"({100 * a['real_error_ci95'][0]:.0f} to {100 * a['real_error_ci95'][1]:.0f}%)"}
+                for name, a in by_annotator.items()]
+        parts.append(md_table(rows))
+    parts.append(f"**All items together:** {sentence(audit)}")
+    if agreement is not None:
+        n = agreement["n_items"]
+        parts.append(f"**Owner and Claude judge on the same {n} items:** same verdict on {agreement['same_verdict']} of {n}, "
+                     f"same scored category on {agreement['same_category']} of {n}.")
+        if agreement["disagreements"]:
+            parts.append(md_table([{"item": d["item"], "owner": f"{d['first_verdict']} ({d['first_category']})",
+                                    "Claude judge": f"{d['second_verdict']} ({d['second_category']})"}
+                                   for d in agreement["disagreements"]]))
+    return parts
 
 
 def main(split: str) -> None:
@@ -194,10 +245,7 @@ def main(split: str) -> None:
     cell_names = [f"{t} train, {e}" for t, e in CELLS]
     rankings = {c: ranking(results, c) for c in cell_names}
     fmt_split = f"{split}_fmt"
-    sheet_path = data.RESULTS_DIR / label_noise.AUDIT_FILE
-    audit = (label_noise.score_audit(pd.read_csv(sheet_path, keep_default_na=False),
-                                     pd.read_csv(data.RESULTS_DIR / label_noise.AUDIT_KEY_FILE, keep_default_na=False))
-             if sheet_path.exists() else None)
+    audit, audit_by_annotator, audit_agreement = score_the_audit()
     out = {
         "split": split,
         "n_eval_in_scope": int(in_scope.sum()), "n_flagged_eval": int(flagged_rows.sum()),
@@ -209,6 +257,8 @@ def main(split: str) -> None:
         "s4_split": fmt_split,
         "fewshot_examples": fewshot_examples_flagged(flagged, label_names),
         "audit": audit,
+        "audit_by_annotator": audit_by_annotator,
+        "audit_agreement": audit_agreement,
     }
     with open(data.RESULTS_DIR / f"e2_{split}.json", "w") as f:
         json.dump({"metadata": meta, **out}, f, indent=2, default=str)

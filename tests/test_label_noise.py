@@ -112,6 +112,29 @@ def test_score_audit_waits_for_every_verdict():
     assert typo["unreadable_items"] == [2]
 
 
+def test_score_audit_by_annotator_scores_each_part_on_its_own_items():
+    key = pd.DataFrame({"item": [1, 2, 3, 4], "given_option": ["a", "b", "a", "b"]})
+    sheet = pd.DataFrame({"item": [1, 2, 3, 4], "verdict": ["b", "b", "both", "a"],
+                          "annotator": ["owner", "owner", "claude", "claude"]})
+    parts = label_noise.score_audit_by_annotator(sheet, key)
+    assert sorted(parts) == ["claude", "owner"]
+    assert (parts["owner"]["n_items"], parts["owner"]["real_error"], parts["owner"]["false_flag"]) == (2, 1, 1)
+    assert (parts["claude"]["n_items"], parts["claude"]["ambiguous"], parts["claude"]["real_error"]) == (2, 1, 1)
+    assert label_noise.score_audit_by_annotator(sheet.drop(columns="annotator"), key) == {}
+
+
+def test_audit_agreement_counts_verdicts_and_categories():
+    key = pd.DataFrame({"item": [1, 2, 3], "given_option": ["a", "a", "b"]})
+    owner = pd.DataFrame({"item": [1, 2, 3], "verdict": ["a", "b", "both"]})
+    judge = pd.DataFrame({"item": [1, 2, 3, 4], "verdict": ["a", "neither", "a", "b"]})  # item 4: owner did not judge it
+    agreement = label_noise.audit_agreement(owner, judge, key)
+    assert agreement["n_items"] == 3
+    assert agreement["same_verdict"] == 1  # item 1
+    assert agreement["same_category"] == 2  # item 2: suggestion and "neither" are both real errors
+    assert [d["item"] for d in agreement["disagreements"]] == [2, 3]
+    assert agreement["disagreements"][1]["second_category"] == "real error"  # item 3: given is b, judge picked a
+
+
 def test_wilson_interval_known_values():
     low, high = label_noise.wilson_interval(50, 100)
     assert (low, high) == pytest.approx((0.4038, 0.5962), abs=1e-4)

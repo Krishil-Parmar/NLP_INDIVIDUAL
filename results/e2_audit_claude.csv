@@ -1,0 +1,101 @@
+item,verdict,note
+1,a,Transfer did not go through; no decline mentioned so generic failure
+2,neither,Declined after wrong info; neither card top-up how-to nor ATM cash shortfall
+3,a,Cannot make a transfer; generic failure
+4,a,Explicitly asks why a transfer was declined
+5,b,Terminal refused card payment; no contactless mentioned
+6,a,Top-up did not go through; failed rather than still pending
+7,a,Asks which payment methods are accepted for top-up; broader than cash/cheque
+8,a,Payment not accepted means declined
+9,b,Asks about fees for foreign currency ATM use; not wrong rate
+10,b,Specific payment declined at a store
+11,both,Unexpected fee with no context of transfer or card payment
+12,both,Balance mismatch after ATM fits pending or short cash equally
+13,b,Generic problem with a top-up
+14,a,Top-up not yet reflected suggests pending
+15,a,Question about currency exchange fees
+16,a,Asks about status of a card already sent
+17,a,Transfer has not arrived
+18,a,Physical cards stolen with wallet
+19,both,Card stolen and also used fraudulently; fits both
+20,b,Asks where to find card PIN
+21,b,Asks which payment types are accepted for adding funds
+22,both,Prospective transfer cost; one is transfer fee and other top-up transfer charge
+23,both,Wrong exchange rate on trip; no cue for payment vs cash
+24,a,Asks why source of funds must be verified
+25,a,Unknown charge; general unrecognised payment fits better than direct debit
+26,a,Expediting card delivery is a shipping option question
+27,a,Payment pending refers to card payment
+28,a,Asks allowed top-up amounts
+29,a,About getting identity verified; not why verification is needed
+30,a,Cards stolen
+31,both,Declined with no cue for card payment or cash withdrawal
+32,b,Help a transfer go through; failure not decline
+33,a,Could not transfer money; generic failure
+34,b,Top-up error; reverted top-up closest; beneficiary irrelevant
+35,a,Card declined at purchase
+36,a,Asks how long a transfer takes
+37,a,Merchant not accepting payment means declined
+38,both,Exchange rate changed; no cue for purchase or cash withdrawal
+39,b,Someone using card without permission and wants it frozen
+40,b,Payment did not process suggests declined rather than pending
+41,b,Complains about high ATM withdrawal fee
+42,b,Unable to top up via app means top-up failed
+43,a,Asks when new card can be expected
+44,b,Deposited money not appearing
+45,b,Fee on incoming international transfer; closer to transfer fee
+46,a,Asks about documents needed for identity verification
+47,b,Transfer did not work; generic failure
+48,a,Asks why ID must be proven
+49,b,Asks how long delivery takes
+50,b,Transfer posting to account balance
+51,a,Top-up made but not yet updated
+52,b,Card issue preventing purchase
+53,b,Unable to top up; top-up failed
+54,b,Where disposable card can be used is about its limits
+55,both,Added money not visible; top-up issue ambiguous between options
+56,a,Shop refused payment
+57,both,New card not working could be activation or card fault
+58,a,Asks for a virtual card; not disposable
+59,a,Asks if a document is acceptable for identity verification
+60,b,Topped up but funds not there yet
+61,a,Generic extra charge with no card context
+62,a,Incoming transfer not shown in account
+63,a,Asks maximum delivery time for card
+64,a,Asks about a fee on account; not a direct debit
+65,b,Payment did not clear; declined
+66,b,Ordered card a week ago and not arrived
+67,b,Asks general delivery time for new card
+68,b,Payment amount returned after a week; reverted payment
+69,a,Asks if top-up has gone through; pending
+70,b,Asks how to prove identity
+71,b,Transfer pending too long
+72,b,Speaker has not received money transferred; balance not updated
+73,a,Top-up did not work
+74,a,Generic extra fee with no card context
+75,a,Asks card delivery time; contactless irrelevant
+76,b,Transfer showing up in account
+77,a,Status of top-up implies pending
+78,b,Asks when transfer will happen; timing
+79,a,Third party fees on transfer; not top-up
+80,b,Pending payment means card payment
+81,a,Transfer to crypto account not allowed
+82,b,Transfer did not go through; failure not decline
+83,a,Speaker has not received incoming transfer
+84,a,Deposited money not yet credited
+85,b,Disputing payment not made; general card payment not recognised
+86,b,How to top up; auto top-up not mentioned
+87,a,Card stolen
+88,b,Card used in foreign currency; payment rate wrong
+89,both,Transaction completing could be pending payment or transfer arrival
+90,b,Asks whether bank can refund the item
+91,b,Asks what documents needed for identification
+92,a,Wants a new PIN; change PIN
+93,a,Payment declined is card payment
+94,b,Wants to get a virtual card
+95,neither,Currency conversion before transfer; neither receiving money nor balance update
+96,a,Transaction declined matches declined transfer
+97,neither,Query has no content identifying any intent
+98,a,Asks how to verify identity
+99,a,Asks what options exist for US card top-up; supported cards
+100,neither,"Generic how cards work; not ordering physical card, not disposable card"
