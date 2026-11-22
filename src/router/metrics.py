@@ -1,16 +1,19 @@
-"""Evaluation metrics.
+"""Evaluation metrics (README section 8.1).
 
-This file currently holds the E1 classification metrics (README section 8.1):
-accuracy, precision, recall and F1. Macro averages are primary (each intent
-counts equally); weighted averages are reported next to them.
-Risk-coverage, AURC, out-of-scope metrics and bootstrap intervals come in M4.
+- E1 classification: accuracy, precision, recall and F1. Macro averages are
+  primary (each intent counts equally); weighted averages are reported next to them.
+- E3 out-of-scope detection: AUROC, FPR at 95% TPR and rates at a fixed threshold.
+- A paired, stratified bootstrap for comparing two systems.
+Risk-coverage and AURC come in M4.
 
-Everything is computed with scikit-learn, not by hand.
+Standard metrics come from scikit-learn, not hand-written code.
 """
+
+from collections.abc import Callable
 
 import numpy as np
 import pandas as pd
-from sklearn.metrics import accuracy_score, confusion_matrix, precision_recall_fscore_support
+from sklearn.metrics import accuracy_score, confusion_matrix, precision_recall_fscore_support, roc_auc_score
 
 
 def classification_metrics(
@@ -79,3 +82,98 @@ def mean_std_over_seeds(per_seed: list[dict[str, float]]) -> dict[str, dict[str,
         std = float(values.std(ddof=1)) if len(values) > 1 else 0.0
         summary[key] = {"mean": float(values.mean()), "std": std}
     return summary
+
+
+# ---------------------------------------------------------------------------
+# E3: out-of-scope (OOS) detection.
+# is_oos is a True/False array (True = out of scope). oos_score is the system's
+# score where higher means "more likely out of scope" (1 - confidence).
+# A query is KEPT (treated as in scope) when its oos_score is at or below a threshold.
+# ---------------------------------------------------------------------------
+
+def oos_auroc(is_oos: np.ndarray, oos_score: np.ndarray) -> float:
+    """Area under the ROC curve for telling OOS queries from in-scope ones.
+
+    It is the chance that a random OOS query gets a higher oos_score than a
+    random in-scope query (ties count half). 1.0 = perfect, 0.5 = coin flip.
+    """
+    return float(roc_auc_score(np.asarray(is_oos, dtype=bool), oos_score))
+
+
+def in_scope_threshold(in_scope_scores: np.ndarray, keep: float = 0.95) -> float:
+    """The lowest threshold that keeps at least `keep` of the in-scope queries.
+
+    Sort the in-scope scores; if 95% of n queries must be kept, the threshold
+    is the score of the ceil(0.95 * n)-th lowest query.
+    """
+    sorted_scores = np.sort(np.asarray(in_scope_scores, dtype=float))
+    # round() guards against floating-point error: in Python 0.55 * 100 = 55.00000000000001,
+    # which ceil() would turn into 56 instead of 55.
+    n_keep = int(np.ceil(round(keep * len(sorted_scores), 9)))
+    return float(sorted_scores[n_keep - 1])  # n_keep-th lowest (lists count from 0)
+
+
+def rates_at_threshold(is_oos: np.ndarray, oos_score: np.ndarray, threshold: float) -> dict[str, float]:
+    """At a fixed threshold: the share of in-scope queries kept, and the share of
+    OOS queries rejected (OOS recall)."""
+    is_oos = np.asarray(is_oos, dtype=bool)
+    kept = np.asarray(oos_score) <= threshold
+    return {
+        "in_scope_kept": float(kept[~is_oos].mean()),  # ~ flips True/False: ~is_oos = in scope
+        "oos_recall": float((~kept[is_oos]).mean()),
+    }
+
+
+def fpr_at_tpr(is_oos: np.ndarray, oos_score: np.ndarray, keep: float = 0.95) -> dict[str, float]:
+    """FPR at 95% TPR, with in-scope as the positive class (Hendrycks and Gimpel, 2017).
+
+    Choose the threshold that keeps 95% of in-scope queries (the TPR); the FPR
+    is the share of OOS queries that are also kept. Lower is better. The
+    threshold is returned too, so it can be frozen on validation and reused on test.
+    """
+    is_oos = np.asarray(is_oos, dtype=bool)
+    oos_score = np.asarray(oos_score, dtype=float)
+    threshold = in_scope_threshold(oos_score[~is_oos], keep)
+    rates = rates_at_threshold(is_oos, oos_score, threshold)
+    return {"threshold": threshold, "fpr": 1.0 - rates["oos_recall"], "in_scope_kept": rates["in_scope_kept"]}
+
+
+# ---------------------------------------------------------------------------
+# Comparing two systems: paired, stratified bootstrap (rigour rule 3)
+# ---------------------------------------------------------------------------
+
+def paired_bootstrap_diff(
+    metric_a: Callable[[np.ndarray], float],
+    metric_b: Callable[[np.ndarray], float],
+    strata: np.ndarray,
+    n_resamples: int = 1000,
+    seed: int = 0,
+    ci: float = 0.95,
+) -> dict[str, float]:
+    """metric_a minus metric_b, with a bootstrap confidence interval.
+
+    metric_a and metric_b each take an array of row indices and return one
+    number for that subset of queries (for example, system A's AUROC on those rows).
+
+    Each resample draws rows with replacement, separately inside each stratum
+    (for E3: in-scope and OOS), so every resample keeps the same class counts.
+    Both systems are scored on the same rows (paired), so query difficulty they
+    share cancels out of the difference. The interval is the middle `ci` share
+    of the resampled differences (percentile interval).
+    """
+    rng = np.random.default_rng(seed)
+    strata = np.asarray(strata)
+    groups = [np.flatnonzero(strata == value) for value in np.unique(strata)]  # row indices of each stratum
+    diffs = np.empty(n_resamples)
+    for r in range(n_resamples):
+        rows = np.concatenate([rng.choice(group, size=len(group), replace=True) for group in groups])
+        diffs[r] = metric_a(rows) - metric_b(rows)
+    all_rows = np.arange(len(strata))
+    tail = (1.0 - ci) / 2  # e.g. 0.025 on each side for a 95% interval
+    low, high = np.quantile(diffs, [tail, 1.0 - tail])
+    return {
+        "diff": float(metric_a(all_rows) - metric_b(all_rows)),
+        "ci_low": float(low),
+        "ci_high": float(high),
+        "n_resamples": n_resamples,
+    }

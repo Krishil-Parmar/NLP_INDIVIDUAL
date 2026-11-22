@@ -1,0 +1,29 @@
+# E3: out-of-scope detection (README sections 8 and 8.1). Read by scripts/evaluate_oos.py.
+
+# The threshold keeps at least this share of in-scope queries (the "95% TPR" in
+# "FPR at 95% TPR", with in-scope as the positive class).
+in_scope_keep: 0.95
+
+# Paired, stratified bootstrap for the comparisons below (rigour rule 3).
+bootstrap:
+  resamples: 1000
+  seed: 0
+  ci: 0.95
+
+# Each pair (A, B) reports AUROC(A) - AUROC(B) with a bootstrap interval.
+comparisons:
+  - [s3_quora-distilroberta-base, s1_distilroberta-base]   # RQ2: pairwise matcher vs softmax encoder
+  - [s3_quora-distilroberta-base, s2_all-MiniLM-L6-v2]     # does the cross-encoder add anything over its retriever?
+  - [s3_quora-distilroberta-base, s0_tfidf]
+
+# The system whose most confidently accepted OOS queries are listed for reading.
+inspect_system: s3_quora-distilroberta-base
+
+# ROC figure: systems in this order, with fixed colours so a system keeps its
+# colour in every figure. Three categorical colours at most on one plot (dataviz
+# rule for overlapping lines); the baseline is grey and dashed instead.
+figure:
+  - {tag: s3_quora-distilroberta-base, name: "S3 pairwise", color: "#2a78d6", style: solid}
+  - {tag: s1_distilroberta-base, name: "S1 encoder", color: "#eb6834", style: solid}
+  - {tag: s2_all-MiniLM-L6-v2, name: "S2 embedding", color: "#1baf7a", style: solid}
+  - {tag: s0_tfidf, name: "S0 TF-IDF", color: "#898781", style: dashed}
