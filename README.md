@@ -151,7 +151,7 @@ Verify every dataset ID and split size on the Hugging Face Hub before use. IDs h
 | --- | --- | --- |
 | **Banking77** (Casanueva et al., 2020) | Primary in-scope benchmark | 77 fine-grained banking intents, 13,083 queries, 10,003 train and 3,080 test. No official validation split: carve a stratified 10% validation set from train with a fixed seed. |
 | **CLINC150** (Larson et al., 2019) | Out-of-scope queries, second benchmark | 150 intents over 10 domains (one is banking). 15,000 train, 3,000 validation, 4,500 test in scope. Out of scope in the Hub config `plus` used here: 250 train, 100 validation, 1,000 test (the paper's "full" variant has 100 OOS train). |
-| **Banking77 cleaned** | Label-noise experiment | Built in this project with cleanlab (confident learning). Keep the list of flagged indices in `data/processed/banking77_flagged.csv`. Hand-check a random 100 flagged items and report how many are real errors. |
+| **Banking77 cleaned** | Label-noise experiment | Built in this project with cleanlab (confident learning). Keep the list of flagged indices in `data/processed/banking77_flagged.csv`. Hand-check a random 100 flagged items and report how many are real errors. **Built 22 Nov 2026 (M4b):** 192 of the 9,992 train and validation rows flagged (163 train, 29 validation) by `scripts/find_label_issues.py`; flagged rows are removed, never relabelled (`data.load_train("cleaned")`). Test was not checked. Blind audit sheet: `results/e2_audit.csv`. |
 | **Jeff set** (owner-written) | Domain-shift test | See 6.1. |
 
 Optional, only if time allows: Banking77-OOS (verify that it exists and how it was built before relying on it).
@@ -284,6 +284,16 @@ E6 as implemented (`scripts/evaluate_router.py`, fixed 22 Nov 2026 before E6 was
 - **Prices:** `llm_cost` is S4's measured mean cost per call (token usage, including prompt-cache reads and writes, times the Bedrock prices in `configs/s4_llm.yaml`: AWS Price List API, ap-southeast-2, regional `au.` profile, checked 22 Nov 2026). `router_cost` is taken as US$0 (a local model on hardware the assistant already runs); its time cost is reported as latency.
 - **Frozen for test:** per-seed temperatures and thresholds, and the best router (highest mean coverage at matched risk), are written to `results/policy_v1.json` and applied unchanged at M5.
 
+E2 as implemented (`scripts/find_label_issues.py`, `scripts/evaluate_label_noise.py`, `configs/e2_label_noise.yaml`, fixed 22 Nov 2026 before the cleaner ran):
+
+- **Rows checked:** all in-scope train and validation rows, pooled (9,992). Test is not checked.
+- **Out-of-sample probabilities:** frozen `all-mpnet-base-v2` embeddings (not a compared system: S2 chose MiniLM) and logistic regression, 5-fold stratified cross-validation, seed 0. C from {0.1, 1, 10, 100} by the lowest cross-validated log loss. Saved in `data/processed/banking77_cleaner_pred_probs.npz`, so the flags can be re-derived in a second.
+- **Flags:** `cleanlab.filter.find_label_issues` with its defaults (`prune_by_noise_rate`), ranked by self-confidence. The suggested label is the most probable label other than the given one.
+- **Cleaned:** flagged rows removed, never relabelled. Every system is retrained on cleaned train with every other choice frozen (S0 keeps its grid parameters, S1 and S3 their hyperparameters, five seeds each; S2 rebuilds its support set). Runs are saved as `<tag>_cleaned` and never appear in E1, E3 or E6.
+- **Stop rule before retraining:** more than 10% of train flagged, any intent losing more than a third of its train rows, or cleaner accuracy below 85%.
+- **Metrics:** in-scope macro-F1 and accuracy in four cells: train labels {original, cleaned} by validation rows {all, flagged removed}. **Ranking stable (RQ4)** means the same order by mean macro-F1 in all four cells. Training effect per system: cleaned minus original macro-F1, paired bootstrap stratified by intent, 1,000 resamples. S4 is not retrained; its mixed-set error rate (the E6 matched risk) is reported with and without the flagged rows, from cached replies only.
+- **Audit:** 100 flagged rows drawn at random (seed 0), shown blind: the given and suggested labels appear as options A and B in random order, each with 3 unflagged train examples. The key is in a separate file. Scoring, fixed before the audit: a real error is the suggestion or "neither"; "both" is ambiguous; the given label is a false flag. Reported with a Wilson 95% interval.
+
 ---
 
 ## 9. Rigour rules (non-negotiable)
@@ -319,6 +329,7 @@ E6 as implemented (`scripts/evaluate_router.py`, fixed 22 Nov 2026 before E6 was
 │   ├── policy.py              HANDLE / REJECT / ESCALATE logic
 │   ├── calibration.py         temperature scaling
 │   ├── metrics.py             risk-coverage, AURC, OOS metrics, bootstrap
+│   ├── label_noise.py         cleanlab flags, cleaned splits, blind audit (E2)
 │   └── cost.py                cost and latency model
 ├── scripts/                   make_splits, clean_labels, train, evaluate, make_figures
 ├── results/                   metrics as JSON or CSV, figures, preregistration.md, data_report.md, clean_run.md
