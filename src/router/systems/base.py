@@ -23,6 +23,8 @@ import pandas as pd
 from router.data import RESULTS_DIR, load_label_map
 
 PREDICTIONS_DIR = RESULTS_DIR / "predictions"
+# E2: a system trained on cleaned labels saves its runs under "<tag>_cleaned".
+CLEANED_SUFFIX = "_cleaned"
 
 
 @dataclass
@@ -116,12 +118,18 @@ def load_predictions(system_tag: str, seed: int, split: str) -> tuple[pd.DataFra
     return df, logits
 
 
-def list_runs(split: str) -> dict[str, list[int]]:
-    """Every saved run for a split, as {system_tag: [seeds]}."""
+def list_runs(split: str, include_cleaned: bool = False) -> dict[str, list[int]]:
+    """Every saved run for a split, as {system_tag: [seeds]}.
+
+    Runs trained on cleaned labels (E2) are left out unless include_cleaned is
+    True, so E1, E3, E6 and checkpoint selection only ever see the original runs.
+    """
     runs: dict[str, list[int]] = {}
     if not PREDICTIONS_DIR.exists():
         return runs
     for folder in sorted(PREDICTIONS_DIR.iterdir()):
+        if folder.name.endswith(CLEANED_SUFFIX) and not include_cleaned:
+            continue
         seeds = sorted(
             int(p.name[len("seed") :].split("_")[0]) for p in folder.glob(f"seed*_{split}.csv")
         )

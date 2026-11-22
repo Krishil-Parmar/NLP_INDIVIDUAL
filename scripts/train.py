@@ -7,6 +7,11 @@ Run from the project root:
     uv run python scripts/train.py --system s1 --checkpoint X --probe 30 --determinism
     uv run python scripts/train.py --system s2 --checkpoint sentence-transformers/all-MiniLM-L6-v2
     uv run python scripts/train.py --system s3 [--probe 50]
+    uv run python scripts/train.py --system s1 --labels cleaned   # E2: train without the flagged rows
+
+With --labels cleaned (E2), every choice stays frozen (same model, hyperparameters
+and, for S0, the grid parameters already chosen); only the training rows change.
+Runs are saved under "<tag>_cleaned".
 
 Only the train and validation splits are used. The test split is never loaded here.
 
@@ -34,46 +39,58 @@ from router.systems.base import label_names_in_id_order, save_predictions, save_
 CHECKPOINT_DIR = data.PROJECT_ROOT / "checkpoints"
 
 
-def load_train_and_val() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-    """(train, validation in-scope only, validation mixed with OOS)."""
-    train_df = data.load_split("train")
+def load_train_and_val(labels: str = "original") -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    """(train, validation in-scope only, validation mixed with OOS).
+
+    labels="cleaned" drops the train rows cleanlab flagged (E2). Validation is
+    always the full original split, so every run is scored on the same rows.
+    """
+    train_df = data.load_train(labels)
     val_mixed = data.load_eval_set("val", with_oos=True)
     val_in_scope = val_mixed[~val_mixed["is_oos"]].reset_index(drop=True)
     return train_df, val_in_scope, val_mixed
 
 
-def run_s0(seeds: list[int]) -> None:
+def run_s0(seeds: list[int], labels: str = "original") -> None:
     cfg = data.load_config("s0_tfidf")
     label_names = label_names_in_id_order()
-    train_df, val_in, val_mixed = load_train_and_val()
+    train_df, val_in, val_mixed = load_train_and_val(labels)
+    tag = registry.run_tag(cfg["system_tag"], labels)
 
-    print("S0 grid search on validation macro-F1")
-    best, grid_rows = s0_tfidf.grid_search(train_df, val_in, cfg, label_names)
-    for row in grid_rows:
-        print(f"  ngram={row['ngram_range']} C={row['C']}: val macro-F1 {row['val_macro_f1']:.4f}")
-    print(f"  chosen: {best}")
-    with open(data.RESULTS_DIR / "s0_grid.json", "w") as f:
-        json.dump({"metadata": run_metadata(cfg), "chosen": best, "grid": grid_rows}, f, indent=2, default=str)
+    if labels == "cleaned":
+        # E2 keeps every choice frozen: reuse the grid parameters chosen on the original labels.
+        with open(data.RESULTS_DIR / "s0_grid.json") as f:
+            best = json.load(f)["chosen"]
+        print(f"S0 on cleaned labels ({len(train_df)} train rows) with the frozen parameters {best}")
+    else:
+        print("S0 grid search on validation macro-F1")
+        best, grid_rows = s0_tfidf.grid_search(train_df, val_in, cfg, label_names)
+        for row in grid_rows:
+            print(f"  ngram={row['ngram_range']} C={row['C']}: val macro-F1 {row['val_macro_f1']:.4f}")
+        print(f"  chosen: {best}")
+        with open(data.RESULTS_DIR / "s0_grid.json", "w") as f:
+            json.dump({"metadata": run_metadata(cfg), "chosen": best, "grid": grid_rows}, f, indent=2, default=str)
 
     for seed in seeds:
         start = time.perf_counter()
         model = s0_tfidf.train(train_df, best, cfg, seed)
         train_seconds = time.perf_counter() - start
         preds = s0_tfidf.predict(model, val_mixed["text"].tolist(), label_names)
-        save_predictions(cfg["system_tag"], seed, "val", val_mixed, preds)
-        s0_tfidf.save(model, CHECKPOINT_DIR / "s0" / f"seed{seed}.joblib")
-        save_run_info(cfg["system_tag"], seed, {
+        save_predictions(tag, seed, "val", val_mixed, preds)
+        s0_tfidf.save(model, registry.s0_checkpoint(seed, labels))
+        save_run_info(tag, seed, {
             "metadata": run_metadata(cfg, seed), "params": best, "train_seconds": train_seconds,
+            "labels": labels, "n_train_rows": len(train_df),
         })
         print(f"  seed {seed}: trained in {train_seconds:.1f}s, predictions saved")
 
 
-def run_s1(checkpoint: str, seeds: list[int]) -> None:
+def run_s1(checkpoint: str, seeds: list[int], labels: str = "original") -> None:
     cfg = data.load_config("s1_encoder")
     label_names = label_names_in_id_order()
-    train_df, val_in, val_mixed = load_train_and_val()
+    train_df, val_in, val_mixed = load_train_and_val(labels)
     device = pick_device()
-    tag = s1_encoder.system_tag(checkpoint)
+    tag = registry.run_tag(s1_encoder.system_tag(checkpoint), labels)
     max_length = s1_encoder.max_length_for(checkpoint)
     logs_dir = data.RESULTS_DIR / "training_logs"
     logs_dir.mkdir(parents=True, exist_ok=True)
@@ -82,7 +99,7 @@ def run_s1(checkpoint: str, seeds: list[int]) -> None:
     meta_at_start = run_metadata(cfg)
 
     for seed in seeds:
-        print(f"S1 {checkpoint} seed {seed} on {device}")
+        print(f"S1 {checkpoint} seed {seed} on {device}, {labels} labels ({len(train_df)} train rows)")
         meta = {**meta_at_start, "seed": seed}
         start = time.perf_counter()
         model, tokenizer, log = s1_encoder.train(train_df, cfg, checkpoint, seed, device, label_names, val_df=val_in)
@@ -94,46 +111,51 @@ def run_s1(checkpoint: str, seeds: list[int]) -> None:
         save_run_info(tag, seed, {
             "metadata": meta, "checkpoint": checkpoint, "device": str(device),
             "max_length": max_length, "train_seconds": train_seconds, "epoch_log": log,
+            "labels": labels, "n_train_rows": len(train_df),
         })
         print(f"  seed {seed}: trained in {train_seconds / 60:.1f} min, predictions and checkpoint saved")
 
 
-def run_s2(checkpoint: str) -> None:
+def run_s2(checkpoint: str, labels: str = "original") -> None:
     """S2 has no training: embed the train split once and predict validation (deterministic, seed 0 only)."""
     cfg = data.load_config("s2_embedding")
     label_names = label_names_in_id_order()
-    _, _, val_mixed = load_train_and_val()
+    _, _, val_mixed = load_train_and_val(labels)
     device = pick_device()
-    tag = s2_embedding.system_tag(checkpoint)
+    tag = registry.run_tag(s2_embedding.system_tag(checkpoint), labels)
     meta = run_metadata(cfg, seed=0)
     start = time.perf_counter()
     encoder = s2_embedding.load_encoder(checkpoint, device)
-    support = registry.s2_support_set(encoder, checkpoint, cfg["batch_size"])
+    support = registry.s2_support_set(encoder, checkpoint, cfg["batch_size"], labels)
     preds = s2_embedding.predict(encoder, support, val_mixed["text"].tolist(), label_names, cfg["batch_size"])
     seconds = time.perf_counter() - start
     save_predictions(tag, 0, "val", val_mixed, preds)
-    save_run_info(tag, 0, {"metadata": meta, "checkpoint": checkpoint, "device": str(device), "seconds": seconds})
+    save_run_info(tag, 0, {"metadata": meta, "checkpoint": checkpoint, "device": str(device), "seconds": seconds,
+                           "labels": labels, "n_train_rows": len(support.texts)})
     print(f"S2 {checkpoint}: embedded {len(support.texts)} support examples and predicted validation in {seconds:.1f}s on {device}")
 
 
-def _s3_setup():
-    """Shared S3 inputs: config, labels, data, device, S2 retriever and support set, pair max_length."""
+def _s3_setup(labels: str = "original"):
+    """Shared S3 inputs: config, labels, data, device, S2 retriever and support set, pair max_length.
+
+    labels="cleaned" builds the support set (and so the training pairs) without the flagged rows (E2).
+    """
     cfg = data.load_config("s3_pairwise")
     s2_cfg = data.load_config("s2_embedding")
     if not s2_cfg["checkpoint"]:
         sys.exit("S3 needs its retriever: choose the S2 model first (configs/s2_embedding.yaml).")
     label_names = label_names_in_id_order()
-    _, val_in, val_mixed = load_train_and_val()
+    _, val_in, val_mixed = load_train_and_val(labels)
     device = pick_device()
     encoder = s2_embedding.load_encoder(s2_cfg["checkpoint"], device)
-    support = registry.s2_support_set(encoder, s2_cfg["checkpoint"], s2_cfg["batch_size"])
+    support = registry.s2_support_set(encoder, s2_cfg["checkpoint"], s2_cfg["batch_size"], labels)
     return cfg, s2_cfg, label_names, val_in, val_mixed, device, encoder, support, registry.s3_max_length(cfg)
 
 
-def run_s3(seeds: list[int]) -> None:
-    cfg, s2_cfg, label_names, val_in, val_mixed, device, encoder, support, max_length = _s3_setup()
+def run_s3(seeds: list[int], labels: str = "original") -> None:
+    cfg, s2_cfg, label_names, val_in, val_mixed, device, encoder, support, max_length = _s3_setup(labels)
     checkpoint = cfg["checkpoint"]
-    tag = s3_pairwise.system_tag(checkpoint)
+    tag = registry.run_tag(s3_pairwise.system_tag(checkpoint), labels)
     logs_dir = data.RESULTS_DIR / "training_logs"
     logs_dir.mkdir(parents=True, exist_ok=True)
     meta_at_start = run_metadata(cfg)  # git state recorded once, before training
@@ -142,7 +164,7 @@ def run_s3(seeds: list[int]) -> None:
     print(f"S2 shortlist recall on validation (true intent among the {cfg['retrieval']['top_intents']} shortlisted): {recall:.4f}")
 
     for seed in seeds:
-        print(f"S3 {checkpoint} seed {seed} on {device}")
+        print(f"S3 {checkpoint} seed {seed} on {device}, {labels} labels ({len(support.texts)} support rows)")
         start = time.perf_counter()
         pairs = s3_pairwise.make_training_pairs(support, cfg, np.random.default_rng(seed))
         model, tokenizer, log = s3_pairwise.train(pairs, cfg, checkpoint, seed, device, max_length)
@@ -156,6 +178,7 @@ def run_s3(seeds: list[int]) -> None:
             "device": str(device), "max_length": max_length, "n_training_pairs": len(pairs),
             "positive_share": float(pairs["label"].mean()), "val_shortlist_recall": recall,
             "train_seconds": train_seconds, "epoch_log": log,
+            "labels": labels, "n_train_rows": len(support.texts),
         })
         print(f"  seed {seed}: {len(pairs)} pairs, trained in {train_seconds / 60:.1f} min, predictions and checkpoint saved")
 
@@ -212,20 +235,24 @@ if __name__ == "__main__":
     parser.add_argument("--seeds", type=int, nargs="+", help="default: the seeds in the system's config")
     parser.add_argument("--probe", type=int, metavar="N", help="S1/S3: train N steps, print timing, save nothing")
     parser.add_argument("--determinism", action="store_true", help="with --probe: run twice and compare outputs")
+    parser.add_argument("--labels", choices=["original", "cleaned"], default="original",
+                        help="cleaned: train without the rows cleanlab flagged (E2)")
     args = parser.parse_args()
+    if args.probe and args.labels != "original":
+        sys.exit("--probe only times training; use it with the original labels")
 
     if args.system == "s0":
-        run_s0(args.seeds or data.load_config("s0_tfidf")["seeds"])
+        run_s0(args.seeds or data.load_config("s0_tfidf")["seeds"], args.labels)
     elif args.system == "s2":
         s2_checkpoint = args.checkpoint or data.load_config("s2_embedding")["checkpoint"]
         if not s2_checkpoint:
             sys.exit("Pass --checkpoint or fill in configs/s2_embedding.yaml")
-        run_s2(s2_checkpoint)
+        run_s2(s2_checkpoint, args.labels)
     elif args.system == "s3":
         if args.probe:
             probe_s3(args.probe)
         else:
-            run_s3(args.seeds or data.load_config("s3_pairwise")["seeds"])
+            run_s3(args.seeds or data.load_config("s3_pairwise")["seeds"], args.labels)
     else:
         s1_cfg = data.load_config("s1_encoder")
         checkpoint = args.checkpoint or s1_cfg["checkpoint"]
@@ -234,4 +261,4 @@ if __name__ == "__main__":
         if args.probe:
             probe_s1(checkpoint, args.probe, args.determinism)
         else:
-            run_s1(checkpoint, args.seeds or s1_cfg["seeds"])
+            run_s1(checkpoint, args.seeds or s1_cfg["seeds"], args.labels)

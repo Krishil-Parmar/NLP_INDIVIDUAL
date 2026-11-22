@@ -117,3 +117,34 @@ def test_wilson_interval_known_values():
     assert (low, high) == pytest.approx((0.4038, 0.5962), abs=1e-4)
     low, high = label_noise.wilson_interval(0, 10)
     assert low == pytest.approx(0.0, abs=1e-12) and high == pytest.approx(0.2775, abs=1e-4)
+
+
+def test_list_runs_hides_cleaned_runs_by_default(tmp_path, monkeypatch):
+    from router.systems import base
+
+    for tag in ["s1_distilroberta-base", "s1_distilroberta-base_cleaned"]:
+        (tmp_path / tag).mkdir()
+        (tmp_path / tag / "seed0_val.csv").write_text("")
+    monkeypatch.setattr(base, "PREDICTIONS_DIR", tmp_path)
+    assert list(base.list_runs("val")) == ["s1_distilroberta-base"]
+    assert list(base.list_runs("val", include_cleaned=True)) == ["s1_distilroberta-base", "s1_distilroberta-base_cleaned"]
+
+
+def test_cleaned_runs_get_their_own_tags_and_checkpoints():
+    from router.systems import registry
+
+    assert registry.run_tag("s3_quora-distilroberta-base", "cleaned") == "s3_quora-distilroberta-base_cleaned"
+    assert registry.run_tag("s0_tfidf") == "s0_tfidf"
+    assert registry.s0_checkpoint(2).parts[-2:] == ("s0", "seed2.joblib")  # unchanged for the original runs
+    assert registry.s0_checkpoint(2, "cleaned").parts[-2:] == ("s0_cleaned", "seed2.joblib")
+
+
+def test_cleaned_train_is_train_minus_the_flagged_train_rows():
+    from router import data
+
+    flagged = label_noise.load_flagged()
+    original, cleaned = data.load_train(), data.load_train("cleaned")
+    assert len(cleaned) == len(original) - int((flagged["split"] == "train").sum())
+    assert not label_noise.is_flagged(cleaned, flagged).any()
+    with pytest.raises(ValueError):
+        data.load_train("relabelled")

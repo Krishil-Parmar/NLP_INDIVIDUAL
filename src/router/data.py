@@ -141,6 +141,22 @@ def load_split(name: str) -> pd.DataFrame:
     return pd.read_csv(path, keep_default_na=False)
 
 
+def load_train(labels: str = "original") -> pd.DataFrame:
+    """The train split. labels="cleaned" drops the rows cleanlab flagged (E2).
+
+    The flagged list is data/processed/banking77_flagged.csv, written by
+    scripts/find_label_issues.py. Rows are dropped, never relabelled.
+    """
+    train_df = load_split("train")
+    if labels == "original":
+        return train_df
+    if labels == "cleaned":
+        from router import label_noise  # imported here: label_noise itself imports this module
+
+        return label_noise.drop_flagged(train_df, label_noise.load_flagged())
+    raise ValueError("labels must be 'original' or 'cleaned'")
+
+
 def load_eval_set(split: str, with_oos: bool = True) -> pd.DataFrame:
     """Banking77 val or test, optionally with the matching OOS pool appended.
 

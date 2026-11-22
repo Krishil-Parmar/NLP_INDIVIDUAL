@@ -21,8 +21,8 @@ from sklearn.metrics import log_loss
 from sklearn.model_selection import StratifiedKFold, cross_val_predict
 
 from router import data
+from router.systems.base import CLEANED_SUFFIX
 
-CLEANED_SUFFIX = "_cleaned"
 FLAGGED_FILE = "banking77_flagged.csv"
 PRED_PROBS_FILE = "banking77_cleaner_pred_probs.npz"
 AUDIT_FILE = "e2_audit.csv"
