@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "timestamp_utc": "2026-11-22T07:34:09+00:00",
-    "git_commit": "d80b6e8710707b0837d7120fee1e4524c6c68f60",
+    "timestamp_utc": "2026-11-22T08:59:23+00:00",
+    "git_commit": "e6692d11431d1592a99621cb242b320b2124bc74",
     "git_dirty": false,
     "seed": null,
     "dataset_revisions": {
@@ -1032,6 +1032,177 @@
           "true": "unable_to_verify_identity",
           "predicted": "why_verify_identity",
           "count": 9
+        }
+      ]
+    },
+    "s4_claude-sonnet-4-6": {
+      "seeds": [
+        0
+      ],
+      "n_queries": 1000,
+      "per_seed": [
+        {
+          "accuracy": 0.763,
+          "macro_precision": 0.797139718365644,
+          "macro_recall": 0.770115402090393,
+          "macro_f1": 0.7605720567094417,
+          "weighted_precision": 0.7986119699770473,
+          "weighted_recall": 0.763,
+          "weighted_f1": 0.7583050900349021
+        }
+      ],
+      "summary": {
+        "accuracy": {
+          "mean": 0.763,
+          "std": 0.0
+        },
+        "macro_precision": {
+          "mean": 0.797139718365644,
+          "std": 0.0
+        },
+        "macro_recall": {
+          "mean": 0.770115402090393,
+          "std": 0.0
+        },
+        "macro_f1": {
+          "mean": 0.7605720567094417,
+          "std": 0.0
+        },
+        "weighted_precision": {
+          "mean": 0.7986119699770473,
+          "std": 0.0
+        },
+        "weighted_recall": {
+          "mean": 0.763,
+          "std": 0.0
+        },
+        "weighted_f1": {
+          "mean": 0.7583050900349021,
+          "std": 0.0
+        }
+      },
+      "worst_intents": [
+        {
+          "intent": "get_physical_card",
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 11.0
+        },
+        {
+          "intent": "topping_up_by_card",
+          "precision": 0.18181818181818182,
+          "recall": 0.2,
+          "f1": 0.19047619047619047,
+          "support": 10.0
+        },
+        {
+          "intent": "top_up_by_bank_transfer_charge",
+          "precision": 1.0,
+          "recall": 0.18181818181818182,
+          "f1": 0.3076923076923077,
+          "support": 11.0
+        },
+        {
+          "intent": "order_physical_card",
+          "precision": 0.5,
+          "recall": 0.25,
+          "f1": 0.3333333333333333,
+          "support": 12.0
+        },
+        {
+          "intent": "card_payment_not_recognised",
+          "precision": 0.47058823529411764,
+          "recall": 0.47058823529411764,
+          "f1": 0.47058823529411764,
+          "support": 17.0
+        },
+        {
+          "intent": "card_linking",
+          "precision": 0.8333333333333334,
+          "recall": 0.35714285714285715,
+          "f1": 0.5,
+          "support": 14.0
+        },
+        {
+          "intent": "verify_my_identity",
+          "precision": 0.5,
+          "recall": 0.5,
+          "f1": 0.5,
+          "support": 10.0
+        },
+        {
+          "intent": "transfer_timing",
+          "precision": 0.4166666666666667,
+          "recall": 0.7692307692307693,
+          "f1": 0.5405405405405406,
+          "support": 13.0
+        },
+        {
+          "intent": "declined_transfer",
+          "precision": 0.5,
+          "recall": 0.6153846153846154,
+          "f1": 0.5517241379310345,
+          "support": 13.0
+        },
+        {
+          "intent": "pending_transfer",
+          "precision": 0.5714285714285714,
+          "recall": 0.5333333333333333,
+          "f1": 0.5517241379310345,
+          "support": 15.0
+        }
+      ],
+      "top_confused_pairs": [
+        {
+          "true": "get_physical_card",
+          "predicted": "change_pin",
+          "count": 10
+        },
+        {
+          "true": "direct_debit_payment_not_recognised",
+          "predicted": "card_payment_not_recognised",
+          "count": 8
+        },
+        {
+          "true": "card_linking",
+          "predicted": "activate_my_card",
+          "count": 6
+        },
+        {
+          "true": "order_physical_card",
+          "predicted": "get_physical_card",
+          "count": 6
+        },
+        {
+          "true": "pending_top_up",
+          "predicted": "top_up_failed",
+          "count": 6
+        },
+        {
+          "true": "card_about_to_expire",
+          "predicted": "country_support",
+          "count": 5
+        },
+        {
+          "true": "card_payment_not_recognised",
+          "predicted": "extra_charge_on_statement",
+          "count": 5
+        },
+        {
+          "true": "card_payment_wrong_exchange_rate",
+          "predicted": "exchange_rate",
+          "count": 5
+        },
+        {
+          "true": "unable_to_verify_identity",
+          "predicted": "verify_my_identity",
+          "count": 5
+        },
+        {
+          "true": "verify_my_identity",
+          "predicted": "why_verify_identity",
+          "count": 5
         }
       ]
     }

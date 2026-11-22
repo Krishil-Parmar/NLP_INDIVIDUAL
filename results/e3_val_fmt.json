@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "timestamp_utc": "2026-11-22T07:34:07+00:00",
-    "git_commit": "d80b6e8710707b0837d7120fee1e4524c6c68f60",
-    "git_dirty": false,
+    "timestamp_utc": "2026-11-22T08:59:41+00:00",
+    "git_commit": "e6692d11431d1592a99621cb242b320b2124bc74",
+    "git_dirty": true,
     "seed": 0,
     "dataset_revisions": {
       "banking77": "1846984189f2bc0ac51c6fc3a600fa9e1714e0c6",
@@ -308,6 +308,32 @@
         "fpr_at_tpr": {
           "mean": 0.012571428571428544,
           "std": 0.003833259389999627
+        }
+      }
+    },
+    "s4_claude-sonnet-4-6": {
+      "seeds": [
+        0
+      ],
+      "n_in_scope": 1000,
+      "n_oos": 350,
+      "per_seed": [
+        {
+          "auroc": 0.9904285714285714,
+          "fpr_at_tpr": 0.017142857142857126
+        }
+      ],
+      "thresholds": {
+        "0": 0.0
+      },
+      "summary": {
+        "auroc": {
+          "mean": 0.9904285714285714,
+          "std": 0.0
+        },
+        "fpr_at_tpr": {
+          "mean": 0.017142857142857126,
+          "std": 0.0
         }
       }
     }

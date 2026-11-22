@@ -1,0 +1,1351 @@
+text,label,is_oos,pred_label,confidence,oos_score
+when did you send me my new card,card_arrival,False,card_arrival,1.0,0.0
+has my card been lost in delivery,card_arrival,False,card_arrival,1.0,0.0
+my card still hasn't been delivered,card_arrival,False,card_arrival,1.0,0.0
+can you tell me why i haven't received my new card,card_arrival,False,card_arrival,1.0,0.0
+what's the reason my new card hasn't come,card_arrival,False,card_arrival,1.0,0.0
+i am still waiting for my card,card_arrival,False,card_arrival,1.0,0.0
+will i have to wait much longer for my new card to arrive,card_arrival,False,card_arrival,1.0,0.0
+is there a reason my new card hasn't arrived yet,card_arrival,False,card_arrival,1.0,0.0
+is there a way to track the new card you sent me,card_arrival,False,card_arrival,1.0,0.0
+what do i need to do to get my new card which i have requested 2 weeks ago,card_arrival,False,card_arrival,1.0,0.0
+is there a reason my new card hasn't arrived,card_arrival,False,card_arrival,1.0,0.0
+i'm still waiting for my card that was issued a week ago what should i do,card_arrival,False,card_arrival,1.0,0.0
+i still haven't gotten my new card when will it get here,card_arrival,False,card_arrival,1.0,0.0
+i was supposed to receive my new card by now but it hasn't came in,card_arrival,False,card_arrival,1.0,0.0
+my card still hasn't arrived after two weeks now what,card_arrival,False,card_arrival,1.0,0.0
+how do i get my card to show in the app,card_linking,False,card_linking,1.0,0.0
+how do i add an existing card to the app,card_linking,False,card_linking,1.0,0.0
+okay i found my card can i put it back in the app,card_linking,False,card_linking,1.0,0.0
+how do i reactivate a card i thought i lost,card_linking,False,lost_or_stolen_card,1.0,0.0
+i want to reactivate my card i thought i had lost it but i found it,card_linking,False,lost_or_stolen_card,1.0,0.0
+i would like to link my card to my account,card_linking,False,card_linking,1.0,0.0
+can i reactivate my card i reported it lost and found it this morning in my jacket,card_linking,False,lost_or_stolen_card,1.0,0.0
+i want to reactivate my card i thought i had lost it but found it again in my jacket this morning,card_linking,False,lost_or_stolen_card,1.0,0.0
+i found the card that i thought i lost and i would like to reactivate it,card_linking,False,activate_my_card,1.0,0.0
+can you tell me how to get my card on the app,card_linking,False,card_linking,1.0,0.0
+i received my new card where is it in the app,card_linking,False,card_linking,1.0,0.0
+the card i thought i lost was in my jacket pocket this morning so can i reactivate that,card_linking,False,lost_or_stolen_card,1.0,0.0
+i received my card how do i get it to work in the app,card_linking,False,card_linking,1.0,0.0
+i have a card that was deactivated can i reactivate it,card_linking,False,activate_my_card,1.0,0.0
+what's the foreign exchange rate i will receive,exchange_rate,False,exchange_rate,1.0,0.0
+i need to know what foreign exchange rate i can get,exchange_rate,False,exchange_rate,1.0,0.0
+what is the basis of your exchange rates,exchange_rate,False,exchange_rate,1.0,0.0
+how do the foreign exchange rates work,exchange_rate,False,exchange_rate,1.0,0.0
+how is the exchange rate calculated,exchange_rate,False,exchange_rate,1.0,0.0
+what is your opinion on the exchange rate,exchange_rate,False,exchange_rate,1.0,0.0
+how are your exchange rates calculated,exchange_rate,False,exchange_rate,1.0,0.0
+what is the present state of the exchange rate,exchange_rate,False,exchange_rate,1.0,0.0
+how is the current exchange rate,exchange_rate,False,exchange_rate,1.0,0.0
+i am travelling and i was wondering what your exchange rates are,exchange_rate,False,exchange_rate,1.0,0.0
+how do you determine the exchange rate,exchange_rate,False,exchange_rate,1.0,0.0
+the exchange rate i was charged for a purchase was not right,card_payment_wrong_exchange_rate,False,card_payment_wrong_exchange_rate,1.0,0.0
+my payment has an incorrect exchange rate,card_payment_wrong_exchange_rate,False,card_payment_wrong_exchange_rate,1.0,0.0
+this exchange rate you use is awful please tell me this is a mistake and not the official interbank exchange rate,card_payment_wrong_exchange_rate,False,exchange_rate,1.0,0.0
+this exchange rate on my purchase is wrong,card_payment_wrong_exchange_rate,False,card_payment_wrong_exchange_rate,1.0,0.0
+i question today's exchange rate for rubles into pounds i was hoping for a better return,card_payment_wrong_exchange_rate,False,exchange_rate,1.0,0.0
+why isn't my purchase exchange rate correct,card_payment_wrong_exchange_rate,False,card_payment_wrong_exchange_rate,1.0,0.0
+it seems that the rate i got is incorrect,card_payment_wrong_exchange_rate,False,exchange_rate,1.0,0.0
+why is the exchange rate different from what i expected,card_payment_wrong_exchange_rate,False,exchange_rate,1.0,0.0
+the wrong exchange rate was used when i purchased an item,card_payment_wrong_exchange_rate,False,card_payment_wrong_exchange_rate,1.0,0.0
+i bought something abroad and the exchange rate applied is wrong,card_payment_wrong_exchange_rate,False,card_payment_wrong_exchange_rate,1.0,0.0
+i believe you charged me too much to exchange my money,card_payment_wrong_exchange_rate,False,exchange_charge,1.0,0.0
+your foreign exchange rate is wrong,card_payment_wrong_exchange_rate,False,exchange_rate,1.0,0.0
+the exchange rate is incorrect for something i bought,card_payment_wrong_exchange_rate,False,card_payment_wrong_exchange_rate,1.0,0.0
+when i was traveling abroad the exchange rate was applied wrong,card_payment_wrong_exchange_rate,False,card_payment_wrong_exchange_rate,1.0,0.0
+there's an error in regards to the exchange rate for an item i bought,card_payment_wrong_exchange_rate,False,card_payment_wrong_exchange_rate,1.0,0.0
+i'm going on a trip soon and i needed to convert my russian ruble to uk pounds but when i did your company charged me above the exchange rate did you mess up my transaction,card_payment_wrong_exchange_rate,False,card_payment_wrong_exchange_rate,1.0,0.0
+the exchange rate that was applied for an international purchase was wrong,card_payment_wrong_exchange_rate,False,card_payment_wrong_exchange_rate,1.0,0.0
+have have a small charge on my account from someone i purchased with but i'm not sure what it relates to,extra_charge_on_statement,False,extra_charge_on_statement,1.0,0.0
+i checked my account today and saw that i was charged an extra pound that i did not spend,extra_charge_on_statement,False,extra_charge_on_statement,1.0,0.0
+why is there an extra pound charge that is pending,extra_charge_on_statement,False,extra_charge_on_statement,1.0,0.0
+why did you charge me extra,extra_charge_on_statement,False,extra_charge_on_statement,1.0,0.0
+it appears i have a fee in my statement,extra_charge_on_statement,False,extra_charge_on_statement,1.0,0.0
+why is there an extra 1 fee in my statement,extra_charge_on_statement,False,extra_charge_on_statement,1.0,0.0
+in my statement there was an extra 1 fee,extra_charge_on_statement,False,extra_charge_on_statement,1.0,0.0
+what does the 1 fee mean,extra_charge_on_statement,False,extra_charge_on_statement,1.0,0.0
+i do not know why i was charged for the 1 transaction,extra_charge_on_statement,False,extra_charge_on_statement,1.0,0.0
+i was charged an extra pound,extra_charge_on_statement,False,extra_charge_on_statement,1.0,0.0
+there is a charge for an additional pound,extra_charge_on_statement,False,extra_charge_on_statement,1.0,0.0
+why i'm i being charged an extra pound,extra_charge_on_statement,False,extra_charge_on_statement,1.0,0.0
+the 1 00 has still not been reverted as indicated in the previous email,extra_charge_on_statement,False,extra_charge_on_statement,1.0,0.0
+why is there a fee added to my statement,extra_charge_on_statement,False,extra_charge_on_statement,1.0,0.0
+there is an extra 1 charge on my app why did it charge me extra,extra_charge_on_statement,False,extra_charge_on_statement,1.0,0.0
+what is this random charge of one pound doing on my account,extra_charge_on_statement,False,extra_charge_on_statement,1.0,0.0
+i was overcharged an additional pound,extra_charge_on_statement,False,extra_charge_on_statement,1.0,0.0
+the transaction for the cash i pulled out of the atm earlier is pending in the app but how if i already have the cash,pending_cash_withdrawal,False,pending_cash_withdrawal,1.0,0.0
+my cash withdrawal isnt showing on my account,pending_cash_withdrawal,False,cash_withdrawal_not_recognised,1.0,0.0
+can you explain to me why a cash withdrawal shows up as pending,pending_cash_withdrawal,False,pending_cash_withdrawal,1.0,0.0
+i got cash from an atm earlier but it shows up as pending in the app how can this still be pending i already received the cash,pending_cash_withdrawal,False,pending_cash_withdrawal,1.0,0.0
+i made a deposit in the atm and it has not cleared,pending_cash_withdrawal,False,balance_not_updated_after_cheque_or_cash_deposit,1.0,0.0
+what does it mean if my cash withdrawal is pending,pending_cash_withdrawal,False,pending_cash_withdrawal,1.0,0.0
+why is a transaction still pending,pending_cash_withdrawal,False,pending_card_payment,1.0,0.0
+i made a cash withdrawal and it is still listed as a pending transaction,pending_cash_withdrawal,False,pending_cash_withdrawal,1.0,0.0
+my account says a withdrawal is pending why can't i take cash out of the atm,pending_cash_withdrawal,False,pending_cash_withdrawal,1.0,0.0
+why does my account show as pending a cash withdrawal from the atm that i have already made,pending_cash_withdrawal,False,pending_cash_withdrawal,1.0,0.0
+i have a cash withdrawal that says it's pending why,pending_cash_withdrawal,False,pending_cash_withdrawal,1.0,0.0
+why is the cash transaction still showing as not completed,pending_cash_withdrawal,False,pending_cash_withdrawal,1.0,0.0
+there is a withdrawal waiting,pending_cash_withdrawal,False,pending_cash_withdrawal,1.0,0.0
+my cash withdrawal has not come out of my account yet,pending_cash_withdrawal,False,pending_cash_withdrawal,1.0,0.0
+i want to have multiple currencies in my account if possible,fiat_currency_support,False,fiat_currency_support,1.0,0.0
+can exchanged be made to eur,fiat_currency_support,False,fiat_currency_support,1.0,0.0
+what are the fiat currencies used,fiat_currency_support,False,fiat_currency_support,1.0,0.0
+which fiat currencies are supported by you,fiat_currency_support,False,fiat_currency_support,1.0,0.0
+can i change or hold different currency,fiat_currency_support,False,fiat_currency_support,1.0,0.0
+can you tell me how many currencies i can hold,fiat_currency_support,False,fiat_currency_support,1.0,0.0
+is my country's currency supported by your system,fiat_currency_support,False,fiat_currency_support,1.0,0.0
+what flat currencies do you support for holding and exchange,fiat_currency_support,False,fiat_currency_support,1.0,0.0
+what fiduciary currencies are supported for tenure and exchange,fiat_currency_support,False,fiat_currency_support,1.0,0.0
+what currency is supported for exchanges and holding,fiat_currency_support,False,fiat_currency_support,1.0,0.0
+do you have a problem with eur exchanges,fiat_currency_support,False,fiat_currency_support,1.0,0.0
+do you allow exchanges of eur,fiat_currency_support,False,fiat_currency_support,1.0,0.0
+which flat currencies do you support for holding and exchange,fiat_currency_support,False,fiat_currency_support,1.0,0.0
+when should i expect to receive my card,card_delivery_estimate,False,card_arrival,1.0,0.0
+when can i expect delivery,card_delivery_estimate,False,card_delivery_estimate,1.0,0.0
+how long will this take to get to me,card_delivery_estimate,False,card_delivery_estimate,1.0,0.0
+can i have it delivered on the date i need it delivered,card_delivery_estimate,False,card_delivery_estimate,1.0,0.0
+can i have it by a certain date,card_delivery_estimate,False,card_delivery_estimate,1.0,0.0
+is there a specific date it can be delivered by,card_delivery_estimate,False,card_delivery_estimate,1.0,0.0
+what is the estimated date for delivery to us,card_delivery_estimate,False,card_delivery_estimate,1.0,0.0
+i placed my order a week ago is it ok that my card isn't here yet,card_delivery_estimate,False,card_arrival,1.0,0.0
+when will i get my card shipped to me,card_delivery_estimate,False,card_delivery_estimate,1.0,0.0
+when will i receive my card,card_delivery_estimate,False,card_arrival,1.0,0.0
+i need my card immediately,card_delivery_estimate,False,card_delivery_estimate,1.0,0.0
+when do i activate auto top up,automatic_top_up,False,automatic_top_up,1.0,0.0
+i am inquiring about your auto top up feature,automatic_top_up,False,automatic_top_up,1.0,0.0
+can i schedule future top ups,automatic_top_up,False,automatic_top_up,1.0,0.0
+if there isn't a lot of money left will it automatically top up money,automatic_top_up,False,automatic_top_up,1.0,0.0
+how can i use thereto top option,automatic_top_up,False,topping_up_by_card,1.0,0.0
+how do i get refills to my card when i'm traveling,automatic_top_up,False,topping_up_by_card,1.0,0.0
+how do i auto top up,automatic_top_up,False,automatic_top_up,1.0,0.0
+will money be added automatically when necessary,automatic_top_up,False,automatic_top_up,1.0,0.0
+can i automatically top up when traveling,automatic_top_up,False,automatic_top_up,1.0,0.0
+where can i find the auto top up option,automatic_top_up,False,automatic_top_up,1.0,0.0
+how do i top up while traveling,automatic_top_up,False,topping_up_by_card,1.0,0.0
+can i add money in intervals to my account i will be traveling,automatic_top_up,False,automatic_top_up,1.0,0.0
+i know there's an auto top option but i can not locate it when i look,automatic_top_up,False,automatic_top_up,1.0,0.0
+what is the reason for that,card_not_working,False,oos,1.0,1.0
+why doesn't my card work for any transactions,card_not_working,False,card_not_working,1.0,0.0
+my card hasn't been working when i try to use it,card_not_working,False,card_not_working,1.0,0.0
+help my card is broken,card_not_working,False,card_not_working,1.0,0.0
+no transactions are being accepted what's wrong with my card,card_not_working,False,card_not_working,1.0,0.0
+how do i re order a damaged card,card_not_working,False,order_physical_card,1.0,0.0
+i haven't been able to complete any transactions on my card today do you know what's wrong,card_not_working,False,card_not_working,1.0,0.0
+i need clarity on why my card is not working,card_not_working,False,card_not_working,1.0,0.0
+what's going on with my card i've tried multiple times and it never goes through,card_not_working,False,declined_card_payment,1.0,0.0
+what do i do if my card is not working,card_not_working,False,card_not_working,1.0,0.0
+the card that i have isn't working this is the physical card,card_not_working,False,card_not_working,1.0,0.0
+i would like to change to a different currency,exchange_via_app,False,exchange_via_app,1.0,0.0
+how can i convert currencies,exchange_via_app,False,exchange_via_app,1.0,0.0
+can i use your app to exchange between usd and gbp,exchange_via_app,False,exchange_via_app,1.0,0.0
+how do i change to a different currency,exchange_via_app,False,fiat_currency_support,1.0,0.0
+can i exchange from usd to gbp,exchange_via_app,False,exchange_via_app,1.0,0.0
+is this app capable of exchanging currencies,exchange_via_app,False,exchange_via_app,1.0,0.0
+does this app exchange currencies,exchange_via_app,False,exchange_via_app,1.0,0.0
+i need to exchange a currency can i do that here,exchange_via_app,False,exchange_via_app,1.0,0.0
+how to exchange currencies,exchange_via_app,False,exchange_via_app,1.0,0.0
+how can i trade currencies with this app,exchange_via_app,False,exchange_via_app,1.0,0.0
+how do i start an exchange between gbp and aud,exchange_via_app,False,exchange_via_app,1.0,0.0
+can this app exchange american and english currency,exchange_via_app,False,exchange_via_app,1.0,0.0
+how do i replace a stolen card,lost_or_stolen_card,False,lost_or_stolen_card,1.0,0.0
+can you provide information for freezing my card immediately,lost_or_stolen_card,False,lost_or_stolen_card,1.0,0.0
+i believe that my card has been stolen,lost_or_stolen_card,False,lost_or_stolen_card,1.0,0.0
+help i fear that my card was stolen,lost_or_stolen_card,False,lost_or_stolen_card,1.0,0.0
+what can i do if i lost my card,lost_or_stolen_card,False,lost_or_stolen_card,1.0,0.0
+who can i speak with regarding a lost card,lost_or_stolen_card,False,lost_or_stolen_card,1.0,0.0
+i lost my card what do i do now,lost_or_stolen_card,False,lost_or_stolen_card,1.0,0.0
+help lost my card,lost_or_stolen_card,False,lost_or_stolen_card,1.0,0.0
+do you have any age limit,age_limit,False,age_limit,1.0,0.0
+what age do you have to be,age_limit,False,age_limit,1.0,0.0
+what is the appropriate age for my child to be able to open an account,age_limit,False,age_limit,1.0,0.0
+what are the requirements to open an account for a minor,age_limit,False,age_limit,1.0,0.0
+i have kids and i'm curious at what age could they start to use your service,age_limit,False,age_limit,1.0,0.0
+can i open up an account for my child,age_limit,False,age_limit,1.0,0.0
+i want to open an account for my child,age_limit,False,age_limit,1.0,0.0
+how old does my daughter need to be to have her own account,age_limit,False,age_limit,1.0,0.0
+my son has just turned 13 is he old enough for an account,age_limit,False,age_limit,1.0,0.0
+is my child too young to sign up,age_limit,False,age_limit,1.0,0.0
+is it possible for me to set up separate accounts for my kids,age_limit,False,age_limit,1.0,0.0
+help me unblock my account i entered the pin wrong too many times,pin_blocked,False,pin_blocked,1.0,0.0
+where do i find pin for my card,pin_blocked,False,get_physical_card,1.0,0.0
+what do i have to do to get my pin unblocked,pin_blocked,False,pin_blocked,1.0,0.0
+i tried my pin too many times and now my card won't work,pin_blocked,False,pin_blocked,1.0,0.0
+i tried the wrong pin too many times,pin_blocked,False,pin_blocked,1.0,0.0
+my pin is locked how do i unlock it,pin_blocked,False,pin_blocked,1.0,0.0
+is there a way to reset my pin,pin_blocked,False,change_pin,1.0,0.0
+what do i do if my pin was blocked,pin_blocked,False,pin_blocked,1.0,0.0
+i need a new pin number,pin_blocked,False,change_pin,1.0,0.0
+i punched in the wrong pin too many times and i'm locked out,pin_blocked,False,pin_blocked,1.0,0.0
+i can't figure out how to unblock my pin number can you help me,pin_blocked,False,pin_blocked,1.0,0.0
+my contactless payments don't work,contactless_not_working,False,contactless_not_working,1.0,0.0
+how do i troubleshoot when contactless doesn't work,contactless_not_working,False,contactless_not_working,1.0,0.0
+what is the reason when i tried to pay contactless at the bus it didnt work,contactless_not_working,False,contactless_not_working,1.0,0.0
+what is the charge for receiving a sepa transfer,top_up_by_bank_transfer_charge,False,top_up_by_bank_transfer_charge,1.0,0.0
+will i be charged any fee for receiving money,top_up_by_bank_transfer_charge,False,top_up_by_bank_transfer_charge,1.0,0.0
+do you offer swift transfers,top_up_by_bank_transfer_charge,False,top_up_by_bank_transfer_charge,1.0,0.0
+why do you charge for transfers,top_up_by_bank_transfer_charge,False,transfer_fee_charged,1.0,0.0
+what is the price of a transfer,top_up_by_bank_transfer_charge,False,transfer_fee_charged,1.0,0.0
+do you charge anything for topping up,top_up_by_bank_transfer_charge,False,top_up_by_card_charge,1.0,0.0
+what does it cost to receive a sepa transfer,top_up_by_bank_transfer_charge,False,top_up_by_bank_transfer_charge,1.0,0.0
+i want to top up my account by a bank transfer but will i be charged,top_up_by_bank_transfer_charge,False,top_up_by_bank_transfer_charge,1.0,0.0
+are you aware of any charges for receiving money,top_up_by_bank_transfer_charge,False,top_up_by_bank_transfer_charge,1.0,0.0
+are there topping up fees if i have to transfer,top_up_by_bank_transfer_charge,False,top_up_by_bank_transfer_charge,1.0,0.0
+does it cost me to add cash,top_up_by_bank_transfer_charge,False,top_up_by_cash_or_cheque,1.0,0.0
+i am under the impression that my top up is still pending,pending_top_up,False,pending_top_up,1.0,0.0
+how long will it take for my money to be deposited,pending_top_up,False,transfer_timing,1.0,0.0
+it appears my top up is still pending,pending_top_up,False,pending_top_up,1.0,0.0
+i think my top up is still pending,pending_top_up,False,pending_top_up,1.0,0.0
+i topped up but it isn't in my account,pending_top_up,False,pending_top_up,1.0,0.0
+i tried to top up but it didn't finish,pending_top_up,False,top_up_failed,1.0,0.0
+why hasn't my top up gone through,pending_top_up,False,pending_top_up,1.0,0.0
+how long does it take for a top up,pending_top_up,False,transfer_timing,1.0,0.0
+my top up hasn't gone through,pending_top_up,False,top_up_failed,1.0,0.0
+i topped up my account but i don't think it went through,pending_top_up,False,top_up_failed,1.0,0.0
+it appears my top up has not gone through,pending_top_up,False,top_up_failed,1.0,0.0
+when will my top up be applied,pending_top_up,False,pending_top_up,1.0,0.0
+what is wrong with my top up,pending_top_up,False,top_up_failed,1.0,0.0
+i have a new card and i can't add money to it i tried about 30 minutes ago and it is still pending what do i do,pending_top_up,False,pending_top_up,1.0,0.0
+where to check top ups pending,pending_top_up,False,pending_top_up,1.0,0.0
+am i able to cancel a transfer i just made,cancel_transfer,False,cancel_transfer,1.0,0.0
+is there a way to undo a transaction,cancel_transfer,False,cancel_transfer,1.0,0.0
+i messed up and made a transaction using the wrong account,cancel_transfer,False,cancel_transfer,1.0,0.0
+what are the steps i need to take to cancel a transaction,cancel_transfer,False,cancel_transfer,1.0,0.0
+how fast can you fix an error in payment i made a payment in the wrong account yesterday and it needs to be adjusted by tomorrow for my rent,cancel_transfer,False,cancel_transfer,1.0,0.0
+i would like to cancel my previous transaction,cancel_transfer,False,cancel_transfer,1.0,0.0
+hi i made a transfer yesterday that i need to reverse i need to put the money in a different account,cancel_transfer,False,cancel_transfer,1.0,0.0
+could you refund my transaction i paid it into the wrong account i need to be able to pay it into the right account by tomorrow,cancel_transfer,False,request_refund,1.0,0.0
+how can i revert a transaction from this morning,cancel_transfer,False,request_refund,1.0,0.0
+i made a transfer into my account and now i need to cancel it,cancel_transfer,False,cancel_transfer,1.0,0.0
+i need to cancel my recent transfer quickly since i made a mistake please help before it goes through,cancel_transfer,False,cancel_transfer,1.0,0.0
+can i cancel a transfer i made,cancel_transfer,False,cancel_transfer,1.0,0.0
+i just initiated a transfer but i'd like to cancel it,cancel_transfer,False,cancel_transfer,1.0,0.0
+help please my rent payment is coming out tomorrow and i made a payment mistake yesterday can you put in in the correct account,cancel_transfer,False,cancel_transfer,1.0,0.0
+a transfer has been made in my account that i need to cancel this was a mistake on my part and i hope we can get this resolved quickly,cancel_transfer,False,cancel_transfer,1.0,0.0
+what do i have to do to cancel a transfer,cancel_transfer,False,cancel_transfer,1.0,0.0
+is there a limit to how much i can top up,top_up_limits,False,top_up_limits,1.0,0.0
+what is the limit for top ups,top_up_limits,False,top_up_limits,1.0,0.0
+how much can i top up in a day,top_up_limits,False,top_up_limits,1.0,0.0
+can i top up any amount i wish on any given day,top_up_limits,False,top_up_limits,1.0,0.0
+what is the highest amount i can top up,top_up_limits,False,top_up_limits,1.0,0.0
+what's the maximum amount i can top up my card with please,top_up_limits,False,top_up_limits,1.0,0.0
+what is your maximum top up limit per day,top_up_limits,False,top_up_limits,1.0,0.0
+is there a maximum for top ups,top_up_limits,False,top_up_limits,1.0,0.0
+what amount can i top up,top_up_limits,False,top_up_limits,1.0,0.0
+is there a limit on top ups,top_up_limits,False,top_up_limits,1.0,0.0
+how can i request cash back the atm just gave me the wrong amount that i've been charged though,wrong_amount_of_cash_received,False,wrong_amount_of_cash_received,1.0,0.0
+i went tot the atm earlier today and didn't realize this till now but i did not get all the money i requested i believe my account was charged for 100 but i only got 80 is there any way we can solve this problem,wrong_amount_of_cash_received,False,wrong_amount_of_cash_received,1.0,0.0
+i'm at the atm right now and it only allowed me to withdraw 10 pounds instead of my requested 30 what's going on how can i fix this,wrong_amount_of_cash_received,False,wrong_amount_of_cash_received,1.0,0.0
+i only got 20 of the 100 that i attempted to withdraw,wrong_amount_of_cash_received,False,wrong_amount_of_cash_received,1.0,0.0
+help i tried to get cash and it gave me some but not the right amount,wrong_amount_of_cash_received,False,wrong_amount_of_cash_received,1.0,0.0
+i did not get the right amount of cash from the atm,wrong_amount_of_cash_received,False,wrong_amount_of_cash_received,1.0,0.0
+how can i request cash back the atm just gave me a different amount than what i've been charged though,wrong_amount_of_cash_received,False,wrong_amount_of_cash_received,1.0,0.0
+i did not get any money but still was charged,wrong_amount_of_cash_received,False,declined_cash_withdrawal,1.0,0.0
+i did not receive the right amount of cash,wrong_amount_of_cash_received,False,wrong_amount_of_cash_received,1.0,0.0
+i took out money and didn't get all of it,wrong_amount_of_cash_received,False,wrong_amount_of_cash_received,1.0,0.0
+please help me with the amount that i have withdrawn from the atm today the atm has given me wrong sum of amount and i could see that the app is displaying the greater amount than taken out,wrong_amount_of_cash_received,False,wrong_amount_of_cash_received,1.0,0.0
+i wanted to take out 100 but i only got 20,wrong_amount_of_cash_received,False,wrong_amount_of_cash_received,1.0,0.0
+the atm didn't give me the amount i asked for,wrong_amount_of_cash_received,False,wrong_amount_of_cash_received,1.0,0.0
+how can i get my money that i didn't get from the atm,wrong_amount_of_cash_received,False,wrong_amount_of_cash_received,1.0,0.0
+how can i request cash back the atm just gave me a different amount than what i've been actually charged though,wrong_amount_of_cash_received,False,wrong_amount_of_cash_received,1.0,0.0
+can you explain why the atm is giving me less money than what i asked for,wrong_amount_of_cash_received,False,wrong_amount_of_cash_received,1.0,0.0
+i tried to withdraw 50 pounds but it only gave me 30 where is the rest of my money,wrong_amount_of_cash_received,False,wrong_amount_of_cash_received,1.0,0.0
+i'm stuck here at your broken atm and i don't know what to do next asked for 30 pounds got 10 atm said i got 30 something very wrong here and i want my money now,wrong_amount_of_cash_received,False,wrong_amount_of_cash_received,1.0,0.0
+on a card payment why is there a fee,card_payment_fee_charged,False,card_payment_fee_charged,1.0,0.0
+there was an extra charge when i used my card,card_payment_fee_charged,False,card_payment_fee_charged,1.0,0.0
+i used my card and there was a fee,card_payment_fee_charged,False,card_payment_fee_charged,1.0,0.0
+i paid with a card and there is an extra charge why,card_payment_fee_charged,False,card_payment_fee_charged,1.0,0.0
+i want to see what this fee is on my card payment,card_payment_fee_charged,False,card_payment_fee_charged,1.0,0.0
+let me know when you charge extra for payments please i just checked the app earlier when i saw that there was an additional fee on one of the payments that i wasn't warned about before,card_payment_fee_charged,False,card_payment_fee_charged,1.0,0.0
+i paid with my card and was charged extra,card_payment_fee_charged,False,card_payment_fee_charged,1.0,0.0
+my account was charged a fee when did you start charging extra for card payments,card_payment_fee_charged,False,card_payment_fee_charged,1.0,0.0
+tell me why i was charged more with my card,card_payment_fee_charged,False,card_payment_fee_charged,1.0,0.0
+my card is showing a fee from when i used it but i thought this card was supposed to be fee free,card_payment_fee_charged,False,card_payment_fee_charged,1.0,0.0
+i was spending cash with my card and got a fee,card_payment_fee_charged,False,cash_withdrawal_charge,1.0,0.0
+i am getting charged fees on some payments please help me understand where are these fees disclosed,card_payment_fee_charged,False,card_payment_fee_charged,1.0,0.0
+why was i charged a fee for my card payment,card_payment_fee_charged,False,card_payment_fee_charged,1.0,0.0
+what are the fees imposed when i make a transaction,card_payment_fee_charged,False,card_payment_fee_charged,1.0,0.0
+why was a fee added to my bill when i used my card,card_payment_fee_charged,False,card_payment_fee_charged,1.0,0.0
+i was charged an additional amount of money for making a purchase with my card,card_payment_fee_charged,False,card_payment_fee_charged,1.0,0.0
+i just saw a fee on my account when do these get charged,card_payment_fee_charged,False,card_payment_fee_charged,1.0,0.0
+why have i been charged a small fee to use my card,card_payment_fee_charged,False,card_payment_fee_charged,1.0,0.0
+is there an allowance on cards,card_payment_fee_charged,False,disposable_card_limits,1.0,0.0
+how long will it take for my transfer to arrive,transfer_not_received_by_recipient,False,transfer_timing,1.0,0.0
+i sent a payment but it isn't showing up in the app,transfer_not_received_by_recipient,False,transfer_not_received_by_recipient,1.0,0.0
+when are you going to transfer the money,transfer_not_received_by_recipient,False,transfer_timing,1.0,0.0
+how long does it take for money to transfer i sent some to a friend and it hasn't gone through yet,transfer_not_received_by_recipient,False,transfer_timing,1.0,0.0
+my friend says he hasn't received my transaction,transfer_not_received_by_recipient,False,transfer_not_received_by_recipient,1.0,0.0
+i transferred some money but it is not here yet,transfer_not_received_by_recipient,False,transfer_not_received_by_recipient,1.0,0.0
+i have done a transfer within the country a couple days ago but it's still not there yet can you please check what's going on with that the account number definitely is the right one i've checked that several times already,transfer_not_received_by_recipient,False,transfer_not_received_by_recipient,1.0,0.0
+my friend has not got the money i sent last week,transfer_not_received_by_recipient,False,transfer_not_received_by_recipient,1.0,0.0
+i transferred money and it hasn't come yet,transfer_not_received_by_recipient,False,transfer_not_received_by_recipient,1.0,0.0
+why hasn't the money transfer arrived yet,transfer_not_received_by_recipient,False,transfer_not_received_by_recipient,1.0,0.0
+why is my transaction taking so long to complete,transfer_not_received_by_recipient,False,pending_transfer,1.0,0.0
+how long will it take to receive my money from my transfer transaction,transfer_not_received_by_recipient,False,transfer_timing,1.0,0.0
+how long does it take for transfers to be approved i sent funds to my girlfriend and she says that she has not seen any approved funds in her account,transfer_not_received_by_recipient,False,transfer_timing,1.0,0.0
+i sent a payment but the person i sent it to says they don't have it,transfer_not_received_by_recipient,False,transfer_not_received_by_recipient,1.0,0.0
+i've been waiting since friday where is my money,transfer_not_received_by_recipient,False,balance_not_updated_after_bank_transfer,1.0,0.0
+why isn't the transfer i made to a friend showing,transfer_not_received_by_recipient,False,transfer_not_received_by_recipient,1.0,0.0
+the money i transferred didnt arrive,transfer_not_received_by_recipient,False,transfer_not_received_by_recipient,1.0,0.0
+what are the acceptable currencies for adding funds,supported_cards_and_currencies,False,supported_cards_and_currencies,1.0,0.0
+do you accept any card and currency,supported_cards_and_currencies,False,supported_cards_and_currencies,1.0,0.0
+what currencies do you accept to add money,supported_cards_and_currencies,False,fiat_currency_support,1.0,0.0
+what currency can i use to add money,supported_cards_and_currencies,False,fiat_currency_support,1.0,0.0
+can i use a credit card from the us to top up,supported_cards_and_currencies,False,supported_cards_and_currencies,1.0,0.0
+what kind of cards are supported what currency,supported_cards_and_currencies,False,supported_cards_and_currencies,1.0,0.0
+what forms of payment do you accept,supported_cards_and_currencies,False,supported_cards_and_currencies,1.0,0.0
+do you have a list of cards and currencies you support,supported_cards_and_currencies,False,supported_cards_and_currencies,1.0,0.0
+which cards are accepted for topping up,supported_cards_and_currencies,False,supported_cards_and_currencies,1.0,0.0
+help me use american express to add money to the account,supported_cards_and_currencies,False,topping_up_by_card,1.0,0.0
+can i use this app for any currency,supported_cards_and_currencies,False,fiat_currency_support,1.0,0.0
+if i want to topup by card how do i do it,supported_cards_and_currencies,False,topping_up_by_card,1.0,0.0
+what are the various currencies and cards that you offer support for,supported_cards_and_currencies,False,supported_cards_and_currencies,1.0,0.0
+can i have a virtual card,getting_virtual_card,False,getting_virtual_card,1.0,0.0
+which part of the app do i order virtual cards from,getting_virtual_card,False,getting_virtual_card,1.0,0.0
+how to order a virtual card,getting_virtual_card,False,getting_virtual_card,1.0,0.0
+how to get virtual card,getting_virtual_card,False,getting_virtual_card,1.0,0.0
+where can i order my virtual card,getting_virtual_card,False,getting_virtual_card,1.0,0.0
+how long do you have to wait to see your virtual card your ordered,getting_virtual_card,False,getting_virtual_card,1.0,0.0
+i want to get a virtual card,getting_virtual_card,False,getting_virtual_card,1.0,0.0
+i haven't received my virtual card,getting_virtual_card,False,getting_virtual_card,1.0,0.0
+i'd like like to know where i can order a virtual card,getting_virtual_card,False,getting_virtual_card,1.0,0.0
+what is a virtual and how do i get one,getting_virtual_card,False,getting_virtual_card,1.0,0.0
+are there businesses that don't accept this card,card_acceptance,False,card_acceptance,1.0,0.0
+this card is accepted by what businesses,card_acceptance,False,card_acceptance,1.0,0.0
+where can my card be used,card_acceptance,False,card_acceptance,1.0,0.0
+will my card work at all merchant locations,card_acceptance,False,card_acceptance,1.0,0.0
+can i pay with my card anywhere,card_acceptance,False,card_acceptance,1.0,0.0
+where is this card accepted,card_acceptance,False,card_acceptance,1.0,0.0
+why did my top up get reverted,top_up_reverted,False,top_up_reverted,1.0,0.0
+my top up was cancelled and i am writing to ask if i need to complete the 3d secure authentication section before i submit it,top_up_reverted,False,top_up_reverted,1.0,0.0
+what happened to my top up i think it was cancelled,top_up_reverted,False,top_up_reverted,1.0,0.0
+why won't my top up go through,top_up_reverted,False,top_up_failed,1.0,0.0
+why has my top up been cancelled,top_up_reverted,False,top_up_reverted,1.0,0.0
+what i topped up was reverted by the app,top_up_reverted,False,top_up_reverted,1.0,0.0
+how can i tell if my top up has been cancelled,top_up_reverted,False,top_up_reverted,1.0,0.0
+when i topped up the app has seemed to reverted it,top_up_reverted,False,top_up_reverted,1.0,0.0
+i refilled my account balance but got an error message,top_up_reverted,False,top_up_failed,1.0,0.0
+why was my top up cancelled,top_up_reverted,False,top_up_reverted,1.0,0.0
+why has my money disappeared i topped up earlier and seen it was there and had went through what seems to be the problem,top_up_reverted,False,balance_not_updated_after_bank_transfer,1.0,0.0
+why wasn't my top up accepted and where did that money go at first it said it was confirmed but now i can't find it,top_up_reverted,False,top_up_reverted,1.0,0.0
+i need to know what's going on i was under the impression you offered cryto top up which doesn't seem to be working and money has just vanished from my account,top_up_reverted,False,top_up_failed,1.0,0.0
+can you explain to me why a top up would be reverted,top_up_reverted,False,top_up_reverted,1.0,0.0
+hello i tried doing a topup and i thought it worked but now the money is no longer in my account can you explain,top_up_reverted,False,top_up_reverted,1.0,0.0
+i deposited cash but it isn't showing up in my account,balance_not_updated_after_cheque_or_cash_deposit,False,balance_not_updated_after_cheque_or_cash_deposit,1.0,0.0
+why hasn't my cash been deposited yet,balance_not_updated_after_cheque_or_cash_deposit,False,balance_not_updated_after_cheque_or_cash_deposit,1.0,0.0
+when will my cheque be processed,balance_not_updated_after_cheque_or_cash_deposit,False,balance_not_updated_after_cheque_or_cash_deposit,1.0,0.0
+where is my missing cheque i deposited,balance_not_updated_after_cheque_or_cash_deposit,False,balance_not_updated_after_cheque_or_cash_deposit,1.0,0.0
+i have yet to receive the cash i added to my account this morning,balance_not_updated_after_cheque_or_cash_deposit,False,pending_top_up,1.0,0.0
+i submitted a cheque couple of days ago nothing happened to my account yet what could be the possible issue,balance_not_updated_after_cheque_or_cash_deposit,False,balance_not_updated_after_cheque_or_cash_deposit,1.0,0.0
+dude i put money in the atm last week but it ain't there i need the money now figure this out,balance_not_updated_after_cheque_or_cash_deposit,False,balance_not_updated_after_cheque_or_cash_deposit,1.0,0.0
+where is the cash i deposited,balance_not_updated_after_cheque_or_cash_deposit,False,balance_not_updated_after_cheque_or_cash_deposit,1.0,0.0
+my cash deposit isn't in my account what happened,balance_not_updated_after_cheque_or_cash_deposit,False,balance_not_updated_after_cheque_or_cash_deposit,1.0,0.0
+help i'm missing money i deposited a cheque but its not showing on my balance,balance_not_updated_after_cheque_or_cash_deposit,False,balance_not_updated_after_cheque_or_cash_deposit,1.0,0.0
+my cash deposit hasn't posted to my account,balance_not_updated_after_cheque_or_cash_deposit,False,balance_not_updated_after_cheque_or_cash_deposit,1.0,0.0
+i had a cheque deposited but i don't see my money yet,balance_not_updated_after_cheque_or_cash_deposit,False,balance_not_updated_after_cheque_or_cash_deposit,1.0,0.0
+i haven't received the cash from the check i deposited,balance_not_updated_after_cheque_or_cash_deposit,False,balance_not_updated_after_cheque_or_cash_deposit,1.0,0.0
+when will my deposit post to my account,balance_not_updated_after_cheque_or_cash_deposit,False,pending_top_up,1.0,0.0
+i deposited money but my balance hasn't been updated yet,balance_not_updated_after_cheque_or_cash_deposit,False,balance_not_updated_after_bank_transfer,1.0,0.0
+i sent a check into the system but still haven't received the cash yet,balance_not_updated_after_cheque_or_cash_deposit,False,balance_not_updated_after_cheque_or_cash_deposit,1.0,0.0
+i made a check deposit but the cash hasn't arrived in my account yet,balance_not_updated_after_cheque_or_cash_deposit,False,balance_not_updated_after_cheque_or_cash_deposit,1.0,0.0
+when will my balance reflect a deposit,balance_not_updated_after_cheque_or_cash_deposit,False,balance_not_updated_after_cheque_or_cash_deposit,1.0,0.0
+i don't understand where this charge came from,card_payment_not_recognised,False,extra_charge_on_statement,1.0,0.0
+someone might have access to my card there are some strange payments showing up on my account what do i do,card_payment_not_recognised,False,compromised_card,1.0,0.0
+i have an unusual payment in my statement,card_payment_not_recognised,False,card_payment_not_recognised,1.0,0.0
+a payment on my statement is wrong,card_payment_not_recognised,False,card_payment_not_recognised,1.0,0.0
+there are some charges that i don't recognize it happened days ago can i get these charges back should i cancel my card,card_payment_not_recognised,False,card_payment_not_recognised,1.0,0.0
+there is a card payment i'm not familiar with,card_payment_not_recognised,False,card_payment_not_recognised,1.0,0.0
+there is a strange payment on my card and i don't know what to do,card_payment_not_recognised,False,card_payment_not_recognised,1.0,0.0
+there were a couple of payments that i have noticed on my account with my card that i didn't make is it possible that somebody else has my card information,card_payment_not_recognised,False,compromised_card,1.0,0.0
+there are a couple payments with my card shown in the app that i really make myself what's going on with this maybe someone has access to my card,card_payment_not_recognised,False,card_payment_not_recognised,1.0,0.0
+i didnt do this charge,card_payment_not_recognised,False,card_payment_not_recognised,1.0,0.0
+i see an unfamiliar payment on my statement,card_payment_not_recognised,False,card_payment_not_recognised,1.0,0.0
+i swear that there are 2 payments on the app that i didn't make could my card me stolen please advise what i should do,card_payment_not_recognised,False,compromised_card,1.0,0.0
+i don't think i made this transaction on my statement,card_payment_not_recognised,False,card_payment_not_recognised,1.0,0.0
+a random charge got added to my card,card_payment_not_recognised,False,card_payment_not_recognised,1.0,0.0
+there's a card payment i didn't make,card_payment_not_recognised,False,card_payment_not_recognised,1.0,0.0
+i don't recognize a charge on my statement,card_payment_not_recognised,False,card_payment_not_recognised,1.0,0.0
+i need to know where this charge is coming from,card_payment_not_recognised,False,card_payment_not_recognised,1.0,0.0
+where can i change my address,edit_personal_details,False,edit_personal_details,1.0,0.0
+i have a new phone number and need to edit my contact information,edit_personal_details,False,edit_personal_details,1.0,0.0
+how do i change my account details,edit_personal_details,False,edit_personal_details,1.0,0.0
+i've just got married and want to change my name,edit_personal_details,False,edit_personal_details,1.0,0.0
+since i just got married i need to change my name,edit_personal_details,False,edit_personal_details,1.0,0.0
+i moved can i edit my personal details,edit_personal_details,False,edit_personal_details,1.0,0.0
+how to change name on account,edit_personal_details,False,edit_personal_details,1.0,0.0
+i would like to change my personal details,edit_personal_details,False,edit_personal_details,1.0,0.0
+is there a way to modify my details,edit_personal_details,False,edit_personal_details,1.0,0.0
+i must change my address,edit_personal_details,False,edit_personal_details,1.0,0.0
+how can i change to my married name,edit_personal_details,False,edit_personal_details,1.0,0.0
+i need to change my data,edit_personal_details,False,edit_personal_details,1.0,0.0
+why do you have the identity check,why_verify_identity,False,why_verify_identity,1.0,0.0
+what is the reason for the identity check,why_verify_identity,False,why_verify_identity,1.0,0.0
+what i need to verify my account,why_verify_identity,False,verify_my_identity,1.0,0.0
+do i need to verify my identity before i can use my card,why_verify_identity,False,why_verify_identity,1.0,0.0
+do you think you're asking for too much information about me,why_verify_identity,False,why_verify_identity,1.0,0.0
+is identity verification required for me to use my account,why_verify_identity,False,why_verify_identity,1.0,0.0
+why do you need me to do an identity check,why_verify_identity,False,why_verify_identity,1.0,0.0
+why do i have to give you my drivers license,why_verify_identity,False,why_verify_identity,1.0,0.0
+do i have to verify who i am,why_verify_identity,False,verify_my_identity,1.0,0.0
+why am i being asked to verify my identity,why_verify_identity,False,why_verify_identity,1.0,0.0
+why do you need to verify my identity,why_verify_identity,False,why_verify_identity,1.0,0.0
+why and how soon do i have to have proof of identity to you,why_verify_identity,False,why_verify_identity,1.0,0.0
+help me verify my identify,unable_to_verify_identity,False,verify_my_identity,1.0,0.0
+the app is having trouble verifying my identity,unable_to_verify_identity,False,unable_to_verify_identity,1.0,0.0
+hearing about your verification results from us may take anywhere from 10 minutes to approximately one hour if this verification has in fact failed double check to make sure that your images are clear also make sure that your document photos have no blur or glare they need to be readable you must also be 18 years of age or older and be a resident of switzerland or the european economic area to open an account,unable_to_verify_identity,False,unable_to_verify_identity,1.0,0.0
+how come i can't seem to verify my id,unable_to_verify_identity,False,unable_to_verify_identity,1.0,0.0
+i'm having trouble with proving my identity,unable_to_verify_identity,False,unable_to_verify_identity,1.0,0.0
+i am having trouble verifying my id,unable_to_verify_identity,False,unable_to_verify_identity,1.0,0.0
+my identity isn't being accepted what should i do,unable_to_verify_identity,False,unable_to_verify_identity,1.0,0.0
+i am having trouble to verify my identity,unable_to_verify_identity,False,unable_to_verify_identity,1.0,0.0
+everytime i try to prove my identity it won't let me,unable_to_verify_identity,False,unable_to_verify_identity,1.0,0.0
+i'm still waiting on my identity verification,unable_to_verify_identity,False,unable_to_verify_identity,1.0,0.0
+i have my card when whill my pin be available,get_physical_card,False,get_physical_card,1.0,0.0
+when do i get my pin,get_physical_card,False,get_physical_card,1.0,0.0
+what can you tell me about the card pin,get_physical_card,False,change_pin,1.0,0.0
+when do i set up my card pin,get_physical_card,False,change_pin,1.0,0.0
+explain the card pin to me,get_physical_card,False,get_physical_card,1.0,0.0
+how do i get my card pin,get_physical_card,False,get_physical_card,1.0,0.0
+will my pin number be sent with my card,get_physical_card,False,get_physical_card,1.0,0.0
+i have a question regarding the pin of the card,get_physical_card,False,change_pin,1.0,0.0
+i'm looking in the app and can't find my pin where should i look,get_physical_card,False,get_physical_card,1.0,0.0
+how do i get started when i get my card,get_physical_card,False,activate_my_card,1.0,0.0
+can i create my own pin right away,get_physical_card,False,change_pin,1.0,0.0
+i want to apply for a visa card,visa_or_mastercard,False,visa_or_mastercard,1.0,0.0
+is it possible to get both a visa and a mastercard,visa_or_mastercard,False,visa_or_mastercard,1.0,0.0
+i want to get a visa,visa_or_mastercard,False,visa_or_mastercard,1.0,0.0
+would you give me a mastercard and visa,visa_or_mastercard,False,visa_or_mastercard,1.0,0.0
+please help me get a visa card,visa_or_mastercard,False,visa_or_mastercard,1.0,0.0
+will the card be a mastercard or a visa,visa_or_mastercard,False,visa_or_mastercard,1.0,0.0
+i'd like to get a visa card please,visa_or_mastercard,False,visa_or_mastercard,1.0,0.0
+can i choose between mastercard and visa,visa_or_mastercard,False,visa_or_mastercard,1.0,0.0
+what type of card can i get,visa_or_mastercard,False,order_physical_card,1.0,0.0
+could i get a mastercard and visa from you,visa_or_mastercard,False,visa_or_mastercard,1.0,0.0
+i need to get visa and mastercard,visa_or_mastercard,False,visa_or_mastercard,1.0,0.0
+could i get a mastercard if that's reasonable,visa_or_mastercard,False,visa_or_mastercard,1.0,0.0
+can you make sure i get a mastercard and not a visa,visa_or_mastercard,False,visa_or_mastercard,1.0,0.0
+do you supply both visa and mastercard,visa_or_mastercard,False,visa_or_mastercard,1.0,0.0
+i can not see my top up,topping_up_by_card,False,pending_top_up,1.0,0.0
+the money disappeared when i tried to use my card to top up,topping_up_by_card,False,top_up_failed,1.0,0.0
+how do i use a card to top up,topping_up_by_card,False,topping_up_by_card,1.0,0.0
+how do i set up my credit card to send transfers,topping_up_by_card,False,topping_up_by_card,1.0,0.0
+i don't see me 'top up' in my wallet,topping_up_by_card,False,pending_top_up,1.0,0.0
+what happened to the money after i put in the wrong info and it got declined,topping_up_by_card,False,declined_transfer,1.0,0.0
+am i the only one who can top up my account,topping_up_by_card,False,topping_up_by_card,1.0,0.0
+i cannot tell what my top up currently is,topping_up_by_card,False,pending_top_up,1.0,0.0
+can you tell me how to top up on my card,topping_up_by_card,False,topping_up_by_card,1.0,0.0
+why is my 'top up' not showing up in my wallet,topping_up_by_card,False,pending_top_up,1.0,0.0
+can i have more than 2 disposable cards,disposable_card_limits,False,disposable_card_limits,1.0,0.0
+could you tell me about the restrictions that are on the disposable cards,disposable_card_limits,False,disposable_card_limits,1.0,0.0
+why can't i use a disposable card,disposable_card_limits,False,virtual_card_not_working,1.0,0.0
+please specify any limitations that come along with disposable cards,disposable_card_limits,False,disposable_card_limits,1.0,0.0
+how many payments can i make using a virtual card,disposable_card_limits,False,disposable_card_limits,1.0,0.0
+how many disposable cards can i have at one time,disposable_card_limits,False,disposable_card_limits,1.0,0.0
+i am not a premium customer but i want a virtual card how do i get it,disposable_card_limits,False,getting_virtual_card,1.0,0.0
+what is the maximum transactions for one disposable card,disposable_card_limits,False,disposable_card_limits,1.0,0.0
+for the disposable cards what are the restrictions,disposable_card_limits,False,disposable_card_limits,1.0,0.0
+what are the disposable card limits,disposable_card_limits,False,disposable_card_limits,1.0,0.0
+is there a limit to the number of disposable cards per day,disposable_card_limits,False,disposable_card_limits,1.0,0.0
+what is the limits on the number of disposable cards i can have,disposable_card_limits,False,disposable_card_limits,1.0,0.0
+what can i do if my card details where stolen from my car i think they used my card to buy gas,compromised_card,False,compromised_card,1.0,0.0
+i think someone has hacked my card,compromised_card,False,compromised_card,1.0,0.0
+someone used my card without my permission,compromised_card,False,compromised_card,1.0,0.0
+my card was used without my permission what do i do,compromised_card,False,compromised_card,1.0,0.0
+someone else might be using my card without my permission,compromised_card,False,compromised_card,1.0,0.0
+how do i order a replacement for stolen card,compromised_card,False,lost_or_stolen_card,1.0,0.0
+i might be paranoid but someone may be using my card,compromised_card,False,compromised_card,1.0,0.0
+i think someone may be using my card,compromised_card,False,compromised_card,1.0,0.0
+can i use this card at any atm,atm_support,False,atm_support,1.0,0.0
+can you tell me where i can withdraw money,atm_support,False,atm_support,1.0,0.0
+are there specific atm's that i can draw money from,atm_support,False,atm_support,1.0,0.0
+what atms can i use my card at,atm_support,False,atm_support,1.0,0.0
+what atms can i use my card,atm_support,False,atm_support,1.0,0.0
+where are the atms that i can use mastercard,atm_support,False,atm_support,1.0,0.0
+can this card be used at all atms,atm_support,False,atm_support,1.0,0.0
+can i withdraw from any atm,atm_support,False,atm_support,1.0,0.0
+there is a direct debit that looks suspicious,direct_debit_payment_not_recognised,False,direct_debit_payment_not_recognised,1.0,0.0
+is there a way for you to find out why my account was deducted from a seller when i didn't approve of it,direct_debit_payment_not_recognised,False,request_refund,1.0,0.0
+i would like to dispute a direct debit payment,direct_debit_payment_not_recognised,False,direct_debit_payment_not_recognised,1.0,0.0
+a false direct debit payment is showing in my app,direct_debit_payment_not_recognised,False,direct_debit_payment_not_recognised,1.0,0.0
+this debit is not my transcation how do i get my money out back,direct_debit_payment_not_recognised,False,request_refund,1.0,0.0
+i'm checking my statements and i saw a purchase from a couple weeks ago that i don't recall at all not only that but i don't even know the business that charged it i'm not sure if i did it or not but can we check it and see if we can trace it back to make certain,direct_debit_payment_not_recognised,False,card_payment_not_recognised,1.0,0.0
+there is a direct debit transaction on my statement that i think is not mine how do i remove,direct_debit_payment_not_recognised,False,direct_debit_payment_not_recognised,1.0,0.0
+what do i do about a debit on my account that i didn't make,direct_debit_payment_not_recognised,False,card_payment_not_recognised,1.0,0.0
+can you help me figure out what is going on with a debit payment that is showing up on my account i am not sure is suppose to be there,direct_debit_payment_not_recognised,False,direct_debit_payment_not_recognised,1.0,0.0
+i found a charge on my debit that i did not make,direct_debit_payment_not_recognised,False,card_payment_not_recognised,1.0,0.0
+recently a few weeks ago there was a transaction made on my account by some seller that i don't recognize i am very certain that didn't happen and will like for you to trace back to make sure,direct_debit_payment_not_recognised,False,card_payment_not_recognised,1.0,0.0
+i just went through a old statement and noticed that a very large payment went through and i did not make it it was from a few months ago can i still dispute the payment,direct_debit_payment_not_recognised,False,direct_debit_payment_not_recognised,1.0,0.0
+there is a potentially fraudulent direct debit on my account,direct_debit_payment_not_recognised,False,direct_debit_payment_not_recognised,1.0,0.0
+there's a payment showing in the app today even though i have not used my card at all i want a refund,direct_debit_payment_not_recognised,False,card_payment_not_recognised,1.0,0.0
+what do i do if there is an electronic debit that is not correct,direct_debit_payment_not_recognised,False,direct_debit_payment_not_recognised,1.0,0.0
+there is a direct debit charge that i don't recognize what can i do,direct_debit_payment_not_recognised,False,direct_debit_payment_not_recognised,1.0,0.0
+why is there a direct debit fee in the app when i didn't do it,direct_debit_payment_not_recognised,False,direct_debit_payment_not_recognised,1.0,0.0
+why is there a direct debit to my account i didn't do that,direct_debit_payment_not_recognised,False,direct_debit_payment_not_recognised,1.0,0.0
+i can't remember my passcode,passcode_forgotten,False,passcode_forgotten,1.0,0.0
+where can i get a new passcode,passcode_forgotten,False,passcode_forgotten,1.0,0.0
+i think my passcode was changed,passcode_forgotten,False,passcode_forgotten,1.0,0.0
+i can't log in,passcode_forgotten,False,passcode_forgotten,1.0,0.0
+i can't access my account,passcode_forgotten,False,passcode_forgotten,1.0,0.0
+i can't get into the app with the passcode,passcode_forgotten,False,passcode_forgotten,1.0,0.0
+can someone please help assist me by explaining to me why my pass code is not working,passcode_forgotten,False,passcode_forgotten,1.0,0.0
+are there directions to get a new passcode if i forgot mine,passcode_forgotten,False,passcode_forgotten,1.0,0.0
+i need to reset the passcode,passcode_forgotten,False,passcode_forgotten,1.0,0.0
+i can't enter my passcode,passcode_forgotten,False,passcode_forgotten,1.0,0.0
+i don't know my password,passcode_forgotten,False,passcode_forgotten,1.0,0.0
+i needed money for a night out with the girls but i was declined why,declined_cash_withdrawal,False,declined_cash_withdrawal,1.0,0.0
+i have tried using my card for the first time at the atm of notting hill to withdrawal cash but it didn't work does this mean my card isn't working,declined_cash_withdrawal,False,declined_cash_withdrawal,1.0,0.0
+this morning i wanted to make a withdrawal before work but my card was declined please double check it for me as this is the first time it was declined,declined_cash_withdrawal,False,declined_cash_withdrawal,1.0,0.0
+i'm trying to take money from my account but its not letting me help,declined_cash_withdrawal,False,declined_cash_withdrawal,1.0,0.0
+is there something wrong with my atm card tried using it earlier and it did not work,declined_cash_withdrawal,False,declined_cash_withdrawal,1.0,0.0
+my card rejected a cash withdrawal why,declined_cash_withdrawal,False,declined_cash_withdrawal,1.0,0.0
+my card didn't work at the atm in notting hill is my card working,declined_cash_withdrawal,False,declined_cash_withdrawal,1.0,0.0
+why was i not able to take cash from the atm,declined_cash_withdrawal,False,declined_cash_withdrawal,1.0,0.0
+i tried to get cash but it was declined,declined_cash_withdrawal,False,declined_cash_withdrawal,1.0,0.0
+i think there may be something wrong with my card i have never had issues with withdraws before but this morning on the way to work it was suddenly declined,declined_cash_withdrawal,False,declined_cash_withdrawal,1.0,0.0
+what caused my cash withdrawal to be declined,declined_cash_withdrawal,False,declined_cash_withdrawal,1.0,0.0
+why would i be declined if i had money iin my account,declined_cash_withdrawal,False,declined_card_payment,1.0,0.0
+i just had my card get declined at the atm i need to get money out but i am unable to why has this happened,declined_cash_withdrawal,False,declined_cash_withdrawal,1.0,0.0
+i entered my pin in wrong and got it frozen how many tries do i have,declined_cash_withdrawal,False,pin_blocked,1.0,0.0
+i tried to make a withdrawal from the atm but it was cancelled,declined_cash_withdrawal,False,declined_cash_withdrawal,1.0,0.0
+i could not get money from an atm,declined_cash_withdrawal,False,declined_cash_withdrawal,1.0,0.0
+i tried to withdraw some funds from my card but was declined how can i get my money,declined_cash_withdrawal,False,declined_cash_withdrawal,1.0,0.0
+my card payment is just showing up as pending since forever what's going on with that it should be going through at some point,pending_card_payment,False,pending_card_payment,1.0,0.0
+why is their a charge pending on my card still,pending_card_payment,False,pending_card_payment,1.0,0.0
+why is my card payment still listed as pending,pending_card_payment,False,pending_card_payment,1.0,0.0
+one of my card payments looks like it's stuck but i have made the payment days ago how long until the payment will be applied to my account,pending_card_payment,False,pending_card_payment,1.0,0.0
+when is a payment i made with my card going to clear,pending_card_payment,False,pending_card_payment,1.0,0.0
+why is my card payment still pending it should have gone through already,pending_card_payment,False,pending_card_payment,1.0,0.0
+how long does it take for my payment to process,pending_card_payment,False,transfer_timing,1.0,0.0
+why is the payment i made still pending,pending_card_payment,False,pending_card_payment,1.0,0.0
+i made a payment but it's still pending,pending_card_payment,False,pending_card_payment,1.0,0.0
+there is a payment showing as pending and hasn't posted for a few days when will it post,pending_card_payment,False,pending_card_payment,1.0,0.0
+i have a payment that is still pending,pending_card_payment,False,pending_card_payment,1.0,0.0
+is there a reason my payment is still pending,pending_card_payment,False,pending_card_payment,1.0,0.0
+why hasn't payment gone through yet,pending_card_payment,False,pending_card_payment,1.0,0.0
+it says that my payment is pending what does that mean,pending_card_payment,False,pending_card_payment,1.0,0.0
+i tried to make a payment with my card and it was declined why is it pending,pending_card_payment,False,pending_card_payment,1.0,0.0
+is there something wrong with my card payment it's been pending a really really long time,pending_card_payment,False,pending_card_payment,1.0,0.0
+my phone was stolen what do i need to do,lost_or_stolen_phone,False,lost_or_stolen_phone,1.0,0.0
+someone mugged my and stole everything i can't use the app what should i do,lost_or_stolen_phone,False,lost_or_stolen_phone,1.0,0.0
+i'm currently not in possession of my phone is it still possible to go about things normally without access to the app,lost_or_stolen_phone,False,lost_or_stolen_phone,1.0,0.0
+i think my phone was stolen what can i do,lost_or_stolen_phone,False,lost_or_stolen_phone,1.0,0.0
+i lost my phone what do i need to do,lost_or_stolen_phone,False,lost_or_stolen_phone,1.0,0.0
+i was mugged they took everything i can't use the app what do i do,lost_or_stolen_phone,False,lost_or_stolen_phone,1.0,0.0
+i no longer have my phone what should i do,lost_or_stolen_phone,False,lost_or_stolen_phone,1.0,0.0
+i can't find my phone what can i do to prevent someone from accessing my account on it,lost_or_stolen_phone,False,lost_or_stolen_phone,1.0,0.0
+what should i do if i lost my phone,lost_or_stolen_phone,False,lost_or_stolen_phone,1.0,0.0
+my phone is missing,lost_or_stolen_phone,False,lost_or_stolen_phone,1.0,0.0
+everything was stolen from me i can't use the app please advise,lost_or_stolen_phone,False,lost_or_stolen_phone,1.0,0.0
+phone is at a hotel can i still use app,lost_or_stolen_phone,False,lost_or_stolen_phone,1.0,0.0
+i bought the wrong size and would like a refund,request_refund,False,request_refund,1.0,0.0
+i've changed my mind on an item how do i get a refund,request_refund,False,request_refund,1.0,0.0
+if i bought something i didn't like can i get a refund,request_refund,False,request_refund,1.0,0.0
+am i able to get a refund for something i bought,request_refund,False,request_refund,1.0,0.0
+how can i get a refund for an item i purchased but has not yet arrived,request_refund,False,request_refund,1.0,0.0
+i didn't enjoy my tutor session and want a refund back how do i go about doing this,request_refund,False,request_refund,1.0,0.0
+i need a refund this is not what i wanted,request_refund,False,request_refund,1.0,0.0
+i bought something online a week ago and i never got it in the mail can i just get my money back now i don't want to keep waiting on something that isn't going to show up,request_refund,False,request_refund,1.0,0.0
+i would like to cancel my purchase,request_refund,False,request_refund,1.0,0.0
+i would like to cancel a purchase,request_refund,False,request_refund,1.0,0.0
+can i have the item refunded,request_refund,False,request_refund,1.0,0.0
+i did not get the item i ordered how should i go about this should i just cancel my order or my payment please help me,request_refund,False,request_refund,1.0,0.0
+do you give refunds,request_refund,False,request_refund,1.0,0.0
+i need to cancel a payment something i purchased a while ago still has not arrived and i'm not going to pay them if they won't send me what i purchased,request_refund,False,request_refund,1.0,0.0
+hello i have recently made a purchase and have decided to cancel my purchase is there any way that you can cancel that transaction for me so i can get the money back it's very important,request_refund,False,request_refund,1.0,0.0
+i just bought an item and would like to stop payment can you tell me if the item has been sent yet,request_refund,False,cancel_transfer,1.0,0.0
+i would like to get an item refunded,request_refund,False,request_refund,1.0,0.0
+while doing a transfer it says declined,declined_transfer,False,declined_transfer,1.0,0.0
+why do you keep declining my transfers it's always been working really well so far but when i tried to buy something just now the card got declined i tried couple of times already but same thing is happening,declined_transfer,False,declined_card_payment,1.0,0.0
+how do i make my transfer go through,declined_transfer,False,transfer_into_account,1.0,0.0
+i have been trying to make transfers to another account but i keep getting a declined notice i have checked all of my information more than once and my information is accurate,declined_transfer,False,declined_transfer,1.0,0.0
+my recent transfer didn't go through why not,declined_transfer,False,failed_transfer,1.0,0.0
+i am unable to transfer money i believe it is not working because it states it was declined,declined_transfer,False,declined_transfer,1.0,0.0
+i was making a purchase and it was declined and i wanted to know why,declined_transfer,False,declined_card_payment,1.0,0.0
+please help me as my online payment is getting declined since yesterday while i am trying to purchase something online,declined_transfer,False,declined_card_payment,1.0,0.0
+it's declining my transfers normally this works but my card is being declined now and i've tried more than once,declined_transfer,False,declined_transfer,1.0,0.0
+i can't seem to figure out why my transfers are getting declined,declined_transfer,False,declined_transfer,1.0,0.0
+the transfer that i was trying to complete was declined what was the cause,declined_transfer,False,declined_transfer,1.0,0.0
+help me my transfer was declined how could this happen,declined_transfer,False,declined_transfer,1.0,0.0
+i have a problem with my account i tried to transfer some funds and the message came back declined can you help me,declined_transfer,False,declined_transfer,1.0,0.0
+why am i missing my refund,Refund_not_showing_up,False,Refund_not_showing_up,1.0,0.0
+i have not received a refund,Refund_not_showing_up,False,Refund_not_showing_up,1.0,0.0
+where is my recent refund in the my statement,Refund_not_showing_up,False,Refund_not_showing_up,1.0,0.0
+how can i investigate a missing refund,Refund_not_showing_up,False,Refund_not_showing_up,1.0,0.0
+when do i see my recent refund in my statement,Refund_not_showing_up,False,Refund_not_showing_up,1.0,0.0
+i was supposed to get a refund but i do not see it on my statement when is it going to be updated,Refund_not_showing_up,False,Refund_not_showing_up,1.0,0.0
+who should i contact if my refund doesn't go through,Refund_not_showing_up,False,Refund_not_showing_up,1.0,0.0
+please i need your help as to whether or not you have money for a large refunded purchase i made i requested it some time ago from the seller but nothing is showing up,Refund_not_showing_up,False,Refund_not_showing_up,1.0,0.0
+i can't find my refund please help,Refund_not_showing_up,False,Refund_not_showing_up,1.0,0.0
+can i check my recent refund in my statement,Refund_not_showing_up,False,Refund_not_showing_up,1.0,0.0
+when can i expect my refund,Refund_not_showing_up,False,Refund_not_showing_up,1.0,0.0
+i need a refund from you because the merchant is refusing can you do that,Refund_not_showing_up,False,request_refund,1.0,0.0
+i returned an item but don't see it on my account,Refund_not_showing_up,False,Refund_not_showing_up,1.0,0.0
+why can't i see my refund in my statement,Refund_not_showing_up,False,Refund_not_showing_up,1.0,0.0
+i should have a refund in my statement but i can't see it,Refund_not_showing_up,False,Refund_not_showing_up,1.0,0.0
+i can't see my refund on my account,Refund_not_showing_up,False,Refund_not_showing_up,1.0,0.0
+how do i check to see why my card payment was declined,declined_card_payment,False,declined_card_payment,1.0,0.0
+i couldn't pay with card in a shop,declined_card_payment,False,declined_card_payment,1.0,0.0
+my card payment failed,declined_card_payment,False,declined_card_payment,1.0,0.0
+when i use my card it says decline,declined_card_payment,False,declined_card_payment,1.0,0.0
+please help me in this as i was unable to make any payment by my new card it was getting declined repeatedly i am not very happy with this incident,declined_card_payment,False,declined_card_payment,1.0,0.0
+why did my payment fail,declined_card_payment,False,failed_transfer,1.0,0.0
+my card was refused,declined_card_payment,False,declined_card_payment,1.0,0.0
+why would you decline my card,declined_card_payment,False,declined_card_payment,1.0,0.0
+my payment for my card is not working,declined_card_payment,False,declined_card_payment,1.0,0.0
+why has my card been declined whats the deal,declined_card_payment,False,declined_card_payment,1.0,0.0
+my payment was rejected do you know why,declined_card_payment,False,declined_card_payment,1.0,0.0
+my card payment doesn't work,declined_card_payment,False,declined_card_payment,1.0,0.0
+i was out today looking forward to paying with my brand new card turns out the payment just kept getting declined this is pretty sad what's going on,declined_card_payment,False,declined_card_payment,1.0,0.0
+i keep trying to make a payment but it doesn't work,declined_card_payment,False,declined_card_payment,1.0,0.0
+i've tried several times to make a payment and every time my card is declined could my card be locked i don't know what to do,declined_card_payment,False,declined_card_payment,1.0,0.0
+what is the reason a transfer shows as pending,pending_transfer,False,pending_transfer,1.0,0.0
+how long do i have to wait for the transfer to be finalized,pending_transfer,False,transfer_timing,1.0,0.0
+why is it taking so long for my pending transaction to post as cleared,pending_transfer,False,pending_card_payment,1.0,0.0
+how long is the wait for a money transfer to show up,pending_transfer,False,transfer_timing,1.0,0.0
+as i double checked that i have the correct account details that i submitted they're right for sure transfer is still pending so far,pending_transfer,False,pending_transfer,1.0,0.0
+i have not seen any changes in my account balance s after making a transfer,pending_transfer,False,balance_not_updated_after_bank_transfer,1.0,0.0
+why is my transfer still pending after all this time,pending_transfer,False,pending_transfer,1.0,0.0
+it seems like a transfer is pending,pending_transfer,False,pending_transfer,1.0,0.0
+what is the reason why the transfer shows as pending,pending_transfer,False,pending_transfer,1.0,0.0
+my transfer has been pending for a long time now i already double checked my account info and it is correct why is it taking so long in 2018 to transfer money,pending_transfer,False,pending_transfer,1.0,0.0
+how long will a transfer be pending for,pending_transfer,False,transfer_timing,1.0,0.0
+how long will it take for my transfer to stop pending,pending_transfer,False,pending_transfer,1.0,0.0
+hello how long does it usually take to transfer money to another country i've made sure all the information is correct but the transfer still says that it's pending,pending_transfer,False,transfer_timing,1.0,0.0
+how long does eu transfer take i bought something online a couple days ago sent the money immediately online but the seller says it is still not there yet,pending_transfer,False,transfer_not_received_by_recipient,1.0,0.0
+my transfer's stuck on pending,pending_transfer,False,pending_transfer,1.0,0.0
+i need you to delete my account now,terminate_account,False,terminate_account,1.0,0.0
+i would like to delete my account now please,terminate_account,False,terminate_account,1.0,0.0
+help me close my account,terminate_account,False,terminate_account,1.0,0.0
+if im not using my account should i close it or just let it sit,terminate_account,False,terminate_account,1.0,0.0
+i want to terminate my account,terminate_account,False,terminate_account,1.0,0.0
+your company is lame shut down all my account services right now,terminate_account,False,terminate_account,1.0,0.0
+i want to close my account the service you provide is unsatisfactory to me,terminate_account,False,terminate_account,1.0,0.0
+please delete this account,terminate_account,False,terminate_account,1.0,0.0
+your service is bad close my account,terminate_account,False,terminate_account,1.0,0.0
+how do i delete an account,terminate_account,False,terminate_account,1.0,0.0
+i no longer want this account what should i do,terminate_account,False,terminate_account,1.0,0.0
+what should i do since my card is trapped in the atm,card_swallowed,False,card_swallowed,1.0,0.0
+the atm didnt return my card,card_swallowed,False,card_swallowed,1.0,0.0
+a bank atm did not give my card back what do i do now,card_swallowed,False,card_swallowed,1.0,0.0
+i cannot get my card out of the atm,card_swallowed,False,card_swallowed,1.0,0.0
+the atm machine ate my card,card_swallowed,False,card_swallowed,1.0,0.0
+how do i get my card back after the atm swallowed it,card_swallowed,False,card_swallowed,1.0,0.0
+i have been double charged,transaction_charged_twice,False,transaction_charged_twice,1.0,0.0
+i have a duplicate charge,transaction_charged_twice,False,transaction_charged_twice,1.0,0.0
+looks like my card payment was made twice by mistake i went to pay at the store earlier which rejected once second time it worked app is on pending for one of the payments can you please remove one of them as it's wrong and clearly was declined,transaction_charged_twice,False,transaction_charged_twice,1.0,0.0
+looks like my card payment was duplicated after all i went to pay at the store earlier got declined once second time it works app still stays pending for one of the payments can you please remove one of them as it's wrong and clearly was declined,transaction_charged_twice,False,transaction_charged_twice,1.0,0.0
+there's a duplicate charge on my account,transaction_charged_twice,False,transaction_charged_twice,1.0,0.0
+a transaction is showing more than once,transaction_charged_twice,False,transaction_charged_twice,1.0,0.0
+i was charged multiple times for one transaction,transaction_charged_twice,False,transaction_charged_twice,1.0,0.0
+i got charged twice with a duplicate card how do i resolve this,transaction_charged_twice,False,transaction_charged_twice,1.0,0.0
+i was charged more than once for a card payment i made,transaction_charged_twice,False,transaction_charged_twice,1.0,0.0
+my account shows i have been charged twice for the same meal how do i get the second payment voided and returned to me i do not eat out much and my family is living paycheck to paycheck mostly i cannot afford to spend more money than necessary as is so i must see to it that the cost be promptly credited back onto my card,transaction_charged_twice,False,transaction_charged_twice,1.0,0.0
+a payment is showing twice why is that,transaction_charged_twice,False,transaction_charged_twice,1.0,0.0
+help i was charged twice,transaction_charged_twice,False,transaction_charged_twice,1.0,0.0
+there is a payment that i was charged two times for,transaction_charged_twice,False,transaction_charged_twice,1.0,0.0
+i need a transaction reversed from my account,transaction_charged_twice,False,reverted_card_payment?,1.0,0.0
+i have been charged for one thing two times,transaction_charged_twice,False,transaction_charged_twice,1.0,0.0
+looks like my card payment was duplicated after all i went to pay at the store earlier got declined once second time it works app still stays pending for one of the payments can you please remove one of them as it's wrong and was declined,transaction_charged_twice,False,transaction_charged_twice,1.0,0.0
+i was charged too many times for one transaction,transaction_charged_twice,False,transaction_charged_twice,1.0,0.0
+my account seems a bit off and getting weird charges,transaction_charged_twice,False,extra_charge_on_statement,1.0,0.0
+can i see where my money came from,verify_source_of_funds,False,verify_source_of_funds,1.0,0.0
+my source of funds need verification,verify_source_of_funds,False,verify_source_of_funds,1.0,0.0
+how can i look at where my available cash is coming from,verify_source_of_funds,False,verify_source_of_funds,1.0,0.0
+where can i see who sent me funds,verify_source_of_funds,False,receiving_money,1.0,0.0
+my money where is it coming from,verify_source_of_funds,False,verify_source_of_funds,1.0,0.0
+how do i verify the source of my funds,verify_source_of_funds,False,verify_source_of_funds,1.0,0.0
+i would like to verify my source of funds,verify_source_of_funds,False,verify_source_of_funds,1.0,0.0
+why do i need to verify my funds,verify_source_of_funds,False,verify_source_of_funds,1.0,0.0
+i need to trace a deposit,verify_source_of_funds,False,pending_top_up,1.0,0.0
+how can i find out the source of my available cash,verify_source_of_funds,False,verify_source_of_funds,1.0,0.0
+where do my funds originate from,verify_source_of_funds,False,verify_source_of_funds,1.0,0.0
+when does my transfer from the us arrive in my account,transfer_timing,False,transfer_timing,1.0,0.0
+does a us transfer take long,transfer_timing,False,transfer_timing,1.0,0.0
+how long will an urgent transfer from china take,transfer_timing,False,transfer_timing,1.0,0.0
+how long will i have to wait for my money to be in my account,transfer_timing,False,transfer_timing,1.0,0.0
+how long will a transfer from europe take,transfer_timing,False,transfer_timing,1.0,0.0
+i need to transfer funds from china and quick expedition is crucial approximately how long does it take for a transfer from china to go through,transfer_timing,False,transfer_timing,1.0,0.0
+i have been waiting for my transfer shouldn't it be here already,transfer_timing,False,transfer_not_received_by_recipient,1.0,0.0
+when can i use money sent to my account,transfer_timing,False,receiving_money,1.0,0.0
+how long do european transfers take,transfer_timing,False,transfer_timing,1.0,0.0
+i must make a transfer from china and it is urgent how long before the transfer is complete,transfer_timing,False,transfer_timing,1.0,0.0
+help i need to transfer something to china,transfer_timing,False,transfer_timing,1.0,0.0
+when can i expect the transfer to arrive in my account,transfer_timing,False,transfer_timing,1.0,0.0
+estimated time arrival for transfers,transfer_timing,False,transfer_timing,1.0,0.0
+i bought something and already paid for it but now i don't see it,reverted_card_payment?,False,pending_card_payment,1.0,0.0
+i really wanted to buy something online but seems the card is not working as the payment suddenly came back what's going on here i've been trying for a good week or two,reverted_card_payment?,False,reverted_card_payment?,1.0,0.0
+my payment didn't work and the money is in back in my account,reverted_card_payment?,False,reverted_card_payment?,1.0,0.0
+my payment came back for something i'm trying to buy online it's been doing it for two weeks do you know what the issue is,reverted_card_payment?,False,declined_card_payment,1.0,0.0
+is my card payment reverted,reverted_card_payment?,False,reverted_card_payment?,1.0,0.0
+why isn't my payment showing,reverted_card_payment?,False,pending_card_payment,1.0,0.0
+the seller just told me he didn't get paid after reviewing my account it did subtract the balance but now it has added it back to my account i need you to please take care of this promptly,reverted_card_payment?,False,transfer_not_received_by_recipient,1.0,0.0
+my payment was put back i think,reverted_card_payment?,False,reverted_card_payment?,1.0,0.0
+i had a seller reach out to me saying my money didn't come through to them but i'm sure it was removed from my account can you figure out what the deal is here,reverted_card_payment?,False,transfer_not_received_by_recipient,1.0,0.0
+why is a payment i made reverted back to my account,reverted_card_payment?,False,reverted_card_payment?,1.0,0.0
+my payment has been returned,reverted_card_payment?,False,reverted_card_payment?,1.0,0.0
+what does it mean if my payment has been reverted,reverted_card_payment?,False,reverted_card_payment?,1.0,0.0
+has my card payment been reverted,reverted_card_payment?,False,reverted_card_payment?,1.0,0.0
+i received a returned payment that i made,reverted_card_payment?,False,reverted_card_payment?,1.0,0.0
+my card payment was cancelled why,reverted_card_payment?,False,reverted_card_payment?,1.0,0.0
+what happens if a merchant doesn't accept you payment,reverted_card_payment?,False,declined_card_payment,1.0,0.0
+in what way can i change my pin and where do i need to be,change_pin,False,change_pin,1.0,0.0
+i need to make my card pin a different number,change_pin,False,change_pin,1.0,0.0
+are there any specific cash machines that i have to go to in order to change my pin,change_pin,False,change_pin,1.0,0.0
+i want to choose a new pin,change_pin,False,change_pin,1.0,0.0
+is there a way yo change my pin,change_pin,False,change_pin,1.0,0.0
+which countries can i change my pin in,change_pin,False,change_pin,1.0,0.0
+how can i reset my pin,change_pin,False,change_pin,1.0,0.0
+while on vacation in spain i think someone saw my pin and i now need to change it can i do this at an atm in spain,change_pin,False,change_pin,1.0,0.0
+please let me know how to change my pin,change_pin,False,change_pin,1.0,0.0
+am i allowed to change my pin anywhere,change_pin,False,change_pin,1.0,0.0
+help me change my pin,change_pin,False,change_pin,1.0,0.0
+can i change my pin number at a cash machine,change_pin,False,change_pin,1.0,0.0
+what are the reasons why you would not be able to process a payment,beneficiary_not_allowed,False,declined_card_payment,1.0,0.0
+i tried to do a transfer to an account but it didn't work,beneficiary_not_allowed,False,failed_transfer,1.0,0.0
+why would a transfer to a beneficiary not go through,beneficiary_not_allowed,False,beneficiary_not_allowed,1.0,0.0
+why couldn't i transfer funds to my beneficiary,beneficiary_not_allowed,False,beneficiary_not_allowed,1.0,0.0
+a transfer was not allowed to an account,beneficiary_not_allowed,False,beneficiary_not_allowed,1.0,0.0
+why can't i use my beneficiary,beneficiary_not_allowed,False,beneficiary_not_allowed,1.0,0.0
+i was trying to purchase some crypto and the app won't allow me to do it what's the deal with this i really wanted to complete the exchange,beneficiary_not_allowed,False,exchange_via_app,1.0,0.0
+i cant transfer money into my account,beneficiary_not_allowed,False,transfer_into_account,1.0,0.0
+why can't i add any beneficiary i choose,beneficiary_not_allowed,False,beneficiary_not_allowed,1.0,0.0
+i tried transferring money to a beneficiary however i was unsuccessful,beneficiary_not_allowed,False,beneficiary_not_allowed,1.0,0.0
+why is my beneficiary not working,beneficiary_not_allowed,False,beneficiary_not_allowed,1.0,0.0
+my transfer to another account was not allowed why is that,beneficiary_not_allowed,False,beneficiary_not_allowed,1.0,0.0
+why was i denied the option to transfer money to a selected beneficiary,beneficiary_not_allowed,False,beneficiary_not_allowed,1.0,0.0
+i couldn't transfer money to a beneficiery,beneficiary_not_allowed,False,beneficiary_not_allowed,1.0,0.0
+my account transfer was blocked,beneficiary_not_allowed,False,declined_transfer,1.0,0.0
+why would my beneficiary not be allowed,beneficiary_not_allowed,False,beneficiary_not_allowed,1.0,0.0
+why am i being charged a fee for transferring money,transfer_fee_charged,False,transfer_fee_charged,1.0,0.0
+i did a transfer what is the extra fee,transfer_fee_charged,False,transfer_fee_charged,1.0,0.0
+why is there a fee for my transfer,transfer_fee_charged,False,transfer_fee_charged,1.0,0.0
+why were there additional charges when i transferred funds,transfer_fee_charged,False,transfer_fee_charged,1.0,0.0
+i thought you guys offered free transfers why was i charged,transfer_fee_charged,False,transfer_fee_charged,1.0,0.0
+i thought that transfers are free why was i charged an extra fee,transfer_fee_charged,False,transfer_fee_charged,1.0,0.0
+what is this fee for transferring money,transfer_fee_charged,False,transfer_fee_charged,1.0,0.0
+can you elaborate on why i have an extra charge just for transferring,transfer_fee_charged,False,transfer_fee_charged,1.0,0.0
+is there a fee for transferring money,transfer_fee_charged,False,transfer_fee_charged,1.0,0.0
+hi i have transferred money but beneficiary's account is credited with less amount now i have transfer the difference of the amount i think there is some issue could you please look into this,transfer_fee_charged,False,transfer_not_received_by_recipient,1.0,0.0
+when i was transferring money i was charged extra why,transfer_fee_charged,False,transfer_fee_charged,1.0,0.0
+i noticed that there was an extra charge fee on my account could you explain to me why,transfer_fee_charged,False,extra_charge_on_statement,1.0,0.0
+why are there additional fees for transfers,transfer_fee_charged,False,transfer_fee_charged,1.0,0.0
+i transferred money to a receiver within the eu and they received a lesser amount than expected now i will have to send additional money to the receiver in order to make up the difference i'm not sure what went wrong can you please advise,transfer_fee_charged,False,transfer_fee_charged,1.0,0.0
+i think i have an extra transfer charge,transfer_fee_charged,False,transfer_fee_charged,1.0,0.0
+i did a transfer and was charged a fee that should not have been charged,transfer_fee_charged,False,transfer_fee_charged,1.0,0.0
+why was a fee charged to me for transferring money,transfer_fee_charged,False,transfer_fee_charged,1.0,0.0
+salary in gbp has been received does it need to be configured into another place,receiving_money,False,receiving_money,1.0,0.0
+how can you transfer my salary to my correct currency,receiving_money,False,receiving_money,1.0,0.0
+i need my payment in another currency,receiving_money,False,receiving_money,1.0,0.0
+how do i find out about transfers,receiving_money,False,transfer_into_account,1.0,0.0
+can i transfer my payroll to the bank,receiving_money,False,receiving_money,1.0,0.0
+how can i receive money from someone,receiving_money,False,receiving_money,1.0,0.0
+can this app take my salary,receiving_money,False,receiving_money,1.0,0.0
+is there any way to get my salary in a different currency,receiving_money,False,receiving_money,1.0,0.0
+how can my friend pay me,receiving_money,False,receiving_money,1.0,0.0
+is there a reason that my transfer failed,failed_transfer,False,failed_transfer,1.0,0.0
+hi i am currently in the process of buying a flat and i am waiting for the mortgage to go through but it keeps showing up as an error do you know what could be causing this and can you help me get the money over,failed_transfer,False,failed_transfer,1.0,0.0
+what could possibly be the cause of my failed transfer,failed_transfer,False,failed_transfer,1.0,0.0
+hey i'm buying a flat and i need my mortgage to go though however every time i check i get an error message is there any way you can help me with this transfer,failed_transfer,False,failed_transfer,1.0,0.0
+my transfer did not work what was the reason,failed_transfer,False,failed_transfer,1.0,0.0
+what caused my transfer to fail,failed_transfer,False,failed_transfer,1.0,0.0
+my transfer failed,failed_transfer,False,failed_transfer,1.0,0.0
+i tried to transfer money but it didn't go through,failed_transfer,False,failed_transfer,1.0,0.0
+the attempted transfer failed,failed_transfer,False,failed_transfer,1.0,0.0
+why does my transfer keep failing i've tried 5 times and they all failed,failed_transfer,False,failed_transfer,1.0,0.0
+hi can you tell me why my transfer keeps being rejected i've been trying to send money to my friends this morning but failed every time and i have no idea why,failed_transfer,False,declined_transfer,1.0,0.0
+i need to know what is going on i'm attempting to purchase a flat and need the money to pay on my initial mortgage payment i'm only getting an error can you find out what's going on and help in making the transfer,failed_transfer,False,failed_transfer,1.0,0.0
+i tried and tried but i could not complete my transfer tell me what is wrong,failed_transfer,False,failed_transfer,1.0,0.0
+when i tried to transfer funds to my friend today i was unable to do so why,failed_transfer,False,declined_transfer,1.0,0.0
+how can my account have money transferred into it,transfer_into_account,False,transfer_into_account,1.0,0.0
+how do i use bank transfer to top up my account,transfer_into_account,False,transfer_into_account,1.0,0.0
+what do you do to transfer money to my account,transfer_into_account,False,transfer_into_account,1.0,0.0
+how does it work when i transfer money into my account,transfer_into_account,False,transfer_into_account,1.0,0.0
+i have money in a foreign account that i want to send to this account,transfer_into_account,False,transfer_into_account,1.0,0.0
+i want to do a bank transfer to this bank from an account at another bank,transfer_into_account,False,transfer_into_account,1.0,0.0
+i need to transfer money to my account from another bank,transfer_into_account,False,transfer_into_account,1.0,0.0
+i have no more money in my account is there a way to do a bank transfer to put money into my account,transfer_into_account,False,transfer_into_account,1.0,0.0
+can you please explain the topping up transfer process,transfer_into_account,False,topping_up_by_card,1.0,0.0
+what steps are taken to transfer money into my account,transfer_into_account,False,transfer_into_account,1.0,0.0
+can you please explain how bank transfers work,transfer_into_account,False,transfer_into_account,1.0,0.0
+explain to me how to verify the top up card,verify_top_up,False,verify_top_up,1.0,0.0
+where is the top up verification code located,verify_top_up,False,verify_top_up,1.0,0.0
+why do you ask for top up verification,verify_top_up,False,verify_top_up,1.0,0.0
+how do i verify the top up,verify_top_up,False,verify_top_up,1.0,0.0
+why do we need to verify top up,verify_top_up,False,verify_top_up,1.0,0.0
+verify top up card help,verify_top_up,False,verify_top_up,1.0,0.0
+i don't see the verification code for my card transfer,verify_top_up,False,verify_top_up,1.0,0.0
+how do i verify the top up,verify_top_up,False,verify_top_up,1.0,0.0
+why do i need to verify a top up,verify_top_up,False,verify_top_up,1.0,0.0
+tell me how i can verify a card top up,verify_top_up,False,verify_top_up,1.0,0.0
+what is the top up code for,verify_top_up,False,verify_top_up,1.0,0.0
+help my find the verification code on a top up,verify_top_up,False,verify_top_up,1.0,0.0
+why do i need to verify the top up,verify_top_up,False,verify_top_up,1.0,0.0
+how much does it cost to get more cards,getting_spare_card,False,getting_spare_card,1.0,0.0
+how many physical cards am i allowed to have,getting_spare_card,False,getting_spare_card,1.0,0.0
+i need a second card on this account for my daughter,getting_spare_card,False,getting_spare_card,1.0,0.0
+can my daughter also have a card issued in her name but linked to my account,getting_spare_card,False,getting_spare_card,1.0,0.0
+i would like some more physical cards what is my limit,getting_spare_card,False,getting_spare_card,1.0,0.0
+what is the procedure for me to get more cards on my account,getting_spare_card,False,getting_spare_card,1.0,0.0
+is it possible for me to give my daughter a second card for this account,getting_spare_card,False,getting_spare_card,1.0,0.0
+i would like to get a few more physical cards,getting_spare_card,False,getting_spare_card,1.0,0.0
+how much does it cost for additional cards,getting_spare_card,False,getting_spare_card,1.0,0.0
+how do i order another card,getting_spare_card,False,getting_spare_card,1.0,0.0
+is there a fee for sending out more cards,getting_spare_card,False,getting_spare_card,1.0,0.0
+how do i get extra cards,getting_spare_card,False,getting_spare_card,1.0,0.0
+i need a second card can i have more than one,getting_spare_card,False,getting_spare_card,1.0,0.0
+do you have any options to top up with a cheque on my account,top_up_by_cash_or_cheque,False,top_up_by_cash_or_cheque,1.0,0.0
+who do i make a check out to if i want to top off my account,top_up_by_cash_or_cheque,False,top_up_by_cash_or_cheque,1.0,0.0
+can i top up by cheque,top_up_by_cash_or_cheque,False,top_up_by_cash_or_cheque,1.0,0.0
+why can't i top up by cheque,top_up_by_cash_or_cheque,False,top_up_by_cash_or_cheque,1.0,0.0
+where do i find how to top off with a check,top_up_by_cash_or_cheque,False,top_up_by_cash_or_cheque,1.0,0.0
+where is the option to top up with a cheque,top_up_by_cash_or_cheque,False,top_up_by_cash_or_cheque,1.0,0.0
+where can i deposit cash to top up,top_up_by_cash_or_cheque,False,top_up_by_cash_or_cheque,1.0,0.0
+can i add to my account using a cheque,top_up_by_cash_or_cheque,False,top_up_by_cash_or_cheque,1.0,0.0
+is there a way to use a cheque to top up my account,top_up_by_cash_or_cheque,False,top_up_by_cash_or_cheque,1.0,0.0
+how can i add money to my account if you don't accept cash,top_up_by_cash_or_cheque,False,top_up_by_cash_or_cheque,1.0,0.0
+i tried to deposit a cheque into my account and it is not letting me,top_up_by_cash_or_cheque,False,top_up_by_cash_or_cheque,1.0,0.0
+can you tell me exactly what fees i will expect to see in regards to your cards,order_physical_card,False,card_payment_fee_charged,1.0,0.0
+where do you need to live to receive card,order_physical_card,False,country_support,1.0,0.0
+are physical card available,order_physical_card,False,order_physical_card,1.0,0.0
+is it possible to order a card,order_physical_card,False,order_physical_card,1.0,0.0
+how can receive a physical card,order_physical_card,False,order_physical_card,1.0,0.0
+can i receive my card anywhere,order_physical_card,False,card_arrival,1.0,0.0
+how do i actually obtain a card myself,order_physical_card,False,order_physical_card,1.0,0.0
+i would really like a physical card,order_physical_card,False,order_physical_card,1.0,0.0
+can i get a physical card,order_physical_card,False,order_physical_card,1.0,0.0
+do i get an actual card,order_physical_card,False,order_physical_card,1.0,0.0
+is there a fee to order a physical card,order_physical_card,False,order_physical_card,1.0,0.0
+what's the procedure for getting a card,order_physical_card,False,order_physical_card,1.0,0.0
+my disposable virtual card got rejected,virtual_card_not_working,False,virtual_card_not_working,1.0,0.0
+i can't use my virtual disposable card,virtual_card_not_working,False,virtual_card_not_working,1.0,0.0
+i received my virtual card information but was unable to use it to make a purchase why did this happen and what can i do,virtual_card_not_working,False,virtual_card_not_working,1.0,0.0
+why can't i make multiple payments with my virtual card,virtual_card_not_working,False,disposable_card_limits,1.0,0.0
+why did my exchange rate change,wrong_exchange_rate_for_cash_withdrawal,False,exchange_rate,1.0,0.0
+the exchange rate for my withdrawal was wrong,wrong_exchange_rate_for_cash_withdrawal,False,wrong_exchange_rate_for_cash_withdrawal,1.0,0.0
+when i made a cash transfer abroad the wrong exchange rate was applied,wrong_exchange_rate_for_cash_withdrawal,False,wrong_exchange_rate_for_cash_withdrawal,1.0,0.0
+after i got my cash i found out my exchange rate was wrong,wrong_exchange_rate_for_cash_withdrawal,False,wrong_exchange_rate_for_cash_withdrawal,1.0,0.0
+i traded some of my money from my native country into an atm to exchange for foreign currency and the money i received was a different equating amount,wrong_exchange_rate_for_cash_withdrawal,False,wrong_exchange_rate_for_cash_withdrawal,1.0,0.0
+is there extra fees for making a withdraw in a different country at a cash machine,wrong_exchange_rate_for_cash_withdrawal,False,cash_withdrawal_charge,1.0,0.0
+i didn't get the right amount of cash because of the exchange rate,wrong_exchange_rate_for_cash_withdrawal,False,wrong_exchange_rate_for_cash_withdrawal,1.0,0.0
+i did not get the right exchange rate while getting my cash out,wrong_exchange_rate_for_cash_withdrawal,False,wrong_exchange_rate_for_cash_withdrawal,1.0,0.0
+the wrong exchange rate applied to my cash withdrawal,wrong_exchange_rate_for_cash_withdrawal,False,wrong_exchange_rate_for_cash_withdrawal,1.0,0.0
+the exchange rate for me was wrong when i was abroad,wrong_exchange_rate_for_cash_withdrawal,False,wrong_exchange_rate_for_cash_withdrawal,1.0,0.0
+when i got cash my exchange rate was off,wrong_exchange_rate_for_cash_withdrawal,False,wrong_exchange_rate_for_cash_withdrawal,1.0,0.0
+i was using foreign currency at an atm but the rate was typed in wrong,wrong_exchange_rate_for_cash_withdrawal,False,wrong_exchange_rate_for_cash_withdrawal,1.0,0.0
+on my last trip i received the incorrect exchange rate,wrong_exchange_rate_for_cash_withdrawal,False,wrong_exchange_rate_for_cash_withdrawal,1.0,0.0
+the exchange rate for my withdrawal is wrong,wrong_exchange_rate_for_cash_withdrawal,False,wrong_exchange_rate_for_cash_withdrawal,1.0,0.0
+the exchange rate applied was incorrect when i was traveling outside the country,wrong_exchange_rate_for_cash_withdrawal,False,card_payment_wrong_exchange_rate,1.0,0.0
+in a recent withdrawal i received less cash than i expected to receive did someone make an error with the exchange rate,wrong_exchange_rate_for_cash_withdrawal,False,wrong_exchange_rate_for_cash_withdrawal,1.0,0.0
+what are the disposable cards for,get_disposable_virtual_card,False,get_disposable_virtual_card,1.0,0.0
+how can i create a disposable virtual card,get_disposable_virtual_card,False,get_disposable_virtual_card,1.0,0.0
+what are these disposable virtual cards all about,get_disposable_virtual_card,False,get_disposable_virtual_card,1.0,0.0
+will you tell me how i am supposed to use the disposable cards,get_disposable_virtual_card,False,get_disposable_virtual_card,1.0,0.0
+i would like a disposable virtual card could i get one,get_disposable_virtual_card,False,get_disposable_virtual_card,1.0,0.0
+i need a disposable virtual card,get_disposable_virtual_card,False,get_disposable_virtual_card,1.0,0.0
+is it possible to get a disposable virtual card as well,get_disposable_virtual_card,False,get_disposable_virtual_card,1.0,0.0
+i'm not sure how disposable virtual cards work please help,get_disposable_virtual_card,False,get_disposable_virtual_card,1.0,0.0
+can you tell me how to get a disposable virtual card,get_disposable_virtual_card,False,get_disposable_virtual_card,1.0,0.0
+what is the disposable card for,get_disposable_virtual_card,False,get_disposable_virtual_card,1.0,0.0
+my top up was rejected by an app,top_up_failed,False,top_up_reverted,1.0,0.0
+hey i attempted to top up my card today and for some reason it didn't work when i did it the other way it worked just fine could you help me figure out why this is happening please,top_up_failed,False,top_up_failed,1.0,0.0
+i believe my top up has failed,top_up_failed,False,top_up_failed,1.0,0.0
+my credit card for was not approved for a top up transaction what happened,top_up_failed,False,top_up_failed,1.0,0.0
+hi my card is getting declined during top up as it urgent could you please resolve this issue or guide me with other alternatives if any,top_up_failed,False,top_up_failed,1.0,0.0
+i tried to top up with my card but it was declined i was able to a couple days ago and it worked is something wrong can you check it for me please,top_up_failed,False,top_up_failed,1.0,0.0
+my credit card was just denied for top up can you tell me why this happened and what's going on,top_up_failed,False,top_up_failed,1.0,0.0
+my top up didn't go through,top_up_failed,False,top_up_failed,1.0,0.0
+i wanted to top up my account and it doesn't look like it worked,top_up_failed,False,top_up_failed,1.0,0.0
+i tried to top up but the app rejected it,top_up_failed,False,top_up_failed,1.0,0.0
+why is my top up failing,top_up_failed,False,top_up_failed,1.0,0.0
+what was the issue with my topping up,top_up_failed,False,pending_top_up,1.0,0.0
+i was trying to top up and my credit card was declined can you tell me why,top_up_failed,False,top_up_failed,1.0,0.0
+my top up is not working why is that,top_up_failed,False,top_up_failed,1.0,0.0
+won't let me top my card up who can get it sorted out for me it's urgent how do i find out what the problem is with my card and how else to top it up,top_up_failed,False,top_up_failed,1.0,0.0
+hello can you help figure out why the recent transfer from my uk bank account isn't showing up,balance_not_updated_after_bank_transfer,False,balance_not_updated_after_bank_transfer,1.0,0.0
+hi i am unable to see transaction in my account which i made couples of hours ago from my uk account please help me in this,balance_not_updated_after_bank_transfer,False,balance_not_updated_after_bank_transfer,1.0,0.0
+do international transfers take longer i made a transfer from france 2 days ago but it's still not there yet,balance_not_updated_after_bank_transfer,False,balance_not_updated_after_bank_transfer,1.0,0.0
+i transferred some funds but i don't see it,balance_not_updated_after_bank_transfer,False,balance_not_updated_after_bank_transfer,1.0,0.0
+how long does it take for a transfer to post,balance_not_updated_after_bank_transfer,False,transfer_timing,1.0,0.0
+tell me why my balance did not change when i tranferred cash,balance_not_updated_after_bank_transfer,False,balance_not_updated_after_bank_transfer,1.0,0.0
+after making a transfer from a uk account it's not showing up how long do these transfers normally take for you i want to be certain everything is all right,balance_not_updated_after_bank_transfer,False,transfer_timing,1.0,0.0
+why isn't my balance updating i did a bank transfer and it isn't current,balance_not_updated_after_bank_transfer,False,balance_not_updated_after_bank_transfer,1.0,0.0
+how long does a transfer from a uk account take i just made one and it doesn't seem to be working wondering if everything is okay,balance_not_updated_after_bank_transfer,False,transfer_timing,1.0,0.0
+my transfer has still not appeared,balance_not_updated_after_bank_transfer,False,transfer_not_received_by_recipient,1.0,0.0
+i made a transfer from france a couple days ago and don't see the transaction yet how long does an international transfer take,balance_not_updated_after_bank_transfer,False,balance_not_updated_after_bank_transfer,1.0,0.0
+why hasn't the money i transferred into my account shown up yet,balance_not_updated_after_bank_transfer,False,balance_not_updated_after_bank_transfer,1.0,0.0
+why is it taking so long to update my balance transfer,balance_not_updated_after_bank_transfer,False,balance_not_updated_after_bank_transfer,1.0,0.0
+i transferred some money but the balance stayed the same,balance_not_updated_after_bank_transfer,False,balance_not_updated_after_bank_transfer,1.0,0.0
+help me find the transfer that i did,balance_not_updated_after_bank_transfer,False,pending_transfer,1.0,0.0
+can you see my new balance yet,balance_not_updated_after_bank_transfer,False,balance_not_updated_after_bank_transfer,1.0,0.0
+what happened to the transfer i did,balance_not_updated_after_bank_transfer,False,pending_transfer,1.0,0.0
+i think someone stole money from my card,cash_withdrawal_not_recognised,False,compromised_card,1.0,0.0
+i am missing cash from my bank account according to my app,cash_withdrawal_not_recognised,False,cash_withdrawal_not_recognised,1.0,0.0
+there are funds in my app that i did not receive,cash_withdrawal_not_recognised,False,cash_withdrawal_not_recognised,1.0,0.0
+there was money taken out of my account and i'm pretty sure i didn't do it,cash_withdrawal_not_recognised,False,cash_withdrawal_not_recognised,1.0,0.0
+there is a cash withdrawal in my account that isn't mine,cash_withdrawal_not_recognised,False,cash_withdrawal_not_recognised,1.0,0.0
+there are incorrect charges on my account there was a wd that was made by someone else i still have my card though,cash_withdrawal_not_recognised,False,cash_withdrawal_not_recognised,1.0,0.0
+i have a cash withdrawal that i do not recognise,cash_withdrawal_not_recognised,False,cash_withdrawal_not_recognised,1.0,0.0
+why is there a cash withdrawal i didn't make,cash_withdrawal_not_recognised,False,cash_withdrawal_not_recognised,1.0,0.0
+the app says i made a cash withdrawal that i didn't make,cash_withdrawal_not_recognised,False,cash_withdrawal_not_recognised,1.0,0.0
+i need your help immediately there is a 500 cash withdrawal that i know nothing about i think my account has become compromised,cash_withdrawal_not_recognised,False,cash_withdrawal_not_recognised,1.0,0.0
+i didnt put that money in my account,cash_withdrawal_not_recognised,False,cash_withdrawal_not_recognised,1.0,0.0
+some cash withdrawal that i didn't make showed up in the app,cash_withdrawal_not_recognised,False,cash_withdrawal_not_recognised,1.0,0.0
+i have a cash withdrawal that i don't recognize,cash_withdrawal_not_recognised,False,cash_withdrawal_not_recognised,1.0,0.0
+my wallet was just stolen and they've already used my card please help i can't afford to lose more money,cash_withdrawal_not_recognised,False,lost_or_stolen_card,1.0,0.0
+my app says i made a withdrawal but i didn't,cash_withdrawal_not_recognised,False,cash_withdrawal_not_recognised,1.0,0.0
+there has been an unusual withdrawal from my account can you help,cash_withdrawal_not_recognised,False,cash_withdrawal_not_recognised,1.0,0.0
+what is the current exchange fee,exchange_charge,False,exchange_charge,1.0,0.0
+exchanging currencies costs what,exchange_charge,False,exchange_charge,1.0,0.0
+could you help my figure out the exchange fee,exchange_charge,False,exchange_charge,1.0,0.0
+what is the cost for exchanging currencies,exchange_charge,False,exchange_charge,1.0,0.0
+what do you charge for an exchange fee,exchange_charge,False,exchange_charge,1.0,0.0
+i exchange currencies a lot can i get a discount,exchange_charge,False,exchange_charge,1.0,0.0
+how much does it cost to exchange my balance into a foreign currency,exchange_charge,False,exchange_charge,1.0,0.0
+what is your currency exchange fee,exchange_charge,False,exchange_charge,1.0,0.0
+can i have a discount if i exchange currency often,exchange_charge,False,exchange_charge,1.0,0.0
+does a discount apply if i exchange currencies frequently,exchange_charge,False,exchange_charge,1.0,0.0
+do i have to pay more for exchanges,exchange_charge,False,exchange_charge,1.0,0.0
+i need to exchange some foreign currency what's the charge for doing that,exchange_charge,False,exchange_charge,1.0,0.0
+how much does it cost to add money to my card,top_up_by_card_charge,False,top_up_by_card_charge,1.0,0.0
+how much does it cost to add money,top_up_by_card_charge,False,top_up_by_card_charge,1.0,0.0
+are there any charges for european bank card for top up,top_up_by_card_charge,False,top_up_by_card_charge,1.0,0.0
+if i top up using a european card is there a charge,top_up_by_card_charge,False,top_up_by_card_charge,1.0,0.0
+what is the charge for topping up a card,top_up_by_card_charge,False,top_up_by_card_charge,1.0,0.0
+how much does it cost to top up a us issued card,top_up_by_card_charge,False,top_up_by_card_charge,1.0,0.0
+are there charges for using a bank card to top up,top_up_by_card_charge,False,top_up_by_card_charge,1.0,0.0
+what are the top up fees for using an european bank card,top_up_by_card_charge,False,top_up_by_card_charge,1.0,0.0
+how much is it to use my us debit or credit card to top up,top_up_by_card_charge,False,top_up_by_card_charge,1.0,0.0
+will there be any fees for top ups,top_up_by_card_charge,False,top_up_by_card_charge,1.0,0.0
+if us cards have a top up charge what is it,top_up_by_card_charge,False,top_up_by_card_charge,1.0,0.0
+i want to start using my card,activate_my_card,False,activate_my_card,1.0,0.0
+can i get some help to get me card activated,activate_my_card,False,activate_my_card,1.0,0.0
+i want to activate my new card,activate_my_card,False,activate_my_card,1.0,0.0
+what needs to be done to activate and use a card,activate_my_card,False,activate_my_card,1.0,0.0
+i want to start using my card how do i activate it,activate_my_card,False,activate_my_card,1.0,0.0
+you can activate your card in a few seconds by going to account hitting activate and just following the directions,activate_my_card,False,activate_my_card,1.0,0.0
+explain the activation method for this card,activate_my_card,False,activate_my_card,1.0,0.0
+i have a new card and need to activate it,activate_my_card,False,activate_my_card,1.0,0.0
+my new card needs activating,activate_my_card,False,activate_my_card,1.0,0.0
+can you help me activate my card,activate_my_card,False,activate_my_card,1.0,0.0
+what do i do to activate my new card,activate_my_card,False,activate_my_card,1.0,0.0
+where can i activate my card,activate_my_card,False,activate_my_card,1.0,0.0
+what identification is required to activate my card,activate_my_card,False,activate_my_card,1.0,0.0
+i need to do a card activation,activate_my_card,False,activate_my_card,1.0,0.0
+i would like my card activated,activate_my_card,False,activate_my_card,1.0,0.0
+where do i go to activate my card,activate_my_card,False,activate_my_card,1.0,0.0
+i withdrew cash and was charged,cash_withdrawal_charge,False,cash_withdrawal_charge,1.0,0.0
+hello i have a question concerning an unfamiliar fee that i notice on my account i see that you guys charge for atm withdrawal never notice this fee until now can you please explain,cash_withdrawal_charge,False,cash_withdrawal_charge,1.0,0.0
+hello i wanted to get some more information about atm withdraw fee i have been withdrawing money for years and notice this charge on my account i always thought it was no fee since its you guys atm company that i am withdrawing can you please explain,cash_withdrawal_charge,False,cash_withdrawal_charge,1.0,0.0
+why are fees charged for cash withdrawals i went to withdraw some money earlier today after shopping there's a new fee that there,cash_withdrawal_charge,False,cash_withdrawal_charge,1.0,0.0
+why are you charging me for atm withdrawal it has always been free before,cash_withdrawal_charge,False,cash_withdrawal_charge,1.0,0.0
+tell me why there is a charge on my cash withdrawl,cash_withdrawal_charge,False,cash_withdrawal_charge,1.0,0.0
+why am i being charged to make cash withdrawals i thought they were supposed to be free,cash_withdrawal_charge,False,cash_withdrawal_charge,1.0,0.0
+is there a fee for a cash withdrawal,cash_withdrawal_charge,False,cash_withdrawal_charge,1.0,0.0
+why are you charging fees on cash withdrawals i went to withdraw some money earlier today after buying groceries there's a fee that wasn't there before,cash_withdrawal_charge,False,cash_withdrawal_charge,1.0,0.0
+i was under the impression atm cash withdrawals were free why was i suddenly charged for my most recent atm transaction,cash_withdrawal_charge,False,cash_withdrawal_charge,1.0,0.0
+the atm charged me an extra fee why,cash_withdrawal_charge,False,cash_withdrawal_charge,1.0,0.0
+why did i get a fee for getting cash,cash_withdrawal_charge,False,cash_withdrawal_charge,1.0,0.0
+there was an unexpected fee for my cash withdrawal,cash_withdrawal_charge,False,cash_withdrawal_charge,1.0,0.0
+i believe i was charged for making a withdrawal after i went grocery shopping are you guys charging for this now,cash_withdrawal_charge,False,cash_withdrawal_charge,1.0,0.0
+do i get charged for withdrawals,cash_withdrawal_charge,False,cash_withdrawal_charge,1.0,0.0
+i was charged a fee with my cash withdrawal that i shouldn't have been charged,cash_withdrawal_charge,False,cash_withdrawal_charge,1.0,0.0
+i used my card the other day to get cash from an atm and was charged an extra fee i don't understand why i am being charged a fee all of a sudden i thought it was free to withdraw from an atm,cash_withdrawal_charge,False,cash_withdrawal_charge,1.0,0.0
+why did you charge me for taking out cash,cash_withdrawal_charge,False,cash_withdrawal_charge,1.0,0.0
+is it possible to get a new card in china,card_about_to_expire,False,card_about_to_expire,1.0,0.0
+are there steps i need to take before my card expires,card_about_to_expire,False,card_about_to_expire,1.0,0.0
+my card is due to expire,card_about_to_expire,False,card_about_to_expire,1.0,0.0
+after my card expires what should i do,card_about_to_expire,False,card_about_to_expire,1.0,0.0
+my card is about to expire what do i need to do to keep using my card,card_about_to_expire,False,card_about_to_expire,1.0,0.0
+what is the procedure for an expired card,card_about_to_expire,False,card_about_to_expire,1.0,0.0
+what to do if my card is about to expire,card_about_to_expire,False,card_about_to_expire,1.0,0.0
+am i able to get this shipped to china,card_about_to_expire,False,card_delivery_estimate,1.0,0.0
+what should i do once my card expires,card_about_to_expire,False,card_about_to_expire,1.0,0.0
+how to get a new card in china,card_about_to_expire,False,card_about_to_expire,1.0,0.0
+i'm in china and really need a new card,card_about_to_expire,False,card_about_to_expire,1.0,0.0
+will you send me a new card in china,card_about_to_expire,False,card_about_to_expire,1.0,0.0
+want to get a new card in china,card_about_to_expire,False,card_about_to_expire,1.0,0.0
+what do i do if my google pay top up isn't working,apple_pay_or_google_pay,False,apple_pay_or_google_pay,1.0,0.0
+am i able to use apple pay,apple_pay_or_google_pay,False,apple_pay_or_google_pay,1.0,0.0
+my american express works with my apple pay why is top up not working,apple_pay_or_google_pay,False,top_up_failed,1.0,0.0
+help me please my apple pay american express top up does not work,apple_pay_or_google_pay,False,top_up_failed,1.0,0.0
+what can i do if i got my american express in apple bay but top up is not working,apple_pay_or_google_pay,False,top_up_failed,1.0,0.0
+unable to use my american express with apple pay to top up my account,apple_pay_or_google_pay,False,apple_pay_or_google_pay,1.0,0.0
+how can i top up with my apple watch,apple_pay_or_google_pay,False,apple_pay_or_google_pay,1.0,0.0
+can an apple watch be used to tup up,apple_pay_or_google_pay,False,apple_pay_or_google_pay,1.0,0.0
+top up for my american express card is not working,apple_pay_or_google_pay,False,top_up_failed,1.0,0.0
+google pay top up not working,apple_pay_or_google_pay,False,apple_pay_or_google_pay,1.0,0.0
+does apple watch support the topping off of my account,apple_pay_or_google_pay,False,apple_pay_or_google_pay,1.0,0.0
+can google pay be used for top up please help,apple_pay_or_google_pay,False,apple_pay_or_google_pay,1.0,0.0
+how can i top up with google play,apple_pay_or_google_pay,False,apple_pay_or_google_pay,1.0,0.0
+how do i prove i am who i am,verify_my_identity,False,verify_my_identity,1.0,0.0
+what steps do you take to check identity,verify_my_identity,False,verify_my_identity,1.0,0.0
+can you tell me what i need for identity validation,verify_my_identity,False,verify_my_identity,1.0,0.0
+i'm not sure what i need to verify my identity,verify_my_identity,False,unable_to_verify_identity,1.0,0.0
+how do i verify my id,verify_my_identity,False,verify_my_identity,1.0,0.0
+i don't know how to verify my identity,verify_my_identity,False,verify_my_identity,1.0,0.0
+what can i use to verify my identity,verify_my_identity,False,verify_my_identity,1.0,0.0
+tell me what the steps for the identity checks are,verify_my_identity,False,verify_my_identity,1.0,0.0
+what documents do i need for the identity check,verify_my_identity,False,verify_my_identity,1.0,0.0
+what is necessary for the identity verification,verify_my_identity,False,verify_my_identity,1.0,0.0
+can i use my card in austria,country_support,False,country_support,1.0,0.0
+what countries are you located in,country_support,False,country_support,1.0,0.0
+can i get a card in the us,country_support,False,country_support,1.0,0.0
+can you tell me what countries you offer support for,country_support,False,country_support,1.0,0.0
+can i use it outside of europe,country_support,False,country_support,1.0,0.0
+i live in germany is that one of the countries you are in what other countries are you in,country_support,False,country_support,1.0,0.0
+can i get a card if i don't reside in the uk,country_support,False,country_support,1.0,0.0
+if i don't live in the uk can i get a card,country_support,False,country_support,1.0,0.0
+i live in america but i would like a card,country_support,False,country_support,1.0,0.0
+can an american resident apply to get a card,country_support,False,country_support,1.0,0.0
+i am in the eu can i get one of your cards,country_support,False,country_support,1.0,0.0
+which countries do you currently support,country_support,False,country_support,1.0,0.0
+you provide support in what countries,country_support,False,country_support,1.0,0.0
+how much is an overdraft fee for bank,oos,True,oos,1.0,1.0
+why are exponents preformed before multiplication in the order of operations,oos,True,oos,1.0,1.0
+what size wipers does this car take,oos,True,oos,1.0,1.0
+where is the dipstick,oos,True,oos,1.0,1.0
+how much is 1 share of aapl,oos,True,oos,1.0,1.0
+how is glue made,oos,True,oos,1.0,1.0
+any headlines from my areai,oos,True,oos,1.0,1.0
+what is the largest state in the us,oos,True,oos,1.0,1.0
+what is the current market trend,oos,True,oos,1.0,1.0
+what is the most popular airline,oos,True,oos,1.0,1.0
+what is the formula for the circumference of a circle,oos,True,oos,1.0,1.0
+what are some ways to reduce spending,oos,True,oos,1.0,1.0
+what time does the louvre open,oos,True,oos,1.0,1.0
+are there any local stations covering the moral march in raleigh in februaryu,oos,True,oos,1.0,1.0
+how many planets have we discovered,oos,True,oos,1.0,1.0
+how do i change my billing address,oos,True,edit_personal_details,1.0,0.0
+how do i open an online line of credit,oos,True,oos,1.0,1.0
+how do i remove a coffee blemish,oos,True,oos,1.0,1.0
+how expensive is an apple share,oos,True,oos,1.0,1.0
+where can i find the cruise control on my kia sportage 2010,oos,True,oos,1.0,1.0
+how many sides are in a hexagon,oos,True,oos,1.0,1.0
+how fast does an airplane travel,oos,True,oos,1.0,1.0
+is it worth investing in target,oos,True,oos,1.0,1.0
+i need to speak to customer service regarding my flight,oos,True,oos,1.0,1.0
+how long do wire transfers take,oos,True,transfer_timing,1.0,0.0
+what are some deals on amazon,oos,True,oos,1.0,1.0
+what city is the super bowl,oos,True,oos,1.0,1.0
+what trees change color in autumn,oos,True,oos,1.0,1.0
+do people prefer summer over fall,oos,True,oos,1.0,1.0
+how long is winter,oos,True,oos,1.0,1.0
+what were some of ben franklin's notable accomplishments,oos,True,oos,1.0,1.0
+where was john denver born,oos,True,oos,1.0,1.0
+where did abraham lincoln live,oos,True,oos,1.0,1.0
+when was kobe bryant born,oos,True,oos,1.0,1.0
+who's toledo's starting point guard for the next game,oos,True,oos,1.0,1.0
+how many players are on the chicago bulls,oos,True,oos,1.0,1.0
+who is the coach of the chicago bulls,oos,True,oos,1.0,1.0
+when do the utah jazz play next,oos,True,oos,1.0,1.0
+what other nations were involved in the chinese trade war,oos,True,oos,1.0,1.0
+what years has korea been at war,oos,True,oos,1.0,1.0
+when was the theory of evolution first considered,oos,True,oos,1.0,1.0
+who formulated the theory of relativity,oos,True,oos,1.0,1.0
+what stage of evolution am i,oos,True,oos,1.0,1.0
+what other personality type is most compatible with infjs,oos,True,oos,1.0,1.0
+what does my personality mean,oos,True,oos,1.0,1.0
+what's the most dominant scale in bluegrass,oos,True,oos,1.0,1.0
+what year was saxaphone first played,oos,True,oos,1.0,1.0
+which piano is best for classical,oos,True,oos,1.0,1.0
+is k 12 education required outside of the united states,oos,True,oos,1.0,1.0
+what are the benefits of completing college,oos,True,oos,1.0,1.0
+are you able to answer algebra equations,oos,True,oos,1.0,1.0
+can you help me study for a history exam,oos,True,oos,1.0,1.0
+how many points per game is lebron james averaging this season,oos,True,oos,1.0,1.0
+what team does eli mannign play for,oos,True,oos,1.0,1.0
+get me dwight howard shooting average,oos,True,oos,1.0,1.0
+can you list me tiger wood's stats,oos,True,oos,1.0,1.0
+what's the runtime of all the lord of the rings movies combined,oos,True,oos,1.0,1.0
+which character is the most famous from titanic,oos,True,oos,1.0,1.0
+how many oscars did star wars films win,oos,True,oos,1.0,1.0
+what year was shawshank redemption released,oos,True,oos,1.0,1.0
+which marvel character has appeared in the most movies,oos,True,oos,1.0,1.0
+when's the next movie starring thor set to come out,oos,True,oos,1.0,1.0
+who was the first capcom character,oos,True,oos,1.0,1.0
+are any justice league movies coming out,oos,True,oos,1.0,1.0
+can you tell me something about the nfl,oos,True,oos,1.0,1.0
+please explain the catch rule to me,oos,True,oos,1.0,1.0
+is there overtime in college football,oos,True,oos,1.0,1.0
+when did the mls start,oos,True,oos,1.0,1.0
+what's the best price on super smash bros ultimate right now,oos,True,oos,1.0,1.0
+what is the highest earning game on atari,oos,True,oos,1.0,1.0
+when is the next nintendo direct,oos,True,oos,1.0,1.0
+when was nintendo created,oos,True,oos,1.0,1.0
+please find the capital of pakistan and its population,oos,True,oos,1.0,1.0
+how many people live in taiwan,oos,True,oos,1.0,1.0
+what are some of picasso's most famous works,oos,True,oos,1.0,1.0
+what are van gogh's best pieces,oos,True,oos,1.0,1.0
+where can i see art,oos,True,oos,1.0,1.0
+when did camus die,oos,True,oos,1.0,1.0
+how much money does radiohead earn a year,oos,True,oos,1.0,1.0
+who is radiohead,oos,True,oos,1.0,1.0
+what's the biggest saas marketing company in the united states,oos,True,oos,1.0,1.0
+how do i start my own marketing firm,oos,True,oos,1.0,1.0
+how can i get involved in restaurant marketing,oos,True,oos,1.0,1.0
+what is saas marketing,oos,True,oos,1.0,1.0
+what do you call someone who was born in segovia,oos,True,oos,1.0,1.0
+what is rhineland,oos,True,oos,1.0,1.0
+who is the scariest character in start trek,oos,True,oos,1.0,1.0
+who is the current captain of this ship,oos,True,oos,1.0,1.0
+what year was star trek released,oos,True,oos,1.0,1.0
+when was toyota created,oos,True,oos,1.0,1.0
+who are some notable alumni of ucsd,oos,True,oos,1.0,1.0
+what is the next football game,oos,True,oos,1.0,1.0
+how many students attend ucsb,oos,True,oos,1.0,1.0
+when do classes start,oos,True,oos,1.0,1.0
+how can i become an aerospace engineer,oos,True,oos,1.0,1.0
+what percentage of species display cold blooded traits,oos,True,oos,1.0,1.0
+what does it mean to be an alpha male,oos,True,oos,1.0,1.0
+what animals have alpha males,oos,True,oos,1.0,1.0
+why do males want to be alpha,oos,True,oos,1.0,1.0
+what's the average battery life of an android phone,oos,True,oos,1.0,1.0
+what is the most expensive price per share of any stock,oos,True,oos,1.0,1.0
+can you tell me when the bank closes,oos,True,oos,1.0,1.0
+rewind one minute,oos,True,oos,1.0,1.0
+what is apple's stock,oos,True,oos,1.0,1.0
+is there a video on demand function vod,oos,True,oos,1.0,1.0
+show me all contacts,oos,True,oos,1.0,1.0
+what are the pros and cons of credit cards,oos,True,oos,1.0,1.0
+can you show me my 3 digit credit card verification number,oos,True,verify_top_up,1.0,0.0
+how win money in internet,oos,True,oos,1.0,1.0
+is there a car in my blind spot,oos,True,oos,1.0,1.0
+what is slope of an inverted line,oos,True,oos,1.0,1.0
+can you clock me in,oos,True,oos,1.0,1.0
+how do you store my card information,oos,True,oos,1.0,1.0
+can you tell me until what time the stock market is open,oos,True,oos,1.0,1.0
+give me the local newsi,oos,True,oos,1.0,1.0
+why can't you divide by zero,oos,True,oos,1.0,1.0
+adjust windshield wipers,oos,True,oos,1.0,1.0
+what is the formula for the surface area of a cylinder,oos,True,oos,1.0,1.0
+can you forward this email to my boss,oos,True,oos,1.0,1.0
+what did the president say todayu,oos,True,oos,1.0,1.0
+what color is the car,oos,True,oos,1.0,1.0
+can you restart my phone,oos,True,oos,1.0,1.0
+what is the account number,oos,True,transfer_into_account,1.0,0.0
+will you block non kid friendly shows,oos,True,oos,1.0,1.0
+can you tell me who else is on my account,oos,True,oos,1.0,1.0
+what cleaning product should i use on wood floors,oos,True,oos,1.0,1.0
+which state has the best airlines,oos,True,oos,1.0,1.0
+find out who won the governor's electionu,oos,True,oos,1.0,1.0
+what are bbc headlinesi,oos,True,oos,1.0,1.0
+when was the last worker's strike in amsterdam,oos,True,oos,1.0,1.0
+how many prime numbers are there under 100,oos,True,oos,1.0,1.0
+put seatbelts on,oos,True,oos,1.0,1.0
+how many ways can i make 1 using standard us coins,oos,True,oos,1.0,1.0
+what kind of gas do i use,oos,True,oos,1.0,1.0
+does my a c filter need to be changed,oos,True,oos,1.0,1.0
+how do the anti lock brakes work,oos,True,oos,1.0,1.0
+how do i change my flight,oos,True,oos,1.0,1.0
+can you find instructions for removing a coffee stain from upholstery,oos,True,oos,1.0,1.0
+what show am i watching,oos,True,oos,1.0,1.0
+what are my local news stations,oos,True,oos,1.0,1.0
+i have old model car,oos,True,oos,1.0,1.0
+can you tell me how to figure a percentage of a number,oos,True,oos,1.0,1.0
+what do the values of numbers mean non numerically,oos,True,oos,1.0,1.0
+can you read me the last text,oos,True,oos,1.0,1.0
+please save my draft for me so i can work on it later,oos,True,oos,1.0,1.0
+how do i stop the beeping noise when my seatbelt is off in my honda civic,oos,True,oos,1.0,1.0
+how do i find a common denominator,oos,True,oos,1.0,1.0
+can you see the second right inside the fridge,oos,True,oos,1.0,1.0
+change my seat to an window seat for my flight on monday,oos,True,oos,1.0,1.0
+show me an example of an algebraic expression,oos,True,oos,1.0,1.0
+what is npr reporting on right now,oos,True,oos,1.0,1.0
+how many points has the nyse gone up by this month,oos,True,oos,1.0,1.0
+should i invest in microsoft stock,oos,True,oos,1.0,1.0
+can you show me my credit card number,oos,True,get_physical_card,1.0,0.0
+is the stock market up or down today,oos,True,oos,1.0,1.0
+is the shutdown over,oos,True,oos,1.0,1.0
+what's my horoscope today,oos,True,oos,1.0,1.0
+am i using cruise control,oos,True,oos,1.0,1.0
+can you send an email to client b,oos,True,oos,1.0,1.0
+is the bachelor on tonight,oos,True,oos,1.0,1.0
+does my credit card have a balance transfer promotions currently going on,oos,True,oos,1.0,1.0
+how does a optical mouse work,oos,True,oos,1.0,1.0
+which stocks should i invest in to get at least 5 back on my investment this year,oos,True,oos,1.0,1.0
+find out for me what kind of benefits military veterans have after retirement,oos,True,oos,1.0,1.0
+can you tell me what kind of benefits miliraty veterans receive,oos,True,oos,1.0,1.0
+if you're dishonorably discharged are you still a veteran,oos,True,oos,1.0,1.0
+is va treatment free for veterans,oos,True,oos,1.0,1.0
+what month are mosquitoes the worst in the united states,oos,True,oos,1.0,1.0
+what's the most effective bug repellant,oos,True,oos,1.0,1.0
+how long do mosquito's live,oos,True,oos,1.0,1.0
+where do squirrels's live,oos,True,oos,1.0,1.0
+can you identify between poisonous and nonpoisonous mushroom,oos,True,oos,1.0,1.0
+can you find out for me how many mushroom species are there,oos,True,oos,1.0,1.0
+what are some ways to prepare portabello mushrooms,oos,True,oos,1.0,1.0
+how do you know if a mushroom is edible,oos,True,oos,1.0,1.0
+what's the most popular tv show on netflix right now,oos,True,oos,1.0,1.0
+what's trending in 90s television shows on netflix,oos,True,oos,1.0,1.0
+when was hulu created,oos,True,oos,1.0,1.0
+get me the rates of hacking susceptibility for household in my area,oos,True,oos,1.0,1.0
+can you check my privacy online settting,oos,True,edit_personal_details,1.0,0.0
+how can i protect myself online,oos,True,oos,1.0,1.0
+how much is the best vpn,oos,True,oos,1.0,1.0
+who is the oscar who the oscar's is named after,oos,True,oos,1.0,1.0
+what is the origin of the name michael,oos,True,oos,1.0,1.0
+where are the oscar's held,oos,True,oos,1.0,1.0
+how do you get an oscar,oos,True,oos,1.0,1.0
+are deer indigenous to north america,oos,True,oos,1.0,1.0
+what's an otter's primary diet,oos,True,oos,1.0,1.0
+a the bike looks very nice,oos,True,oos,1.0,1.0
+how the bikes looks,oos,True,oos,1.0,1.0
+is the patriarchy a valid concept,oos,True,oos,1.0,1.0
+is patriarchy wrong,oos,True,oos,1.0,1.0
+how many generations of pokemon are there now,oos,True,oos,1.0,1.0
+what year was the first pokemon game released,oos,True,oos,1.0,1.0
+how many pokemon are there,oos,True,oos,1.0,1.0
+where was salt created,oos,True,oos,1.0,1.0
+what's a puffin's natural habitat,oos,True,oos,1.0,1.0
+are hawks domesticated or wild,oos,True,oos,1.0,1.0
+where do frogs come from,oos,True,oos,1.0,1.0
+what are puffins,oos,True,oos,1.0,1.0
+is it legal to breed and sell rabbits without a license,oos,True,oos,1.0,1.0
+how many different types of robins are there,oos,True,oos,1.0,1.0
+how long do chipmunks usually live,oos,True,oos,1.0,1.0
+what do rabbits eat,oos,True,oos,1.0,1.0
+how many seasons of rick and morty are there,oos,True,oos,1.0,1.0
+will there be a new season of true detective,oos,True,oos,1.0,1.0
+how old are rick ad morty,oos,True,oos,1.0,1.0
+who are dan and dave,oos,True,oos,1.0,1.0
+what was the area code of the phone number from that last scam call,oos,True,oos,1.0,1.0
+how many people fall victim to internet scams per year,oos,True,oos,1.0,1.0
+how can i protect myself from nigerian prince scams,oos,True,oos,1.0,1.0
+are semitic languages harder to learn than arabic languages,oos,True,oos,1.0,1.0
+is it difficult to learn a semitic language,oos,True,oos,1.0,1.0
+what languages are considered semitic,oos,True,oos,1.0,1.0
+what is a semitic language,oos,True,oos,1.0,1.0
+what's the typical structure for writing a country song,oos,True,oos,1.0,1.0
+where can i find lyrical inspiration for songwriting,oos,True,oos,1.0,1.0
+what's the dominant minor for the key of bflat,oos,True,oos,1.0,1.0
+what's the order of the circle of fifths,oos,True,oos,1.0,1.0
+what is the most popular sport in new york,oos,True,oos,1.0,1.0
+how are my sports teams doing,oos,True,oos,1.0,1.0
+which sport is the most fun,oos,True,oos,1.0,1.0
+what's on for sports today,oos,True,oos,1.0,1.0
+can you give me instructions for tattoo aftercare,oos,True,oos,1.0,1.0
+how do i decide on a good first tattoo,oos,True,oos,1.0,1.0
+where did the first tattoo originate,oos,True,oos,1.0,1.0
+are tattoos safe to get,oos,True,oos,1.0,1.0
+is time travel to the past theoretically possible,oos,True,oos,1.0,1.0
+what is the solution to the grandfather paradox,oos,True,oos,1.0,1.0
+please take me back to the year 1982,oos,True,oos,1.0,1.0
+has anyone ever time traveled before,oos,True,oos,1.0,1.0
+what species of oak tree grows to be the tallest,oos,True,oos,1.0,1.0
+what's the best time of year to plant a tree,oos,True,oos,1.0,1.0
+are trees absolutely necessary to survive,oos,True,oos,1.0,1.0
+what is the largest tree in the world,oos,True,oos,1.0,1.0
+how much has the market gone up or down so far in 2019,oos,True,oos,1.0,1.0
+what is the most expensive building on wall street,oos,True,oos,1.0,1.0
+is it difficult to be successful on wall street,oos,True,oos,1.0,1.0
+what's the fastest growing stock of 2019,oos,True,oos,1.0,1.0
+give me information about the soviet union's participation in world war 2,oos,True,oos,1.0,1.0
+which nations were on each side of the conflict in world war ii,oos,True,oos,1.0,1.0
+how long was the siege of leningrad,oos,True,oos,1.0,1.0
+what years did world war i occur,oos,True,oos,1.0,1.0
+what's a good resource to learn beginner's yoga,oos,True,oos,1.0,1.0
+what's the most difficult yoga pose to perform,oos,True,oos,1.0,1.0
+how can i get involved in yoga,oos,True,oos,1.0,1.0
+is yoga healthy,oos,True,oos,1.0,1.0
+what's the alma mater of the man that started youtube,oos,True,oos,1.0,1.0
+who has the most subscribers on youtube,oos,True,oos,1.0,1.0
+do those i subscribe to have new videos,oos,True,oos,1.0,1.0
+set a warning for when my bank account starts running low,oos,True,automatic_top_up,1.0,0.0
+a show on broadway,oos,True,oos,1.0,1.0
+who has the best record in the nfl,oos,True,oos,1.0,1.0
+how do i find the area of a circle,oos,True,oos,1.0,1.0
+how many onions do i have on hand,oos,True,oos,1.0,1.0
+what is the name of the 13th president,oos,True,oos,1.0,1.0
+show me recent activity in my backyard,oos,True,oos,1.0,1.0
+how long will it take me to pay off my card if i pay an extra 50 a month over the minimum,oos,True,oos,1.0,1.0
+does our bank have free notary,oos,True,oos,1.0,1.0
+what were the top stories this week,oos,True,oos,1.0,1.0
+can i mix antifreeze with water,oos,True,oos,1.0,1.0
+are any earning reports due,oos,True,oos,1.0,1.0
+show me the channel guide,oos,True,oos,1.0,1.0
+is the pnc bank open,oos,True,oos,1.0,1.0
+where does the power steering fluid go,oos,True,oos,1.0,1.0
+when was the last time the president visited floridau,oos,True,oos,1.0,1.0
+how can i keep my windshield from fogging up in winter,oos,True,oos,1.0,1.0
+how do i compute the median of a set of numbers,oos,True,oos,1.0,1.0
+what is happening with brexit right nowu,oos,True,oos,1.0,1.0
+are there any new companies to look out for,oos,True,oos,1.0,1.0
+can you tell me how to compute price per ounce,oos,True,oos,1.0,1.0
+how to unclog a drain,oos,True,oos,1.0,1.0
+am kind of busy now,oos,True,oos,1.0,1.0
+what new reality shows are there for 2019,oos,True,oos,1.0,1.0
+what is the purpose or benefit of a cash advance,oos,True,cash_withdrawal_charge,1.0,0.0
+how can i root an android phone,oos,True,oos,1.0,1.0
+is android better than iphone,oos,True,oos,1.0,1.0
+are androids expensive,oos,True,oos,1.0,1.0
+how long does it take to become an architect,oos,True,oos,1.0,1.0
+who are some famous living architects,oos,True,oos,1.0,1.0
+find out for me as to why people get autism,oos,True,oos,1.0,1.0
+is autism a genetic disease,oos,True,oos,1.0,1.0
+is flu contagious,oos,True,oos,1.0,1.0
+is it true that nicotine is harder to kick than heroin,oos,True,oos,1.0,1.0
+please inform me on bad habits and overcoming them,oos,True,oos,1.0,1.0
+are bad habits closely related with addictions,oos,True,oos,1.0,1.0
+does hypnosis work to break bad habits,oos,True,oos,1.0,1.0
+king of acid,oos,True,oos,1.0,1.0
+suo2,oos,True,oos,1.0,1.0
+what university in the united states offers the best biomedical engineering program,oos,True,oos,1.0,1.0
+what's the definition of nuclear engineering,oos,True,oos,1.0,1.0
+when was electrical engineering created,oos,True,oos,1.0,1.0
+what is naval engineering,oos,True,oos,1.0,1.0
+is it possible to survive in a black hole,oos,True,oos,1.0,1.0
+where do black holes come from,oos,True,oos,1.0,1.0
+what are black holes,oos,True,oos,1.0,1.0
+what was the final vote count in the brexit referendum,oos,True,oos,1.0,1.0
+can you tell me the latest georgia news,oos,True,oos,1.0,1.0
+is the brexit finalized yet,oos,True,oos,1.0,1.0
+the birds fly with there wings,oos,True,oos,1.0,1.0
+how the birds fly,oos,True,oos,1.0,1.0
+where does cannabis originate from,oos,True,oos,1.0,1.0
+how are my cannabis stocks doing,oos,True,oos,1.0,1.0
+is marijuana addictive,oos,True,oos,1.0,1.0
+should i hit or stay at 17 in blackjack,oos,True,oos,1.0,1.0
+what game has the best odds at a casino,oos,True,oos,1.0,1.0
+what's the best opening gambit for a game of chess,oos,True,oos,1.0,1.0
+what side in chess has the general advantage,oos,True,oos,1.0,1.0
+how do i get better at go,oos,True,oos,1.0,1.0
+how high does my sat score need to be to get into harvard,oos,True,oos,1.0,1.0
+what'll an education at boulder state college run,oos,True,oos,1.0,1.0
+what's the average gpa to get into yale,oos,True,oos,1.0,1.0
+what act score is considered good,oos,True,oos,1.0,1.0
+what cryptocurrency gained the most in 2018,oos,True,oos,1.0,1.0
+what's the best crypto to buy in 2019,oos,True,oos,1.0,1.0
+how is crypto legal,oos,True,oos,1.0,1.0
+are there any cybersecurity jobs available in pittsburgh,oos,True,oos,1.0,1.0
+how many firewalls should i have and what type,oos,True,oos,1.0,1.0
+how can i breach a network,oos,True,oos,1.0,1.0
+how does cybersecurity work,oos,True,oos,1.0,1.0
+how many countries in the world are democracies,oos,True,oos,1.0,1.0
+is the united states a democracy,oos,True,oos,1.0,1.0
+which nations are not democratic,oos,True,oos,1.0,1.0
+how does a democracy work,oos,True,oos,1.0,1.0
+please get me my wheelchair,oos,True,oos,1.0,1.0
+what's the best dog food to feed my puppy,oos,True,oos,1.0,1.0
+how do you know when your dog is ill,oos,True,oos,1.0,1.0
+what dog breed sold the most in 2018,oos,True,oos,1.0,1.0
+how much food should i feed my cat,oos,True,oos,1.0,1.0
+what does it mean if i dream of falling off a building,oos,True,oos,1.0,1.0
+is it bad to not remember your dreams,oos,True,oos,1.0,1.0
+why do we dream,oos,True,oos,1.0,1.0
+do ducks eat meat vegetables or both,oos,True,oos,1.0,1.0
+what is the friendliest breed,oos,True,oos,1.0,1.0
+what do geese eat,oos,True,oos,1.0,1.0
+do ducks sleep,oos,True,oos,1.0,1.0
+are over the ear headphones better than in ear headphones,oos,True,oos,1.0,1.0
+what brand of earphones is the best reviewed of 2019,oos,True,oos,1.0,1.0
+are white and brown eggs any different,oos,True,oos,1.0,1.0
+where do eggs come from,oos,True,oos,1.0,1.0
+how can i easily replace a string on my guitar,oos,True,oos,1.0,1.0
+how do you learn how to play electric violin,oos,True,oos,1.0,1.0
+can you give me the standard tuning notes,oos,True,oos,1.0,1.0
+what is the cheapest electric guitar,oos,True,oos,1.0,1.0
+you want to know about current time now,oos,True,oos,1.0,1.0
+what does it mean to have equality,oos,True,oos,1.0,1.0
+what site publishes the most fake news,oos,True,oos,1.0,1.0
+can you tell me some fake news,oos,True,oos,1.0,1.0
+is cnn really fake news,oos,True,oos,1.0,1.0
+why is there fake news,oos,True,oos,1.0,1.0

@@ -4,8 +4,8 @@ Written by `scripts/evaluate_oos.py`. Do not edit by hand.
 
 ## Provenance
 
-- Generated (UTC): 2026-11-22T07:34:07+00:00
-- Git commit: `d80b6e8710707b0837d7120fee1e4524c6c68f60`
+- Generated (UTC): 2026-11-22T08:59:41+00:00
+- Git commit: `e6692d11431d1592a99621cb242b320b2124bc74` (uncommitted changes present)
 - Seed: 0
 - Python 3.12.4 on macOS-27.0-arm64-arm-64bit
 - Dataset `banking77` revision: `1846984189f2bc0ac51c6fc3a600fa9e1714e0c6`
@@ -27,6 +27,7 @@ Written by `scripts/evaluate_oos.py`. Do not edit by hand.
 | s2_all-MiniLM-L6-v2 | 1 | 99.91 ± 0.00 | 0.57 ± 0.00 | 0.2537 |
 | s2_all-mpnet-base-v2 | 1 | 99.93 ± 0.00 | 0.29 ± 0.00 | 0.2546 |
 | s3_quora-distilroberta-base | 5 | 99.72 ± 0.04 | 1.26 ± 0.38 | 0.4376 |
+| s4_claude-sonnet-4-6 | 1 | 99.04 ± 0.00 | 1.71 ± 0.00 | 0.0000 |
 
 ## Surface cues (no model)
 

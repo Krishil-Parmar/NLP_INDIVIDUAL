@@ -4,8 +4,8 @@ Written by `scripts/evaluate.py`. Do not edit by hand.
 
 ## Provenance
 
-- Generated (UTC): 2026-11-22T07:34:09+00:00
-- Git commit: `d80b6e8710707b0837d7120fee1e4524c6c68f60`
+- Generated (UTC): 2026-11-22T08:59:23+00:00
+- Git commit: `e6692d11431d1592a99621cb242b320b2124bc74`
 - Seed: None
 - Python 3.12.4 on macOS-27.0-arm64-arm-64bit
 - Dataset `banking77` revision: `1846984189f2bc0ac51c6fc3a600fa9e1714e0c6`
@@ -25,6 +25,7 @@ Macro averages are primary (each of the 77 intents counts equally). Std is the s
 | s2_all-MiniLM-L6-v2 | 1 | 90.80 ± 0.00 | 91.60 ± 0.00 | 91.28 ± 0.00 | 91.04 ± 0.00 | 91.43 ± 0.00 | 90.80 ± 0.00 | 90.73 ± 0.00 |
 | s2_all-mpnet-base-v2 | 1 | 90.90 ± 0.00 | 91.67 ± 0.00 | 91.33 ± 0.00 | 91.06 ± 0.00 | 91.52 ± 0.00 | 90.90 ± 0.00 | 90.78 ± 0.00 |
 | s3_quora-distilroberta-base | 5 | 90.38 ± 0.26 | 91.19 ± 0.24 | 90.75 ± 0.21 | 90.58 ± 0.21 | 91.12 ± 0.26 | 90.38 ± 0.26 | 90.38 ± 0.26 |
+| s4_claude-sonnet-4-6 | 1 | 76.30 ± 0.00 | 79.71 ± 0.00 | 77.01 ± 0.00 | 76.06 ± 0.00 | 79.86 ± 0.00 | 76.30 ± 0.00 | 75.83 ± 0.00 |
 
 ## s0_tfidf
 
@@ -185,3 +186,35 @@ Most frequent confusions (true intent predicted as another, counts summed over s
 | card_arrival | card_delivery_estimate | 9 |
 | pin_blocked | change_pin | 9 |
 | unable_to_verify_identity | why_verify_identity | 9 |
+
+## s4_claude-sonnet-4-6
+
+10 intents with the lowest F1 (averaged over seeds):
+
+| intent | precision | recall | f1 | support |
+| --- | --- | --- | --- | --- |
+| get_physical_card | 0.000 | 0.000 | 0.000 | 11 |
+| topping_up_by_card | 0.182 | 0.200 | 0.190 | 10 |
+| top_up_by_bank_transfer_charge | 1.000 | 0.182 | 0.308 | 11 |
+| order_physical_card | 0.500 | 0.250 | 0.333 | 12 |
+| card_payment_not_recognised | 0.471 | 0.471 | 0.471 | 17 |
+| card_linking | 0.833 | 0.357 | 0.500 | 14 |
+| verify_my_identity | 0.500 | 0.500 | 0.500 | 10 |
+| transfer_timing | 0.417 | 0.769 | 0.541 | 13 |
+| declined_transfer | 0.500 | 0.615 | 0.552 | 13 |
+| pending_transfer | 0.571 | 0.533 | 0.552 | 15 |
+
+Most frequent confusions (true intent predicted as another, counts summed over seeds):
+
+| true | predicted | count |
+| --- | --- | --- |
+| get_physical_card | change_pin | 10 |
+| direct_debit_payment_not_recognised | card_payment_not_recognised | 8 |
+| card_linking | activate_my_card | 6 |
+| order_physical_card | get_physical_card | 6 |
+| pending_top_up | top_up_failed | 6 |
+| card_about_to_expire | country_support | 5 |
+| card_payment_not_recognised | extra_charge_on_statement | 5 |
+| card_payment_wrong_exchange_rate | exchange_rate | 5 |
+| unable_to_verify_identity | verify_my_identity | 5 |
+| verify_my_identity | why_verify_identity | 5 |
