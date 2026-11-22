@@ -1,0 +1,514 @@
+# Router Before the LLM
+
+A cost-aware intent router for a personal finance assistant. Individual university NLP project by Krishil Parmar.
+
+This README is the single source of truth for the project. It is written so that Claude Code (or any new collaborator) can pick the work up cold. Read all of it before writing code.
+
+Last updated: 22 Nov 2026. Status: planning complete and aligned to the marking rubric (section 0), no code written yet.
+
+---
+
+## 0. Marking rubric alignment (read this first)
+
+Source: "Individual Project Evaluation Criteria (updated)", supplied by the owner on 22 Nov 2026. 100 points, five categories of 20 points each.
+
+**What is submitted:** a 1 to 2 page summary report and the code. **What is shown:** a brief demo of the working application. No presentation is required.
+
+| Category (20 points each) | What the rubric measures | Where this project earns it | What goes beyond the minimum |
+| --- | --- | --- | --- |
+| 1. Problem Understanding and Requirement Coverage | Clear explanation of the problem. Understanding of constraints and user needs. Evidence that the project actually solves the intended task. | Sections 1, 2.3 and 2.5 (requirements table, each requirement tied to an experiment) | A real product use case with a hard budget and latency constraint. Hypotheses written down before the test runs (section 4). |
+| 2. Model and Dataset Selection | Appropriateness of chosen model. Appropriateness of dataset. Preprocessing pipeline quality. | Sections 6, 6.2, 7 and 7.2 | Five systems compared through one interface. Label-noise audit. Owner-written domain-shift set. |
+| 3. Implementation Quality | Code correctness. Clear modular structure. Notebook runs end to end without breaking. | Sections 9, 10 and 10.1 | Unit tests for metrics and policy. Pinned dependencies. Clean-run check on a fresh machine before submission. |
+| 4. Evaluation | Correct use of appropriate metrics. For classification: accuracy, F1, precision, recall. | Section 8 (E1) and section 8.1 | Five seeds and confidence intervals. Out-of-scope metrics. Risk-coverage and cost. Error analysis by reading examples. |
+| 5. Final Demo and Communication | Clear, engaging demonstration. Clarity on what it does, why it works and its limitations. | Sections 12.1 and 12.2 | The demo shows the matched example behind each decision, a running count of LLM calls saved, and one failure case on purpose. |
+
+Three consequences that override anything else in this file:
+
+1. **The marker reads two pages, runs one notebook and watches one short demo.** Work that is not visible in one of those three places earns nothing. Every experiment must end as one table row, one figure or one sentence in the summary.
+2. **40 of the 100 points (Implementation, Demo) depend on things working on the day.** A thin version that runs end to end is built first and kept working from then on. Depth is added on top of it, never instead of it.
+3. **The rubric names accuracy, F1, precision and recall.** Those four go first in the results table. Coverage at matched risk is the extension and is explained in the same vocabulary (section 8.1).
+
+**Core path. Finish this and keep it working before any stretch work:**
+
+- Banking77 through the preprocessing pipeline (section 6.2)
+- S0, S1 and S3 (with S2 as its retriever)
+- E1 with accuracy, precision, recall and F1
+- Router policy v1 and E6, using cached S4 responses
+- The submission notebook (section 10.1)
+- The demo (section 12.2)
+- The two-page summary (section 12.1)
+
+**Stretch. This is the "exceeds expectations" layer:** E2, E3, E4, E5, E7, policy v2 and CLINC150 as a second benchmark. Each gets at most one sentence or one table row in the summary. Details go in `report/appendix.md`.
+
+---
+
+## 1. North Star
+
+**Remove as many LLM calls from a finance assistant as possible without making it worse.**
+
+A small local model looks at each user query and makes one of three decisions:
+
+| Decision | Meaning | Cost |
+| --- | --- | --- |
+| HANDLE | Router is confident about the intent and dispatches it directly | Near zero |
+| REJECT | Query is clearly out of scope, return a canned response | Near zero |
+| ESCALATE | Router is unsure, pass the query to the LLM | Full LLM cost |
+
+**The one research question:** how many LLM calls can a small router safely remove, and at what error cost?
+
+**The headline metric: coverage at matched risk.** The largest share of queries the router can decide by itself while its error rate on those queries stays at or below the error rate of the LLM baseline on the same queries.
+
+**The headline chart:** a risk-coverage curve per system, with a second axis showing LLM calls, dollars and milliseconds saved at each threshold.
+
+Every piece of work must move the headline metric, explain it, make it more trustworthy, or be a rubric deliverable from section 0 (notebook, demo, summary). If a task does none of these, do not do it.
+
+---
+
+## 2. Why this project exists
+
+### 2.1 Coursework framing
+
+The unit offers 11 individual project topics. This project is anchored on:
+
+- **Topic 7, Intent Classification for Chatbots** ("build an intent detector for a domain, e.g. banking"). This is the official topic.
+- **Topic 2, Paraphrase Detection** ("binary classifier for whether two sentences mean the same thing"). This is used as the method, not as a second project.
+
+### 2.2 Why it is not the generic version
+
+The generic version is: fine-tune BERT on Banking77, report about 93% accuracy, done. That result is weak because:
+
+1. **The benchmark is noisy.** Ying and Thomas (2022) flagged over 1,400 of the 10,003 Banking77 training utterances (about 14%) as possibly mislabelled.
+2. **In-scope accuracy is the easy part.** Larson et al. (2019) showed classifiers do well in scope and struggle to reject out-of-scope queries.
+3. **A fixed softmax cannot take new intents without retraining.** Pairwise matching can. Zhang et al. (2020) got 10-shot performance competitive with 50-shot and full-data classifiers this way.
+4. **Nobody else will report cost.** In 2026 the obvious objection to any classifier is "why not just prompt an LLM?". This project answers it with numbers instead of ignoring it.
+
+### 2.3 The real use case
+
+The owner runs a personal finance app whose assistant ("Jeff") is LLM-backed, has a hard per-user inference budget, a sub-900ms time-to-first-token target and a small tool belt. Every query that reaches the LLM spends budget. A router that safely absorbs the easy queries has direct product value. The project is designed so the result can be used there, but it must stand alone as coursework using public data.
+
+### 2.4 What was considered and rejected
+
+- **Hate speech plus emotion ("PRISM").** Rejected: the most over-subscribed pairing on the topic list, six loosely connected components, and its central finding (fewer false positives from emotion multi-task learning) is already published.
+- **Adding emotion detection (topic 5) to this router.** Rejected: scope sprawl. Do not add it back.
+
+### 2.5 Requirements and how each is checked
+
+This table is the evidence for rubric category 1. Each user or product need becomes a requirement, and each requirement is checked by a named experiment. The summary report states, for each one, met or not met, with the number.
+
+| ID | User or product need | Requirement | Checked by |
+| --- | --- | --- | --- |
+| R1 | A user asks a banking question and is routed to the right action | Correct intent on in-scope queries | E1 |
+| R2 | A user is never given a confident answer to something the assistant cannot do | Out-of-scope and uncertain queries are not handled directly | E3, and the confident wrong HANDLE rate in E6 |
+| R3 | The per-user inference budget is hard | Fewer LLM calls at an error rate no higher than LLM-only | E6 |
+| R4 | Time to first token must stay under 900ms | The router adds little latency. Report p50 and p95 on CPU against a limit of [L] ms set by the owner. | E6 latency |
+| R5 | The assistant's tool belt changes over time | A new intent can be added from about 10 examples with no retraining | E4 |
+| R6 | Users phrase the same request in many ways | Decisions are stable under rewording | E5 |
+| R7 | Real users are Australian and do not write like Banking77 | The router still works on owner-written queries | E7 |
+
+R1 to R4 are on the core path. R5 to R7 are stretch.
+
+---
+
+## 3. Honest positioning
+
+None of the components here is new research. Pairwise few-shot intent detection, out-of-scope detection, confident learning and selective classification all exist. The contribution is the applied question, the evaluation design, the cost analysis and a small owner-written domain-shift test set. Do not write "novel architecture" anywhere in the report.
+
+---
+
+## 4. Research questions and hypotheses
+
+The owner must fill in the bracketed thresholds **before** any test-set run. Record them in `results/preregistration.md` with a date.
+
+| ID | Question | Hypothesis |
+| --- | --- | --- |
+| RQ1 | How much of the query stream can the router decide at matched risk? | Best router reaches coverage of at least [N]% at matched risk on Banking77 |
+| RQ2 | Does pairwise matching beat a softmax classifier at rejecting out-of-scope queries? | Pairwise matcher beats softmax encoder on OOS AUROC by at least [M] points |
+| RQ3 | Can new intents be added without retraining? | With 10 support examples per held-out intent, pairwise matcher is within [K] accuracy points of a fully retrained softmax model |
+| RQ4 | Does label noise change the conclusions? | System ranking is stable between original and cleaned labels (report if not) |
+| RQ5 | Is the router stable under rewording? | Prediction flip rate under validated paraphrases is below [F]% for the best router |
+| RQ6 | Does it survive domain shift? | Coverage at matched risk on the owner-written set drops by no more than [D] points versus Banking77 |
+
+A hypothesis that fails is a result, not a problem. Report it plainly.
+
+---
+
+## 5. Non-goals
+
+- No dialogue management, slot filling or response generation.
+- No emotion, sentiment, hate speech or sarcasm components.
+- No training a language model from scratch.
+- No real customer data, bank data or CDR data in this repository, ever.
+- No product-grade UI. The demo is worth 20 points, so it is not optional and not last: a thin version exists by the end of M2 and is polished in M6 (section 12.2). It stays a single screen in a single file.
+- No leaderboard chasing on Banking77. A plain, well-evaluated system beats a tuned one.
+
+---
+
+## 6. Data
+
+Verify every dataset ID and split size on the Hugging Face Hub before use. IDs have moved in the past. Record the exact ID, config and revision hash used.
+
+| Dataset | Role | Key facts |
+| --- | --- | --- |
+| **Banking77** (Casanueva et al., 2020) | Primary in-scope benchmark | 77 fine-grained banking intents, 13,083 queries, 10,003 train and 3,080 test. No official validation split: carve a stratified 10% validation set from train with a fixed seed. |
+| **CLINC150** (Larson et al., 2019) | Out-of-scope queries, second benchmark | 150 intents over 10 domains (one is banking). 15,000 train, 3,000 validation, 4,500 test in scope. Out of scope in the Hub config `plus` used here: 250 train, 100 validation, 1,000 test (the paper's "full" variant has 100 OOS train). |
+| **Banking77 cleaned** | Label-noise experiment | Built in this project with cleanlab (confident learning). Keep the list of flagged indices in `data/processed/banking77_flagged.csv`. Hand-check a random 100 flagged items and report how many are real errors. |
+| **Jeff set** (owner-written) | Domain-shift test | See 6.1. |
+
+Optional, only if time allows: Banking77-OOS (verify that it exists and how it was built before relying on it).
+
+**Pinned versions and licences** (checked 22 Nov 2026, recorded in `configs/data.yaml`):
+
+- `PolyAI/banking77`, revision `1846984189f2bc0ac51c6fc3a600fa9e1714e0c6`, CC-BY-4.0. Banking77 by Casanueva et al. (2020), PolyAI.
+- `clinc/clinc_oos`, config `plus`, revision `155b9c710419136e17307b80d0a13e68cd46b4ec`, CC-BY-3.0. CLINC150 by Larson et al. (2019), Clinc Inc.
+
+Both licences allow redistribution with attribution, so the processed splits in `data/processed/` are committed to this repo. The attribution above covers them.
+
+### 6.1 The Jeff set
+
+Written by the owner by hand. This is the project's own data contribution.
+
+- 8 to 15 intents that map to the assistant's real tools.
+- 20 queries per intent, phrased the way a real Australian user would type them (PayID, BSB, super and similar terms are expected).
+- 40 out-of-scope queries, a mix of clearly unrelated and finance-adjacent but unsupported.
+- Split per intent: 10 **support** examples (the few-shot examples the matcher is allowed to see) and 10 **test** examples. Out-of-scope queries are test only.
+- File: `data/jeff/jeff_queries.csv` with columns `text, intent, split, notes`. Use `oos` as the out-of-scope label.
+- **Never train or tune thresholds on the Jeff test split.** It is run once, at the end.
+
+Status: not yet written. This blocks milestone M5 only.
+
+### 6.2 Preprocessing pipeline
+
+The rubric marks "preprocessing pipeline quality" directly. All preprocessing lives in `src/router/preprocess.py` as plain functions, is called by every system, and is covered by unit tests. Steps, in order:
+
+1. **Load and pin.** Load each dataset by exact Hub ID and revision hash. Save the label-to-ID mapping to `data/processed/label_map.json` so every system uses the same one.
+2. **Normalise text.** Unicode NFKC normalisation, collapse repeated whitespace, strip leading and trailing whitespace. Keep case, punctuation and digits: the transformer tokenisers handle them, and amounts and account terms carry meaning. Lowercasing happens only inside the S0 TF-IDF vectoriser.
+3. **Drop empty rows and exact duplicates** within each split. Log how many were removed.
+4. **Leakage check.** After normalisation, find any text that appears in both train and test. Report the count, remove those rows from train (never from test), and save the list.
+5. **Split.** Stratified 10% validation split from train with a fixed seed, saved to disk once (rigour rule 6).
+6. **Length check.** Compute token-length statistics per tokeniser on train. Set `max_length` from them and report the share of queries that get truncated.
+7. **Class balance.** Report queries per intent for each split. If intents are uneven, that is the reason macro averages are the primary metric (section 8.1).
+8. **Out-of-scope mixing.** When CLINC150 out-of-scope queries are added to Banking77, they pass through the same steps 2 and 3. The mixing ratio is set in the config and stated in the report.
+9. **Fit on train only.** Anything learned from data (TF-IDF vocabulary, temperature, thresholds) is fitted on train or validation and never on test.
+
+Output: `results/data_report.md`, written by `scripts/make_splits.py`, with split sizes, rows removed at each step, leakage count, length statistics and class balance. Two or three of these numbers go in the summary report as the evidence for this rubric line.
+
+Keep it this simple. No stemming, stop-word removal or spelling correction unless a validation result shows it helps, in which case record it in the decision log.
+
+---
+
+## 7. Systems
+
+All systems output, per query: a predicted intent, an in-scope confidence score and an out-of-scope score. That shared interface is what makes the comparison fair.
+
+| ID | System | Notes |
+| --- | --- | --- |
+| S0 | TF-IDF plus logistic regression | Classical baseline. Confidence is max predicted probability. |
+| S1 | Fine-tuned encoder with softmax head | A small encoder (for example DistilRoBERTa or DeBERTa-v3-small). Confidence is max softmax probability, temperature-scaled on validation. |
+| S2 | Embedding nearest neighbour | Frozen sentence-embedding model, cosine similarity to labelled examples. No training. |
+| S3 | Pairwise paraphrase matcher | Cross-encoder scoring (query, example) pairs: "do these mean the same thing?". Initialise from an NLI or paraphrase checkpoint. Use S2 to retrieve the top-k candidates so inference stays fast. This is the topic 2 component and the main system. |
+| S4 | LLM zero-shot | Given the intent list and descriptions. Use the same model family the assistant runs in production (owner to confirm exact model). Temperature 0. Cache every response to disk. This is the accuracy ceiling and the cost reference, not a competitor to beat. |
+
+### 7.1 Router policy
+
+- **Policy v1 (required):** HANDLE if confidence is at or above `t_high`, otherwise ESCALATE.
+- **Policy v2 (stretch):** add REJECT when the out-of-scope score is at or above `t_oos`.
+
+Thresholds are chosen on validation data only. The dangerous error is a confident wrong HANDLE, above all on an out-of-scope query. Report that error separately.
+
+### 7.2 Why these models
+
+The rubric marks "appropriateness of chosen model". Each system is in the comparison for a stated reason, and the summary report gives that reason in one line each.
+
+| System | Why it is here |
+| --- | --- |
+| S0 | The cheapest possible baseline. Shows how much of the task is solved by keywords alone. If S0 is close to S1, say so. |
+| S1 | The standard approach for this topic and the reference point a marker expects to see. |
+| S2 | Needs no training and takes a new intent by adding examples. Also serves as the retriever for S3. |
+| S3 | The main system. Fits requirement R5 (new intents without retraining), and because it scores pairs, every decision can be shown next to the example it matched. That is what the demo uses to explain why it works. |
+| S4 | The thing being replaced. Sets the error rate to match and the cost to beat. |
+
+Small encoders are chosen because of the latency requirement (R4) and the compute limits in section 14. The choice between candidate checkpoints is made on validation accuracy and measured CPU latency, and is recorded in the decision log. The "best router" for the headline result is picked by a rule fixed before any test run: highest coverage at matched risk on validation.
+
+---
+
+## 8. Experiments
+
+| ID | Experiment | Data | Reports |
+| --- | --- | --- | --- |
+| E1 | In-scope accuracy, all systems | Banking77 test | Accuracy, precision, recall and F1 (macro and weighted), per-intent precision, recall and F1 for the 10 worst intents, the most confused intent pairs from the confusion matrix |
+| E2 | Label noise | Banking77 original vs cleaned | E1 metrics on both, change in system ranking, audit of 100 flagged items |
+| E3 | Out-of-scope rejection | Banking77 test plus CLINC150 out-of-scope test; CLINC150 as its own benchmark | AUROC, FPR at 95% TPR, OOS recall at the chosen threshold |
+| E4 | New intents without retraining | Hold out 10 Banking77 intents, add back with 5 and 10 support examples | Accuracy on held-out intents, accuracy on the original 67, versus a fully retrained S1 |
+| E5 | Paraphrase robustness | Reworded Banking77 test queries | Flip rate, accuracy drop. Hand-validate 100 paraphrases for meaning preservation and report the pass rate. |
+| E6 | **Headline: risk-coverage and cost** | Banking77 test with OOS mixed in | Risk-coverage curves, AURC, coverage at matched risk, LLM calls avoided, cost per 1,000 queries, latency p50 and p95 |
+| E7 | Domain shift | Jeff test split | E6 metrics, run once |
+
+### 8.1 Metric definitions
+
+The four metrics the rubric names for classification come first, in E1 and in the summary table:
+
+- **Accuracy:** share of in-scope test queries given the correct intent.
+- **Precision, recall and F1:** computed per intent, then averaged. Macro averages are primary because each of the 77 intents should count equally. Weighted averages are reported next to them. Use scikit-learn (`precision_recall_fscore_support`, `classification_report`), not hand-written code.
+- **S4 is scored the same way.** It is an LLM, but here it outputs an intent label, so classification metrics apply and generation metrics do not.
+
+The router metrics are then defined in the same vocabulary, so a marker can see they are the same ideas applied to the HANDLE decision:
+
+- **HANDLE precision:** of the queries the router handled, the share it handled correctly. This equals 1 minus selective risk.
+- **HANDLE recall:** of the queries whose top prediction was correct, the share the router did handle instead of escalating.
+- **Out-of-scope precision and recall:** for the out-of-scope decision at the chosen threshold, alongside AUROC.
+
+Selective classification terms:
+
+- **Coverage:** share of queries the router decides itself (HANDLE or REJECT).
+- **Selective risk:** error rate on the covered queries only.
+- **Coverage at matched risk:** highest coverage where selective risk is at or below S4's error rate on the same test set. If S4 cannot be run (no budget or no approval), report coverage at fixed risk levels of 1%, 2% and 5% instead, and say so.
+- **AURC:** area under the risk-coverage curve. Lower is better.
+- **Flip rate:** share of queries whose predicted intent changes after a validated paraphrase.
+- **Cost model:** `cost_per_query = router_cost + (1 - coverage) * llm_cost`. Compute `llm_cost` from measured input and output tokens times a per-token price supplied by the owner. Do not hardcode a price from memory. State the price and its date in the report.
+- **Latency:** wall-clock per query on one named machine, batch size 1, warm model.
+
+---
+
+## 9. Rigour rules (non-negotiable)
+
+1. **Test sets are touched once per system**, after all choices are frozen. All tuning happens on validation.
+2. **Five random seeds** for every trained system. Report mean and standard deviation.
+3. **Paired bootstrap confidence intervals** (1,000 resamples) for every headline comparison.
+4. **No number goes in the report unless a script in this repo produced it.** Never estimate, round up or fill in a result that was not run.
+5. **Every result file records** the git commit, config, seed, dataset revision and timestamp.
+6. **Same splits for every system.** Splits are created once by `scripts/make_splits.py` and saved.
+7. **LLM baseline is reproducible:** prompt stored in the repo, temperature 0, responses cached, model ID and date recorded.
+8. **Error analysis is done by reading examples**, not only by metrics. At least 100 router errors are read and categorised by hand.
+9. **Negative results are reported.**
+10. **The submission notebook passes a clean-run check** before submission (section 10.1). After M1 it must run end to end at the close of every working session.
+
+---
+
+## 10. Repository layout
+
+```
+.
+├── README.md                  this file
+├── pyproject.toml             dependencies, pinned
+├── configs/                   one YAML per system and experiment
+├── data/
+│   ├── raw/                   downloaded datasets (gitignored)
+│   ├── processed/             splits, cleaned labels, paraphrases
+│   └── jeff/                  owner-written queries
+├── src/router/
+│   ├── data.py                loading, splits
+│   ├── preprocess.py          text normalisation, dedup, leakage check (section 6.2)
+│   ├── systems/               s0_tfidf.py ... s4_llm.py, shared interface
+│   ├── policy.py              HANDLE / REJECT / ESCALATE logic
+│   ├── calibration.py         temperature scaling
+│   ├── metrics.py             risk-coverage, AURC, OOS metrics, bootstrap
+│   └── cost.py                cost and latency model
+├── scripts/                   make_splits, clean_labels, train, evaluate, make_figures
+├── results/                   metrics as JSON or CSV, figures, preregistration.md, data_report.md, clean_run.md
+├── notebooks/
+│   ├── 00_submission.ipynb    the notebook the marker runs (section 10.1)
+│   └── ...                    exploration and error analysis
+├── demo/
+│   ├── app.py                 single-file demo (section 12.2)
+│   └── DEMO_SCRIPT.md         the queries and talking points for the demo
+├── report/
+│   ├── summary.pdf            the 1 to 2 page summary that is submitted (section 12.1)
+│   └── appendix.md            full method and results, linked from the summary
+└── tests/                     unit tests for preprocessing, metrics and policy
+```
+
+### 10.1 The submission notebook
+
+`notebooks/00_submission.ipynb` is what the marker runs. The rubric line is "notebook runs end-to-end without breaking", so it is a deliverable with its own rules:
+
+- **It is thin.** It imports from `src/router/` and calls functions. No logic lives only in the notebook, so the modular structure is visible and the notebook cannot drift from the scripts.
+- **It follows the rubric order:** problem, data and preprocessing, models, evaluation (accuracy, precision, recall, F1 first), router and cost, limitations. Each part opens with two or three sentences of markdown.
+- **`FAST = True` by default.** In fast mode it trains S0 from scratch, loads saved checkpoints for S1 and S3 (or trains for a small fixed number of steps if none is found), and reads S4 responses from the disk cache. It needs no API key, no GPU and no paid call. Set a run-time target, measure it on the free Colab tier, and record the measured time.
+- **`FAST = False`** reproduces the full five-seed results.
+- **Fast-mode numbers are labelled as fast-mode numbers.** The reported results come from the full-run result files and are loaded and displayed next to them (rigour rule 4).
+- The first cell installs the pinned dependencies and prints versions. The second sets the seeds.
+- **Clean-run check:** fresh clone, fresh environment, Restart and Run All, on two machines, one of them Colab. Record the date, commit and run time in `results/clean_run.md`.
+
+Open point for the owner: where the S1 and S3 checkpoints and the S4 cache are hosted so the notebook can fetch them (in the repo if small enough, otherwise a Hub model repo), and whether the dataset licences allow committing cached outputs.
+
+Suggested stack: Python 3.12 (managed with `uv`; see decision log), PyTorch, Hugging Face `transformers` and `datasets`, `sentence-transformers`, scikit-learn, cleanlab, pandas, matplotlib. Check that each model checkpoint name exists on the Hub before using it.
+
+---
+
+## 11. Milestones
+
+No deadline has been supplied yet, so these are ordered phases. Convert to dates once the owner provides one.
+
+| Phase | Work | Done when |
+| --- | --- | --- |
+| M0 | Repo scaffold, environment, data download, preprocessing (section 6.2), fixed splits, empty submission notebook that imports the package | `make_splits.py` runs clean, split sizes match section 6, `results/data_report.md` is written, the notebook runs top to bottom |
+| M1 | S0 and S1 on Banking77, validation only. E1 metric code (accuracy, precision, recall, F1). Skeleton of the two-page summary with an empty results table. | Validation accuracy in a sane range, seeds reproducible, the notebook runs end to end with S0 and S1. **This is the minimum submittable version. Keep it working from here on.** |
+| M2 | S2 and S3, shared scoring interface. Thin demo. | All four local systems emit the same output schema. The demo answers a typed query offline. |
+| M3 | Label cleaning (E2) and out-of-scope evaluation (E3) | Flagged list saved, 100 items audited, OOS metrics on validation |
+| M4 | Metrics module with tests, calibration, router policy, S4 baseline | Risk-coverage code unit-tested on toy data, LLM responses cached |
+| M5 | Freeze everything, run E1 to E7 on test | `results/` complete, preregistration file predates the test runs |
+| M6 | Error analysis, figures, two-page summary, appendix, demo polish and script, clean-run check | Summary fits two pages and is reviewed by the owner, clean run recorded, demo rehearsed against a timer |
+
+Cut order if time runs short: policy v2 (REJECT), then E5, then CLINC150 as a second full benchmark, then E4, then E2. Never cut the submission notebook, the demo, the two-page summary, E1 with precision, recall and F1, E6, the seeds or the confidence intervals. Those are where the 100 points are.
+
+---
+
+## 12. Deliverables
+
+1. Code in this repo, runnable end to end from a clean clone, with the submission notebook (section 10.1).
+2. A 1 to 2 page summary report (section 12.1). Two pages is a hard limit set by the rubric.
+3. One headline figure (risk-coverage with cost axis) and one summary table, both inside the two pages.
+4. A working demo application (section 12.2).
+5. `results/preregistration.md` and the Jeff set.
+6. `report/appendix.md`: related work, full method, all experiment tables, error analysis and deployment notes. Linked from the summary. Do not rely on it being read.
+
+### 12.1 The two-page summary
+
+Laid out so each rubric category can be found without searching. Build the skeleton in M1 with an empty table to find out what fits.
+
+| Part | Space | Content | Rubric category |
+| --- | --- | --- | --- |
+| Problem and constraints | About a quarter page | The task, the user, the budget and latency constraints, the one research question | 1 |
+| Data and preprocessing | About a quarter page | Datasets and why, split sizes, two or three numbers from `results/data_report.md` | 2 |
+| Systems | About a quarter page | One line per system saying why it is there (section 7.2) | 2 |
+| Results | About three quarters of a page | One table: accuracy, macro precision, recall and F1 per system, mean and standard deviation. The headline figure. Coverage at matched risk and cost saved in one sentence. Requirements R1 to R7 marked met or not met. | 4, 1 |
+| What it does, why it works, limitations | About a quarter page | Same three headings the demo uses. Limitations are specific: out-of-scope data from a different source, small owner-written set, label noise, single domain. | 5 |
+| Footer | A few lines | Repository link, how to run the notebook, AI use disclosure as the unit requires, key references | 3 |
+
+Stretch results get one sentence or one table row each. Anything that does not fit goes to the appendix.
+
+### 12.2 The demo
+
+Worth 20 points. The rubric asks for a clear, engaging demonstration that explains what it does, why it works and its limitations. The demo is designed around those three things.
+
+- **Form:** one screen in one file, `demo/app.py`, calling the same `src/router/` code as the notebook. Gradio is the suggested tool (new dependency, owner to approve). The fallback is an ipywidgets cell at the end of the submission notebook.
+- **What it does:** type a query, see the decision (HANDLE, ESCALATE or REJECT), the predicted intent, and the confidence next to the threshold.
+- **Why it works:** show the closest matched support example and its pair score, so the viewer sees what the router compared the query to. A threshold slider shows the trade between coverage and risk live.
+- **What it saves:** a running count of LLM calls avoided and estimated cost saved in the session.
+- **Limitations:** shown, not just stated. The script includes one query the router gets confidently wrong, taken from the error analysis.
+- **It runs offline on a laptop CPU.** An escalated query is labelled "would be sent to the LLM". No live API call on the day.
+- **Scripted run:** `demo/DEMO_SCRIPT.md`, about three minutes, six queries in this order: a clear in-scope query, the same request reworded, a query that sits between two intents (escalates), a clearly unrelated query, a finance-adjacent but unsupported query, and the known failure. Then the limitations in three sentences.
+- **Backup:** record a screen capture of the scripted run in case the live demo fails.
+
+---
+
+## 13. Working agreement for Claude Code
+
+**About the owner**
+
+- Krishil is a Bachelor of Data Science student. This is an individually assessed project, so he must be able to explain and defend every design choice and every line of code.
+- He does not retain Python syntax well. Keep code simple, typed and commented. Prefer plain functions over clever abstractions. When introducing a non-obvious construct, add a one-line comment on what it does.
+- He wants direct, critical feedback. Lead with the problem, then the fix. Do not soften bad news and do not agree with a weak idea to be polite.
+
+**How to work**
+
+- Start each session by reading this README and `results/` to see what exists.
+- Work one milestone at a time. State what you are about to do, do it, then report what ran and what the numbers were.
+- Ask before: any run expected to take more than about 30 minutes, any paid API call, any new dependency, any change to the research questions.
+- Never fabricate, estimate or "expect" a result. If something was not run, say so.
+- If a result looks too good, assume a leak or a bug first and check splits before celebrating.
+- Flag scope creep. If the owner asks for a new component, ask which research question it serves.
+- Before calling a milestone done, check it against section 0: which rubric category did this work earn points in, and where will the marker see it?
+- Do not start stretch work while any core-path item in section 0 is missing or broken.
+- Update this README's status line and the decision log when something material changes.
+
+**Writing style for the report and all prose**
+
+- Plain, direct English. No em dashes and no other stock AI phrasing.
+- Claims match evidence. No "state of the art", no "novel framework".
+- Cite every dataset and method.
+
+**Academic integrity**
+
+- Confirmed 22 Nov 2026: the unit allows AI-assisted code with disclosure. Every session that Claude Code writes code is logged in `report/ai_use_log.md`, which is the source for the disclosure. Whatever the policy allows, the owner writes or rewrites the final report in his own words and discloses AI use as the unit requires.
+
+---
+
+## 14. Risks
+
+| Risk | Mitigation |
+| --- | --- |
+| The plan is far larger than a two-page summary can show, so depth goes unmarked | Core path first (section 0). Every experiment ends as one row, one figure or one sentence. Page budget in section 12.1. |
+| The notebook breaks on the marker's machine (no GPU, no API key, different versions) | Fast mode with cached LLM responses, pinned dependencies, clean-run check on two machines (section 10.1). |
+| The marker looks for accuracy, precision, recall and F1 and finds only risk-coverage curves | E1 table comes first in the notebook and the summary. Router metrics are defined in the same terms (section 8.1). |
+| The live demo fails on the day | Runs offline with no API call, scripted, rehearsed, with a recorded backup (section 12.2). |
+| Lecturer does not accept topic 7 with a custom domain and a topic 2 method | Get written confirmation first. Fallback is Plan B in section 16. |
+| Banking77 and the assistant's real intents barely overlap | Expected. That is what E7 measures. Do not force a mapping. |
+| Pairwise matcher is too slow | Retrieve top-k with S2, score only those pairs. Report latency as a result. |
+| S4 is near perfect and makes the router look pointless | The argument is cost and latency at matched risk, not accuracy. If coverage at matched risk is low, report it. |
+| Out-of-scope data comes from a different dataset than in-scope data, so rejection looks easier than it is | State this limitation. The Jeff set's finance-adjacent OOS queries are the harder test. |
+| Paraphrases change meaning | Hand-validate 100 and report the pass rate. Drop failed ones. |
+| Compute limits | All local models are small. Everything should run on a single consumer GPU or a free Colab tier. Confirm with the owner. |
+
+---
+
+## 15. Open items (owner input needed)
+
+- [ ] Submission deadline and any interim checkpoints
+- [x] Marking rubric and required report format or length (received 22 Nov 2026: 100 points over five categories, 1 to 2 page summary plus code, brief demo, see section 0)
+- [ ] Demo format: live or recorded, how long, in person or online, and when
+- [ ] Whether an appendix or extra pages beyond the two-page summary are allowed or read
+- [x] Whether the code must be a single notebook or a repository with a notebook is accepted (22 Nov 2026: a repository with a thin notebook is accepted)
+- [ ] Where model checkpoints and the S4 response cache are hosted for the submission notebook (dataset licences checked 22 Nov 2026: both CC-BY, so committing processed data and cached outputs is allowed with attribution; hosting for checkpoints still open)
+- [ ] A GitHub repository for the code (the Colab clean-run check clones it, and the summary footer links it)
+- [ ] Approval for Gradio as a demo dependency
+- [ ] Latency limit L in requirement R4 (section 2.5)
+- [ ] Written lecturer confirmation that this topic framing is accepted
+- [x] The unit's policy on AI assistance (22 Nov 2026: allowed with disclosure, see section 13)
+- [ ] Available compute (local GPU, Colab, other)
+- [ ] The assistant's intent list (8 to 15 intents) and the Jeff set
+- [ ] Exact LLM model for S4, its per-token price and a spend cap for the baseline runs
+- [ ] Threshold values N, M, K, F, D in section 4
+
+---
+
+## 16. Plan B
+
+If the topic framing is rejected, switch to **topic 6 plus topic 2: "Can ROUGE tell a paraphrase from a lie?"** Take good summaries, create meaning-preserving paraphrases and factual corruptions (swapped number, swapped entity, added negation), and test whether ROUGE, BLEU and BERTScore separate the two. Valuable to anyone shipping LLM summaries. Less deployable, which is why it is second.
+
+---
+
+## 17. Key references
+
+- Casanueva et al. (2020). Efficient Intent Detection with Dual Sentence Encoders. (Banking77)
+- Larson et al. (2019). An Evaluation Dataset for Intent Classification and Out-of-Scope Prediction. EMNLP. (CLINC150) https://aclanthology.org/D19-1131
+- Ying and Thomas (2022). Label Errors in BANKING77. Insights workshop, ACL. https://aclanthology.org/2022.insights-1.19
+- Zhang et al. (2020). Discriminative Nearest Neighbor Few-Shot Intent Detection by Transferring Natural Language Inference. EMNLP. https://arxiv.org/abs/2010.13009
+- Northcutt et al. (2021). Confident Learning: Estimating Uncertainty in Dataset Labels. (cleanlab)
+- Guo et al. (2017). On Calibration of Modern Neural Networks. (temperature scaling)
+- Geifman and El-Yaniv (2017). Selective Classification for Deep Neural Networks. (risk-coverage)
+- Hendrycks and Gimpel (2017). A Baseline for Detecting Misclassified and Out-of-Distribution Examples in Neural Networks. (max softmax baseline)
+
+Read the first four before M1. Confirm every figure quoted in this README against the source paper before it goes in the report.
+
+---
+
+## 18. Decision log
+
+| Date | Decision | Reason |
+| --- | --- | --- |
+| 13 Nov 2026 | Dropped the hate speech plus emotion project | Over-subscribed, sprawling, central finding already published |
+| 13 Nov 2026 | Chose topic 7 with topic 2 as the method | Real use case, measurable cost result, clean evaluation |
+| 13 Nov 2026 | Excluded emotion detection from scope | Would repeat the sprawl problem |
+| 13 Nov 2026 | Headline metric set to coverage at matched risk | Ties the classifier result directly to LLM cost |
+| 22 Nov 2026 | Added section 0 mapping the project to the marking rubric, with a core path and a stretch layer | Rubric received. Marks sit in a notebook, a demo and two pages, not in a long report |
+| 22 Nov 2026 | Report cut from a full report to a 1 to 2 page summary plus an appendix | Rubric submission format |
+| 22 Nov 2026 | Demo moved from "last task, first to cut" to a core deliverable with a thin version at M2 | Demo and communication is 20 of 100 points |
+| 22 Nov 2026 | Added a submission notebook with a fast mode and a clean-run check | Rubric line "notebook runs end-to-end without breaking" |
+| 22 Nov 2026 | Added precision and recall to E1 and defined the router metrics in those terms | Rubric names accuracy, F1, precision and recall for classification |
+| 22 Nov 2026 | Wrote down the preprocessing pipeline, the model rationale and the requirements table | Rubric lines on preprocessing quality, model appropriateness and requirement coverage |
+| 22 Nov 2026 | Python 3.12 managed by `uv`, exact `==` pins in `pyproject.toml`, `uv.lock` committed, `requirements.txt` exported for Colab | 3.12 was already installed and every package has wheels for it; avoids a second interpreter on a nearly full disk |
+| 22 Nov 2026 | Both datasets pinned by Hub revision hash in `configs/data.yaml` | `PolyAI/banking77` was modified on 28 Oct 2026, so an unpinned load could change under us |
+| 22 Nov 2026 | CLINC150 loaded from Hub config `plus` (250 OOS train, not 100) | The paper's "full" variant is not on the Hub under that name. Only the OOS rows are used, so the difference is just pool size |
+| 22 Nov 2026 | Validation OOS pool = CLINC150 OOS train + validation; test OOS pool = CLINC150 OOS test | Gives a similar OOS share in validation and test (about 25%), so thresholds tuned on validation transfer. Legitimate only because no system trains on OOS data. If that changes, this pool must be split |
+| 22 Nov 2026 | Duplicate rule: same text with the same label keeps one copy; same text with different labels drops every copy; OOS rows that match a Banking77 text are dropped from the OOS pool | No system can get a conflicting pair right, and a text cannot be both in scope and out of scope |
+| 22 Nov 2026 | Processed splits are committed to git; `make_splits.py` refuses to overwrite them without `--force` | Both licences allow it, the notebook then runs without a download step, and the splits are created once (rigour rule 6) |
+
+---
+
+## 19. Start here
+
+1. Read this file end to end, section 0 first.
+2. Ask the owner for anything unchecked in section 15 that blocks the current milestone.
+3. Begin M0. Do not skip ahead to modelling before the splits are fixed and saved.
+4. Get to the minimum submittable version (end of M1) before anything else. From then on, the submission notebook runs end to end at the close of every session.

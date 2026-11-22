@@ -1,0 +1,13 @@
+# Python and environment
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Downloaded datasets and model files (re-created by scripts, too big for git)
+data/raw/
+checkpoints/
+
+# macOS
+.DS_Store
