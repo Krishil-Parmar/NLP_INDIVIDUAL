@@ -4,8 +4,8 @@ Written by `scripts/evaluate.py`. Do not edit by hand.
 
 ## Provenance
 
-- Generated (UTC): 2026-11-22T02:22:26+00:00
-- Git commit: `fcc372772ea990a2b76b60fe8a274494c0215739`
+- Generated (UTC): 2026-11-22T06:32:06+00:00
+- Git commit: `92b733e9ed70b278b2d818959d04ce6866cecd05`
 - Seed: None
 - Python 3.12.4 on macOS-27.0-arm64-arm-64bit
 - Dataset `banking77` revision: `1846984189f2bc0ac51c6fc3a600fa9e1714e0c6`
@@ -22,7 +22,7 @@ Macro averages are primary (each of the 77 intents counts equally). Std is the s
 | s1_distilroberta-base | 5 | 91.10 ± 0.47 | 92.07 ± 0.48 | 91.47 ± 0.41 | 91.46 ± 0.44 | 91.62 ± 0.49 | 91.10 ± 0.47 | 91.06 ± 0.49 |
 | s2_all-MiniLM-L6-v2 | 1 | 91.80 ± 0.00 | 92.66 ± 0.00 | 92.24 ± 0.00 | 92.11 ± 0.00 | 92.44 ± 0.00 | 91.80 ± 0.00 | 91.78 ± 0.00 |
 | s2_all-mpnet-base-v2 | 1 | 91.30 ± 0.00 | 92.22 ± 0.00 | 91.66 ± 0.00 | 91.49 ± 0.00 | 92.01 ± 0.00 | 91.30 ± 0.00 | 91.21 ± 0.00 |
-| s3_quora-distilroberta-base | 5 | 11.76 ± 3.69 | 18.15 ± 4.32 | 12.59 ± 4.13 | 13.18 ± 4.13 | 17.43 ± 3.84 | 11.76 ± 3.69 | 12.47 ± 3.74 |
+| s3_quora-distilroberta-base | 5 | 90.22 ± 0.26 | 91.17 ± 0.37 | 90.69 ± 0.22 | 90.52 ± 0.31 | 91.03 ± 0.21 | 90.22 ± 0.26 | 90.23 ± 0.26 |
 
 ## s0_tfidf
 
@@ -158,28 +158,28 @@ Most frequent confusions (true intent predicted as another, counts summed over s
 
 | intent | precision | recall | f1 | support |
 | --- | --- | --- | --- | --- |
-| balance_not_updated_after_bank_transfer | 0.000 | 0.000 | 0.000 | 17 |
-| balance_not_updated_after_cheque_or_cash_deposit | 0.000 | 0.000 | 0.000 | 18 |
-| beneficiary_not_allowed | 0.000 | 0.000 | 0.000 | 16 |
-| card_acceptance | 0.000 | 0.000 | 0.000 | 6 |
-| card_arrival | 0.000 | 0.000 | 0.000 | 15 |
-| card_not_working | 0.000 | 0.000 | 0.000 | 11 |
-| card_payment_wrong_exchange_rate | 0.000 | 0.000 | 0.000 | 17 |
-| card_swallowed | 0.000 | 0.000 | 0.000 | 6 |
-| country_support | 0.000 | 0.000 | 0.000 | 13 |
-| declined_transfer | 0.000 | 0.000 | 0.000 | 13 |
+| transfer_not_received_by_recipient | 0.818 | 0.529 | 0.643 | 17 |
+| balance_not_updated_after_bank_transfer | 0.661 | 0.824 | 0.733 | 17 |
+| topping_up_by_card | 0.660 | 0.880 | 0.753 | 10 |
+| compromised_card | 0.843 | 0.750 | 0.791 | 8 |
+| declined_transfer | 0.804 | 0.815 | 0.809 | 13 |
+| order_physical_card | 0.827 | 0.800 | 0.813 | 12 |
+| pending_transfer | 0.738 | 0.933 | 0.824 | 15 |
+| pending_top_up | 1.000 | 0.707 | 0.828 | 15 |
+| wrong_exchange_rate_for_cash_withdrawal | 0.787 | 0.875 | 0.829 | 16 |
+| pending_card_payment | 0.776 | 0.900 | 0.832 | 16 |
 
 Most frequent confusions (true intent predicted as another, counts summed over seeds):
 
 | true | predicted | count |
 | --- | --- | --- |
-| card_payment_wrong_exchange_rate | receiving_money | 43 |
-| Refund_not_showing_up | wrong_amount_of_cash_received | 39 |
-| wrong_exchange_rate_for_cash_withdrawal | receiving_money | 37 |
-| change_pin | card_swallowed | 31 |
-| request_refund | wrong_amount_of_cash_received | 28 |
-| pin_blocked | card_swallowed | 26 |
-| top_up_reverted | verify_source_of_funds | 26 |
-| transfer_fee_charged | card_payment_wrong_exchange_rate | 26 |
-| card_payment_fee_charged | card_payment_wrong_exchange_rate | 25 |
-| exchange_charge | top_up_by_card_charge | 23 |
+| transfer_not_received_by_recipient | balance_not_updated_after_bank_transfer | 23 |
+| balance_not_updated_after_bank_transfer | pending_transfer | 14 |
+| card_payment_wrong_exchange_rate | wrong_exchange_rate_for_cash_withdrawal | 14 |
+| compromised_card | lost_or_stolen_card | 10 |
+| declined_transfer | failed_transfer | 10 |
+| pin_blocked | change_pin | 10 |
+| wrong_exchange_rate_for_cash_withdrawal | card_payment_wrong_exchange_rate | 10 |
+| card_arrival | card_delivery_estimate | 9 |
+| pending_top_up | topping_up_by_card | 9 |
+| verify_my_identity | why_verify_identity | 8 |

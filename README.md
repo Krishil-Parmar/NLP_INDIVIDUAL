@@ -4,7 +4,7 @@ A cost-aware intent router for a personal finance assistant. Individual universi
 
 This README is the single source of truth for the project. It is written so that Claude Code (or any new collaborator) can pick the work up cold. Read all of it before writing code.
 
-Last updated: 22 Nov 2026. Status: **M1 complete (minimum submittable version).** S0 and S1 trained on Banking77 with five seeds, E1 on validation in `results/e1_val.md`, the notebook runs end to end with S0 and S1, and the two-page summary skeleton builds to 2 pages. Next: M2 (S2, S3, shared scoring interface, thin demo).
+Last updated: 22 Nov 2026. Status: **M2 complete.** S0 to S3 run on Banking77 validation (five seeds for S0, S1 and S3; S2 has no training, so one run) and all four return the same output schema. E1 on validation is in `results/e1_val.md`. The notebook runs end to end with all four systems, and the two-page summary skeleton builds to 2 pages. The demo router server (`demo/app.py`) answers typed queries offline; its Jeff screen front end builds and passes `flutter analyze` but has not yet been clicked through in a browser. Next: M3 (label cleaning E2, out-of-scope evaluation E3).
 
 ---
 
@@ -517,6 +517,10 @@ Read the first four before M1. Confirm every figure quoted in this README agains
 | 22 Nov 2026 | Demo front end is the real Jeff screen (Velm Flutter harness, new file only), router server in `demo/app.py` with no new dependency. Gradio not used | Owner choice. A real product screen is more convincing for the 20-point demo. The harness calls the local server directly, which the app's own rules forbid for product code, so it stays a dev-only entry point |
 | 22 Nov 2026 | Notebook FAST mode measured: 16.6 s with saved checkpoints (M3 Pro); 10.4 min on CPU only without checkpoints, where S1 trains 300 steps (75.8% validation accuracy, labelled as fast mode) | Works without a GPU, but slowly. The fix is hosting the seed-0 S1 checkpoint for the notebook to download (open item in section 15), not fewer steps |
 | 22 Nov 2026 | Two-page summary written in Markdown and built to PDF with pandoc + XeLaTeX by `scripts/build_summary.py`, which fails above 2 pages and fills the results table from `results/` | Owner choice. No number is typed by hand (rigour rule 4). Word budgets (730 words in six parts) fit with about a third of page 2 spare |
+| 22 Nov 2026 | S3 over five seeds on validation: accuracy 90.22 ± 0.26, macro-F1 90.52 ± 0.31. That is below S2 (92.11) and S1 (91.46 ± 0.44). Reported as is; S3 settings stay fixed | No hypothesis says S3 wins on in-scope accuracy (section 4). S3's case is out-of-scope rejection and new intents (RQ2, RQ3), measured in M3 and later. Tuning it until it wins would be leaderboard chasing (section 5) |
+| 22 Nov 2026 | S3 seeds 3 and 4 trained locally on MPS, like seeds 0 to 2 (3.9 and 4.0 min). AWS Lambda was checked and not used | Lambda stops every call at 15 min and has no GPU. S3 took a measured 17.8 min per seed on CPU (M3 Pro probe), so it would need save-and-resume code across calls, and the account's EC2 GPU quota is 0. Training locally keeps all five seeds on one device. Owner chose local |
+| 22 Nov 2026 | Notebook FAST mode with all four systems measured: 55 s with saved checkpoints (M3 Pro, MPS); 5.2 min on CPU only without checkpoints, where S1 trains 300 steps (75.8% validation accuracy) and S3 is the paraphrase model without fine-tuning (80.5%), both labelled as fast mode | Runs without a GPU or checkpoints. Hosting the seed-0 S1 and S3 checkpoints (open item, section 15) would let the marker run the reported models |
+| 22 Nov 2026 | Demo latency, router server alone on MPS with S3: 27 to 184 ms per query over 8 typed queries (median about 42 ms) | Fast enough for a live demo. The first calls are the slowest |
 
 ---
 
