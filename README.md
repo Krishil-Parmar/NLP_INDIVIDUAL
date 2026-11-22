@@ -4,7 +4,7 @@ A cost-aware intent router for a personal finance assistant. Individual universi
 
 This README is the single source of truth for the project. It is written so that Claude Code (or any new collaborator) can pick the work up cold. Read all of it before writing code.
 
-Last updated: 22 Nov 2026. Status: planning complete and aligned to the marking rubric (section 0), no code written yet.
+Last updated: 22 Nov 2026. Status: **M0 complete.** Environment pinned, preprocessing pipeline tested, splits fixed and saved, `results/data_report.md` written, submission notebook skeleton runs top to bottom. Next: M1 (S0, S1, E1 metrics, summary skeleton).
 
 ---
 

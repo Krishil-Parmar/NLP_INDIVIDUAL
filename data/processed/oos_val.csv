@@ -1,0 +1,351 @@
+text,label,label_id,orig_index,source
+how much is an overdraft fee for bank,oos,-1,15000,clinc_oos_train
+why are exponents preformed before multiplication in the order of operations,oos,-1,15001,clinc_oos_train
+what size wipers does this car take,oos,-1,15002,clinc_oos_train
+where is the dipstick,oos,-1,15003,clinc_oos_train
+how much is 1 share of aapl,oos,-1,15004,clinc_oos_train
+how is glue made,oos,-1,15005,clinc_oos_train
+any headlines from my areai,oos,-1,15006,clinc_oos_train
+what is the largest state in the us,oos,-1,15007,clinc_oos_train
+what is the current market trend,oos,-1,15008,clinc_oos_train
+what is the most popular airline,oos,-1,15009,clinc_oos_train
+what is the formula for the circumference of a circle,oos,-1,15010,clinc_oos_train
+what are some ways to reduce spending,oos,-1,15011,clinc_oos_train
+what time does the louvre open,oos,-1,15012,clinc_oos_train
+are there any local stations covering the moral march in raleigh in februaryu,oos,-1,15013,clinc_oos_train
+how many planets have we discovered,oos,-1,15014,clinc_oos_train
+how do i change my billing address,oos,-1,15015,clinc_oos_train
+how do i open an online line of credit,oos,-1,15016,clinc_oos_train
+how do i remove a coffee blemish,oos,-1,15017,clinc_oos_train
+how expensive is an apple share,oos,-1,15018,clinc_oos_train
+where can i find the cruise control on my kia sportage 2010,oos,-1,15019,clinc_oos_train
+how many sides are in a hexagon,oos,-1,15020,clinc_oos_train
+how fast does an airplane travel,oos,-1,15021,clinc_oos_train
+is it worth investing in target,oos,-1,15022,clinc_oos_train
+i need to speak to customer service regarding my flight,oos,-1,15023,clinc_oos_train
+how long do wire transfers take,oos,-1,15024,clinc_oos_train
+what are some deals on amazon,oos,-1,15025,clinc_oos_train
+what city is the super bowl,oos,-1,15026,clinc_oos_train
+what trees change color in autumn,oos,-1,15027,clinc_oos_train
+do people prefer summer over fall,oos,-1,15028,clinc_oos_train
+how long is winter,oos,-1,15029,clinc_oos_train
+what were some of ben franklin's notable accomplishments,oos,-1,15030,clinc_oos_train
+where was john denver born,oos,-1,15031,clinc_oos_train
+where did abraham lincoln live,oos,-1,15032,clinc_oos_train
+when was kobe bryant born,oos,-1,15033,clinc_oos_train
+who's toledo's starting point guard for the next game,oos,-1,15034,clinc_oos_train
+how many players are on the chicago bulls,oos,-1,15035,clinc_oos_train
+who is the coach of the chicago bulls,oos,-1,15036,clinc_oos_train
+when do the utah jazz play next,oos,-1,15037,clinc_oos_train
+what other nations were involved in the chinese trade war,oos,-1,15038,clinc_oos_train
+what years has korea been at war,oos,-1,15039,clinc_oos_train
+when was the theory of evolution first considered,oos,-1,15040,clinc_oos_train
+who formulated the theory of relativity,oos,-1,15041,clinc_oos_train
+what stage of evolution am i,oos,-1,15042,clinc_oos_train
+what other personality type is most compatible with infjs,oos,-1,15043,clinc_oos_train
+what does my personality mean,oos,-1,15044,clinc_oos_train
+what's the most dominant scale in bluegrass,oos,-1,15045,clinc_oos_train
+what year was saxaphone first played,oos,-1,15046,clinc_oos_train
+which piano is best for classical,oos,-1,15047,clinc_oos_train
+is k-12 education required outside of the united states,oos,-1,15048,clinc_oos_train
+what are the benefits of completing college,oos,-1,15049,clinc_oos_train
+are you able to answer algebra equations,oos,-1,15050,clinc_oos_train
+can you help me study for a history exam,oos,-1,15051,clinc_oos_train
+how many points per game is lebron james averaging this season,oos,-1,15052,clinc_oos_train
+what team does eli mannign play for,oos,-1,15053,clinc_oos_train
+get me dwight howard shooting average,oos,-1,15054,clinc_oos_train
+can you list me tiger wood's stats,oos,-1,15055,clinc_oos_train
+what's the runtime of all the lord of the rings movies combined,oos,-1,15056,clinc_oos_train
+which character is the most famous from titanic,oos,-1,15057,clinc_oos_train
+how many oscars did star wars films win,oos,-1,15058,clinc_oos_train
+what year was shawshank redemption released,oos,-1,15059,clinc_oos_train
+which marvel character has appeared in the most movies,oos,-1,15060,clinc_oos_train
+when's the next movie starring thor set to come out,oos,-1,15061,clinc_oos_train
+who was the first capcom character,oos,-1,15062,clinc_oos_train
+are any justice league movies coming out,oos,-1,15063,clinc_oos_train
+can you tell me something about the nfl,oos,-1,15064,clinc_oos_train
+please explain the catch rule to me,oos,-1,15065,clinc_oos_train
+is there overtime in college football,oos,-1,15066,clinc_oos_train
+when did the mls start,oos,-1,15067,clinc_oos_train
+what's the best price on super smash bros ultimate right now,oos,-1,15068,clinc_oos_train
+what is the highest earning game on atari,oos,-1,15069,clinc_oos_train
+when is the next nintendo direct,oos,-1,15070,clinc_oos_train
+when was nintendo created,oos,-1,15071,clinc_oos_train
+please find the capital of pakistan and its population,oos,-1,15072,clinc_oos_train
+how many people live in taiwan,oos,-1,15073,clinc_oos_train
+what are some of picasso's most famous works,oos,-1,15074,clinc_oos_train
+what are van gogh's best pieces,oos,-1,15075,clinc_oos_train
+where can i see art,oos,-1,15076,clinc_oos_train
+when did camus die,oos,-1,15077,clinc_oos_train
+how much money does radiohead earn a year,oos,-1,15078,clinc_oos_train
+who is radiohead,oos,-1,15079,clinc_oos_train
+what's the biggest saas marketing company in the united states,oos,-1,15080,clinc_oos_train
+how do i start my own marketing firm,oos,-1,15081,clinc_oos_train
+how can i get involved in restaurant marketing,oos,-1,15082,clinc_oos_train
+what is saas marketing,oos,-1,15083,clinc_oos_train
+what do you call someone who was born in segovia,oos,-1,15084,clinc_oos_train
+what is rhineland,oos,-1,15085,clinc_oos_train
+who is the scariest character in start trek,oos,-1,15086,clinc_oos_train
+who is the current captain of this ship,oos,-1,15087,clinc_oos_train
+what year was star trek released,oos,-1,15088,clinc_oos_train
+when was toyota created,oos,-1,15089,clinc_oos_train
+who are some notable alumni of ucsd,oos,-1,15090,clinc_oos_train
+what is the next football game,oos,-1,15091,clinc_oos_train
+how many students attend ucsb,oos,-1,15092,clinc_oos_train
+when do classes start,oos,-1,15093,clinc_oos_train
+how can i become an aerospace engineer,oos,-1,15094,clinc_oos_train
+what percentage of species display cold blooded traits,oos,-1,15095,clinc_oos_train
+what does it mean to be an alpha male,oos,-1,15096,clinc_oos_train
+what animals have alpha males,oos,-1,15097,clinc_oos_train
+why do males want to be alpha,oos,-1,15098,clinc_oos_train
+what's the average battery life of an android phone,oos,-1,15099,clinc_oos_train
+what is the most expensive price per share of any stock,oos,-1,15100,clinc_oos_train
+can you tell me when the bank closes,oos,-1,15101,clinc_oos_train
+rewind one minute,oos,-1,15102,clinc_oos_train
+what is apple's stock,oos,-1,15103,clinc_oos_train
+is there a video-on-demand function (vod),oos,-1,15104,clinc_oos_train
+show me all contacts,oos,-1,15105,clinc_oos_train
+what are the pros and cons of credit cards,oos,-1,15106,clinc_oos_train
+can you show me my 3-digit credit card verification number,oos,-1,15107,clinc_oos_train
+how win money in internet,oos,-1,15108,clinc_oos_train
+is there a car in my blind spot,oos,-1,15109,clinc_oos_train
+what is slope of an inverted line,oos,-1,15110,clinc_oos_train
+can you clock me in,oos,-1,15111,clinc_oos_train
+how do you store my card information,oos,-1,15112,clinc_oos_train
+can you tell me until what time the stock market is open,oos,-1,15113,clinc_oos_train
+give me the local newsi,oos,-1,15114,clinc_oos_train
+why can't you divide by zero,oos,-1,15115,clinc_oos_train
+adjust windshield wipers,oos,-1,15116,clinc_oos_train
+what is the formula for the surface area of a cylinder,oos,-1,15117,clinc_oos_train
+can you forward this email to my boss,oos,-1,15118,clinc_oos_train
+what did the president say todayu,oos,-1,15119,clinc_oos_train
+what color is the car,oos,-1,15120,clinc_oos_train
+can you restart my phone,oos,-1,15121,clinc_oos_train
+what is the account number,oos,-1,15122,clinc_oos_train
+will you block non-kid friendly shows,oos,-1,15123,clinc_oos_train
+can you tell me who else is on my account,oos,-1,15124,clinc_oos_train
+what cleaning product should i use on wood floors,oos,-1,15125,clinc_oos_train
+which state has the best airlines,oos,-1,15126,clinc_oos_train
+find out who won the governor's electionu,oos,-1,15127,clinc_oos_train
+what are bbc headlinesi,oos,-1,15128,clinc_oos_train
+when was the last worker's strike in amsterdam,oos,-1,15129,clinc_oos_train
+how many prime numbers are there under 100,oos,-1,15130,clinc_oos_train
+put seatbelts on,oos,-1,15131,clinc_oos_train
+how many ways can i make $1 using standard us coins,oos,-1,15132,clinc_oos_train
+what kind of gas do i use,oos,-1,15133,clinc_oos_train
+does my a/c filter need to be changed,oos,-1,15134,clinc_oos_train
+how do the anti-lock brakes work,oos,-1,15135,clinc_oos_train
+how do i change my flight,oos,-1,15136,clinc_oos_train
+can you find instructions for removing a coffee stain from upholstery,oos,-1,15137,clinc_oos_train
+what show am i watching,oos,-1,15138,clinc_oos_train
+what are my local news stations,oos,-1,15139,clinc_oos_train
+i have old model car,oos,-1,15140,clinc_oos_train
+can you tell me how to figure a percentage of a number,oos,-1,15141,clinc_oos_train
+what do the values of numbers mean non-numerically,oos,-1,15142,clinc_oos_train
+can you read me the last text,oos,-1,15143,clinc_oos_train
+please save my draft for me so i can work on it later,oos,-1,15144,clinc_oos_train
+how do i stop the beeping noise when my seatbelt is off in my honda civic,oos,-1,15145,clinc_oos_train
+how do i find a common denominator,oos,-1,15146,clinc_oos_train
+can you see the second right inside the fridge,oos,-1,15147,clinc_oos_train
+change my seat to an window seat for my flight on monday,oos,-1,15148,clinc_oos_train
+show me an example of an algebraic expression,oos,-1,15149,clinc_oos_train
+what is npr reporting on right now,oos,-1,15150,clinc_oos_train
+how many points has the nyse gone up by this month,oos,-1,15151,clinc_oos_train
+should i invest in microsoft stock,oos,-1,15152,clinc_oos_train
+can you show me my credit card number,oos,-1,15153,clinc_oos_train
+is the stock market up or down today,oos,-1,15154,clinc_oos_train
+is the shutdown over,oos,-1,15155,clinc_oos_train
+what's my horoscope today,oos,-1,15156,clinc_oos_train
+am i using cruise control,oos,-1,15157,clinc_oos_train
+can you send an email to client b,oos,-1,15158,clinc_oos_train
+is the bachelor on tonight,oos,-1,15159,clinc_oos_train
+does my credit card have a balance transfer promotions currently going on,oos,-1,15160,clinc_oos_train
+how does a optical mouse work,oos,-1,15161,clinc_oos_train
+which stocks should i invest in to get at least 5% back on my investment this year,oos,-1,15162,clinc_oos_train
+find out for me what kind of benefits military veterans have after retirement,oos,-1,15163,clinc_oos_train
+can you tell me what kind of benefits miliraty veterans receive,oos,-1,15164,clinc_oos_train
+"if you're dishonorably discharged, are you still a veteran",oos,-1,15165,clinc_oos_train
+is va treatment free for veterans,oos,-1,15166,clinc_oos_train
+what month are mosquitoes the worst in the united states,oos,-1,15167,clinc_oos_train
+what's the most effective bug repellant,oos,-1,15168,clinc_oos_train
+how long do mosquito's live,oos,-1,15169,clinc_oos_train
+where do squirrels's live,oos,-1,15170,clinc_oos_train
+can you identify between poisonous and nonpoisonous mushroom,oos,-1,15171,clinc_oos_train
+can you find out for me how many mushroom species are there,oos,-1,15172,clinc_oos_train
+what are some ways to prepare portabello mushrooms,oos,-1,15173,clinc_oos_train
+how do you know if a mushroom is edible,oos,-1,15174,clinc_oos_train
+what's the most popular tv show on netflix right now,oos,-1,15175,clinc_oos_train
+what's trending in 90s television shows on netflix,oos,-1,15176,clinc_oos_train
+when was hulu created,oos,-1,15177,clinc_oos_train
+get me the rates of hacking susceptibility for household in my area,oos,-1,15178,clinc_oos_train
+can you check my privacy online settting,oos,-1,15179,clinc_oos_train
+how can i protect myself online,oos,-1,15180,clinc_oos_train
+how much is the best vpn,oos,-1,15181,clinc_oos_train
+"who is the oscar who ""the oscar's"" is named after",oos,-1,15182,clinc_oos_train
+what is the origin of the name michael,oos,-1,15183,clinc_oos_train
+where are the oscar's held,oos,-1,15184,clinc_oos_train
+how do you get an oscar,oos,-1,15185,clinc_oos_train
+are deer indigenous to north america,oos,-1,15186,clinc_oos_train
+what's an otter's primary diet,oos,-1,15187,clinc_oos_train
+a the bike looks very nice,oos,-1,15188,clinc_oos_train
+how the bikes looks,oos,-1,15189,clinc_oos_train
+is the patriarchy a valid concept,oos,-1,15190,clinc_oos_train
+is patriarchy wrong,oos,-1,15191,clinc_oos_train
+how many generations of pokemon are there now,oos,-1,15192,clinc_oos_train
+what year was the first pokemon game released,oos,-1,15193,clinc_oos_train
+how many pokemon are there,oos,-1,15194,clinc_oos_train
+where was salt created,oos,-1,15195,clinc_oos_train
+what's a puffin's natural habitat,oos,-1,15196,clinc_oos_train
+are hawks domesticated or wild,oos,-1,15197,clinc_oos_train
+where do frogs come from,oos,-1,15198,clinc_oos_train
+what are puffins,oos,-1,15199,clinc_oos_train
+is it legal to breed and sell rabbits without a license,oos,-1,15200,clinc_oos_train
+how many different types of robins are there,oos,-1,15201,clinc_oos_train
+how long do chipmunks usually live,oos,-1,15202,clinc_oos_train
+what do rabbits eat,oos,-1,15203,clinc_oos_train
+how many seasons of rick and morty are there,oos,-1,15204,clinc_oos_train
+will there be a new season of true detective,oos,-1,15205,clinc_oos_train
+how old are rick ad morty,oos,-1,15206,clinc_oos_train
+who are dan and dave,oos,-1,15207,clinc_oos_train
+what was the area code of the phone number from that last scam call,oos,-1,15208,clinc_oos_train
+how many people fall victim to internet scams per year,oos,-1,15209,clinc_oos_train
+"how can i protect myself from ""nigerian prince"" scams",oos,-1,15210,clinc_oos_train
+are semitic languages harder to learn than arabic languages,oos,-1,15211,clinc_oos_train
+is it difficult to learn a semitic language,oos,-1,15212,clinc_oos_train
+what languages are considered semitic,oos,-1,15213,clinc_oos_train
+what is a semitic language,oos,-1,15214,clinc_oos_train
+what's the typical structure for writing a country song,oos,-1,15215,clinc_oos_train
+where can i find lyrical inspiration for songwriting,oos,-1,15216,clinc_oos_train
+what's the dominant minor for the key of bflat,oos,-1,15217,clinc_oos_train
+what's the order of the circle of fifths,oos,-1,15218,clinc_oos_train
+what is the most popular sport in new york,oos,-1,15219,clinc_oos_train
+how are my sports teams doing,oos,-1,15220,clinc_oos_train
+which sport is the most fun,oos,-1,15221,clinc_oos_train
+what's on for sports today,oos,-1,15222,clinc_oos_train
+can you give me instructions for tattoo aftercare,oos,-1,15223,clinc_oos_train
+how do i decide on a good first tattoo,oos,-1,15224,clinc_oos_train
+where did the first tattoo originate,oos,-1,15225,clinc_oos_train
+are tattoos safe to get,oos,-1,15226,clinc_oos_train
+is time travel to the past theoretically possible,oos,-1,15227,clinc_oos_train
+what is the solution to the grandfather paradox,oos,-1,15228,clinc_oos_train
+please take me back to the year 1982,oos,-1,15229,clinc_oos_train
+has anyone ever time traveled before,oos,-1,15230,clinc_oos_train
+what species of oak tree grows to be the tallest,oos,-1,15231,clinc_oos_train
+what's the best time of year to plant a tree,oos,-1,15232,clinc_oos_train
+are trees absolutely necessary to survive,oos,-1,15233,clinc_oos_train
+what is the largest tree in the world,oos,-1,15234,clinc_oos_train
+how much has the market gone up or down so far in 2019,oos,-1,15235,clinc_oos_train
+what is the most expensive building on wall street,oos,-1,15236,clinc_oos_train
+is it difficult to be successful on wall street,oos,-1,15237,clinc_oos_train
+what's the fastest growing stock of 2019,oos,-1,15238,clinc_oos_train
+give me information about the soviet union's participation in world war 2,oos,-1,15239,clinc_oos_train
+which nations were on each side of the conflict in world war ii,oos,-1,15240,clinc_oos_train
+how long was the siege of leningrad,oos,-1,15241,clinc_oos_train
+what years did world war i occur,oos,-1,15242,clinc_oos_train
+what's a good resource to learn beginner's yoga,oos,-1,15243,clinc_oos_train
+what's the most difficult yoga pose to perform,oos,-1,15244,clinc_oos_train
+how can i get involved in yoga,oos,-1,15245,clinc_oos_train
+is yoga healthy,oos,-1,15246,clinc_oos_train
+what's the alma mater of the man that started youtube,oos,-1,15247,clinc_oos_train
+who has the most subscribers on youtube,oos,-1,15248,clinc_oos_train
+do those i subscribe to have new videos,oos,-1,15249,clinc_oos_train
+set a warning for when my bank account starts running low,oos,-1,3000,clinc_oos_validation
+a show on broadway,oos,-1,3001,clinc_oos_validation
+who has the best record in the nfl,oos,-1,3002,clinc_oos_validation
+how do i find the area of a circle,oos,-1,3003,clinc_oos_validation
+how many onions do i have on hand,oos,-1,3004,clinc_oos_validation
+what is the name of the 13th president,oos,-1,3005,clinc_oos_validation
+show me recent activity in my backyard,oos,-1,3006,clinc_oos_validation
+how long will it take me to pay off my card if i pay an extra $50 a month over the minimum,oos,-1,3007,clinc_oos_validation
+does our bank have free notary,oos,-1,3008,clinc_oos_validation
+what were the top stories this week,oos,-1,3009,clinc_oos_validation
+can i mix antifreeze with water,oos,-1,3010,clinc_oos_validation
+are any earning reports due,oos,-1,3011,clinc_oos_validation
+show me the channel guide,oos,-1,3012,clinc_oos_validation
+is the pnc bank open,oos,-1,3013,clinc_oos_validation
+where does the power steering fluid go,oos,-1,3014,clinc_oos_validation
+when was the last time the president visited floridau,oos,-1,3015,clinc_oos_validation
+how can i keep my windshield from fogging up in winter,oos,-1,3016,clinc_oos_validation
+how do i compute the median of a set of numbers,oos,-1,3017,clinc_oos_validation
+what is happening with brexit right nowu,oos,-1,3018,clinc_oos_validation
+are there any new companies to look out for,oos,-1,3019,clinc_oos_validation
+can you tell me how to compute price per ounce,oos,-1,3020,clinc_oos_validation
+how to unclog a drain,oos,-1,3021,clinc_oos_validation
+am kind of busy now,oos,-1,3022,clinc_oos_validation
+what new reality shows are there for 2019,oos,-1,3023,clinc_oos_validation
+what is the purpose or benefit of a cash advance,oos,-1,3024,clinc_oos_validation
+how can i root an android phone,oos,-1,3025,clinc_oos_validation
+is android better than iphone,oos,-1,3026,clinc_oos_validation
+are androids expensive,oos,-1,3027,clinc_oos_validation
+how long does it take to become an architect,oos,-1,3028,clinc_oos_validation
+who are some famous living architects,oos,-1,3029,clinc_oos_validation
+find out for me as to why people get autism,oos,-1,3030,clinc_oos_validation
+is autism a genetic disease,oos,-1,3031,clinc_oos_validation
+is flu contagious,oos,-1,3032,clinc_oos_validation
+is it true that nicotine is harder to kick than heroin,oos,-1,3033,clinc_oos_validation
+please inform me on bad habits and overcoming them,oos,-1,3034,clinc_oos_validation
+are bad habits closely related with addictions,oos,-1,3035,clinc_oos_validation
+does hypnosis work to break bad habits,oos,-1,3036,clinc_oos_validation
+king of acid,oos,-1,3037,clinc_oos_validation
+suo2,oos,-1,3038,clinc_oos_validation
+what university in the united states offers the best biomedical engineering program,oos,-1,3039,clinc_oos_validation
+what's the definition of nuclear engineering,oos,-1,3040,clinc_oos_validation
+when was electrical engineering created,oos,-1,3041,clinc_oos_validation
+what is naval engineering,oos,-1,3042,clinc_oos_validation
+is it possible to survive in a black hole,oos,-1,3043,clinc_oos_validation
+where do black holes come from,oos,-1,3044,clinc_oos_validation
+what are black holes,oos,-1,3045,clinc_oos_validation
+what was the final vote count in the brexit referendum,oos,-1,3046,clinc_oos_validation
+can you tell me the latest georgia news,oos,-1,3047,clinc_oos_validation
+is the brexit finalized yet,oos,-1,3048,clinc_oos_validation
+the birds fly with there wings,oos,-1,3049,clinc_oos_validation
+how the birds fly,oos,-1,3050,clinc_oos_validation
+where does cannabis originate from,oos,-1,3051,clinc_oos_validation
+how are my cannabis stocks doing,oos,-1,3052,clinc_oos_validation
+is marijuana addictive,oos,-1,3053,clinc_oos_validation
+should i hit or stay at 17 in blackjack,oos,-1,3054,clinc_oos_validation
+what game has the best odds at a casino,oos,-1,3055,clinc_oos_validation
+what's the best opening gambit for a game of chess,oos,-1,3056,clinc_oos_validation
+what side in chess has the general advantage,oos,-1,3057,clinc_oos_validation
+how do i get better at go,oos,-1,3058,clinc_oos_validation
+how high does my sat score need to be to get into harvard,oos,-1,3059,clinc_oos_validation
+what'll an education at boulder state college run,oos,-1,3060,clinc_oos_validation
+what's the average gpa to get into yale,oos,-1,3061,clinc_oos_validation
+what act score is considered good,oos,-1,3062,clinc_oos_validation
+what cryptocurrency gained the most in 2018,oos,-1,3063,clinc_oos_validation
+what's the best crypto to buy in 2019,oos,-1,3064,clinc_oos_validation
+how is crypto legal,oos,-1,3065,clinc_oos_validation
+are there any cybersecurity jobs available in pittsburgh,oos,-1,3066,clinc_oos_validation
+how many firewalls should i have and what type,oos,-1,3067,clinc_oos_validation
+how can i breach a network,oos,-1,3068,clinc_oos_validation
+how does cybersecurity work,oos,-1,3069,clinc_oos_validation
+how many countries in the world are democracies,oos,-1,3070,clinc_oos_validation
+is the united states a democracy,oos,-1,3071,clinc_oos_validation
+which nations are not democratic,oos,-1,3072,clinc_oos_validation
+how does a democracy work,oos,-1,3073,clinc_oos_validation
+please get me my wheelchair,oos,-1,3074,clinc_oos_validation
+what's the best dog food to feed my puppy,oos,-1,3075,clinc_oos_validation
+how do you know when your dog is ill,oos,-1,3076,clinc_oos_validation
+what dog breed sold the most in 2018,oos,-1,3077,clinc_oos_validation
+how much food should i feed my cat,oos,-1,3078,clinc_oos_validation
+what does it mean if i dream of falling off a building,oos,-1,3079,clinc_oos_validation
+is it bad to not remember your dreams,oos,-1,3080,clinc_oos_validation
+why do we dream,oos,-1,3081,clinc_oos_validation
+"do ducks eat meat, vegetables, or both",oos,-1,3082,clinc_oos_validation
+what is the friendliest breed,oos,-1,3083,clinc_oos_validation
+what do geese eat,oos,-1,3084,clinc_oos_validation
+do ducks sleep,oos,-1,3085,clinc_oos_validation
+are over the ear headphones better than in ear headphones,oos,-1,3086,clinc_oos_validation
+what brand of earphones is the best reviewed of 2019,oos,-1,3087,clinc_oos_validation
+are white and brown eggs any different,oos,-1,3088,clinc_oos_validation
+where do eggs come from,oos,-1,3089,clinc_oos_validation
+how can i easily replace a string on my guitar,oos,-1,3090,clinc_oos_validation
+how do you learn how to play electric violin,oos,-1,3091,clinc_oos_validation
+can you give me the standard tuning notes,oos,-1,3092,clinc_oos_validation
+what is the cheapest electric guitar,oos,-1,3093,clinc_oos_validation
+you want to know about current time now,oos,-1,3094,clinc_oos_validation
+what does it mean to have equality,oos,-1,3095,clinc_oos_validation
+what site publishes the most fake news,oos,-1,3096,clinc_oos_validation
+can you tell me some fake news,oos,-1,3097,clinc_oos_validation
+is cnn really fake news,oos,-1,3098,clinc_oos_validation
+why is there fake news,oos,-1,3099,clinc_oos_validation

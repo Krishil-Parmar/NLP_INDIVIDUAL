@@ -1,0 +1,13 @@
+text,label,label_id,orig_index,source,reason
+I can't seem to be able to use my card,card_not_working,14,1290,banking77_train,duplicate
+I put the wrong pin too many times and now it is blocked. Can you help me unblock it?,pin_blocked,49,1724,banking77_train,duplicate
+Where can I withdraw money from?,atm_support,3,4595,banking77_train,duplicate
+Do I need to go to a physical bank to change my PIN?,change_pin,21,6965,banking77_train,duplicate
+Which ATMs accept this card?,atm_support,3,1461,banking77_test,duplicate
+How do I unblock my PIN?,pin_blocked,49,1722,banking77_train,leakage
+What businesses accept this card?,card_acceptance,10,3103,banking77_train,leakage
+Where can I use my card?,card_acceptance,10,3116,banking77_train,leakage
+"There are a few transaction that I don't recognize, I think someone managed to get my card details and use it.",compromised_card,22,4476,banking77_train,leakage
+At which ATMs can I use this card?,atm_support,3,4576,banking77_train,leakage
+Which cash machines will allow me to change my PIN?,change_pin,21,6984,banking77_train,leakage
+I don't live in the UK. Can I still get a card?,country_support,24,9921,banking77_train,leakage
