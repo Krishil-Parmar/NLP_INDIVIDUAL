@@ -455,7 +455,7 @@ Worth 20 points. The rubric asks for a clear, engaging demonstration that explai
 - [ ] Latency limit L in requirement R4 (section 2.5)
 - [ ] Written lecturer confirmation that this topic framing is accepted
 - [x] The unit's policy on AI assistance (22 Nov 2026: allowed with disclosure, see section 13)
-- [ ] Available compute (local GPU, Colab, other)
+- [ ] Available compute (local GPU, Colab, other). Measured 22 Nov 2026: the owner's Apple M3 Pro (18 GB, MPS) trains one S1 DistilRoBERTa seed in about 5.5 minutes. It cannot train DeBERTa-v3-small in float32 (memory), so larger models need Colab or another GPU
 - [ ] The assistant's intent list (8 to 15 intents) and the Jeff set
 - [ ] Exact LLM model for S4, its per-token price and a spend cap for the baseline runs
 - [ ] Threshold values N, M, K, F, D in section 4
@@ -503,6 +503,13 @@ Read the first four before M1. Confirm every figure quoted in this README agains
 | 22 Nov 2026 | Validation OOS pool = CLINC150 OOS train + validation; test OOS pool = CLINC150 OOS test | Gives a similar OOS share in validation and test (about 25%), so thresholds tuned on validation transfer. Legitimate only because no system trains on OOS data. If that changes, this pool must be split |
 | 22 Nov 2026 | Duplicate rule: same text with the same label keeps one copy; same text with different labels drops every copy; OOS rows that match a Banking77 text are dropped from the OOS pool | No system can get a conflicting pair right, and a text cannot be both in scope and out of scope |
 | 22 Nov 2026 | Processed splits are committed to git; `make_splits.py` refuses to overwrite them without `--force` | Both licences allow it, the notebook then runs without a download step, and the splits are created once (rigour rule 6) |
+| 22 Nov 2026 | One shared output for every system: predicted intent, confidence = max softmax probability, OOS score = 1 - confidence; raw logits saved | Fair comparison (section 7). Saved logits let M4 fit temperature scaling without retraining. Validation predictions cover the OOS-mixed set so M4 can tune the router from files |
+| 22 Nov 2026 | S0 grid on validation macro-F1: n-grams (1,1)/(1,2) x C {1, 10, 100}. Chosen (1,2), C=100 (0.8895) | Best point is on the grid edge, but the top three are within 0.3 points, so the grid was not widened (section 5, no leaderboard chasing). S0 is deterministic: five seeds give identical predictions, std 0 |
+| 22 Nov 2026 | S1 trained with a plain PyTorch loop, fixed hyperparameters (lr 5e-5, AdamW wd 0.01, batch 32, 5 epochs, 10% warmup, clip 1.0, max_length 56), last epoch kept | No `accelerate` dependency; every line explainable. Standard values, not tuned |
+| 22 Nov 2026 | S1 checkpoint: `distilbert/distilroberta-base`. Rule fixed before any run: higher validation macro-F1 by more than 0.5 points wins, else lower CPU p95 latency; a candidate that cannot train on MPS loses | `microsoft/deberta-v3-small` could not be trained here. transformers 5 loads it in its stored float16, which made AdamW produce NaN after one step (fixed by loading in float32). In float32 it used 12 GB RAM with swap nearly full on the 18 GB M3 Pro and did not finish 60 steps in 12 minutes. Evidence in `results/s1_selection.json` |
+| 22 Nov 2026 | All S1 checkpoints load in float32 explicitly | transformers 5 otherwise uses the checkpoint's stored precision |
+| 22 Nov 2026 | Keep all five S1 checkpoints (317 MB each, gitignored); seeds [0, 1, 2, 3, 4] | M5 needs per-seed test predictions, and MPS is not bit-for-bit repeatable (same seed twice: max logit difference 2.1e-6, identical predictions), so retraining could shift the validation numbers |
+| 22 Nov 2026 | Two-page summary written in Markdown and built to PDF with pandoc + XeLaTeX by `scripts/build_summary.py`, which fails above 2 pages and fills the results table from `results/` | Owner choice. No number is typed by hand (rigour rule 4). Word budgets (730 words in six parts) fit with about a third of page 2 spare |
 
 ---
 

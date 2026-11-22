@@ -75,10 +75,13 @@ def run_s1(checkpoint: str, seeds: list[int]) -> None:
     max_length = s1_encoder.max_length_for(checkpoint)
     logs_dir = data.RESULTS_DIR / "training_logs"
     logs_dir.mkdir(parents=True, exist_ok=True)
+    # Git state is recorded once, before any training, so editing files while a
+    # long multi-seed run is going cannot make later seeds look "dirty".
+    meta_at_start = run_metadata(cfg)
 
     for seed in seeds:
         print(f"S1 {checkpoint} seed {seed} on {device}")
-        meta = run_metadata(cfg, seed)  # recorded before training starts
+        meta = {**meta_at_start, "seed": seed}
         start = time.perf_counter()
         model, tokenizer, log = s1_encoder.train(train_df, cfg, checkpoint, seed, device, label_names, val_df=val_in)
         train_seconds = time.perf_counter() - start

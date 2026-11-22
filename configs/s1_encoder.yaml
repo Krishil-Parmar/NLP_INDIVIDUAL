@@ -15,8 +15,9 @@ selection:
   min_f1_gap: 0.5
 
 # Chosen checkpoint. Filled in by hand after the selection run, from
-# results/s1_selection.json. Empty means "not selected yet".
-checkpoint: ""
+# results/s1_selection.json (22 Nov 2026: DeBERTa-v3-small could not be
+# trained on the available hardware, so DistilRoBERTa won by default).
+checkpoint: distilbert/distilroberta-base
 
 training:
   learning_rate: 5.0e-5

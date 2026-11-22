@@ -1,5 +1,6 @@
 """Random seeds and device choice, shared by every training script and the notebook."""
 
+import os
 import random
 
 import numpy as np
@@ -17,7 +18,13 @@ def set_seed(seed: int) -> None:
 
 
 def pick_device() -> torch.device:
-    """Fastest available device: NVIDIA GPU, then Apple GPU (MPS), then CPU."""
+    """Fastest available device: NVIDIA GPU, then Apple GPU (MPS), then CPU.
+
+    Setting the environment variable ROUTER_DEVICE (e.g. ROUTER_DEVICE=cpu)
+    overrides this, which is used to test how the notebook runs on a CPU-only machine.
+    """
+    if os.environ.get("ROUTER_DEVICE"):
+        return torch.device(os.environ["ROUTER_DEVICE"])
     if torch.cuda.is_available():
         return torch.device("cuda")
     if torch.backends.mps.is_available():

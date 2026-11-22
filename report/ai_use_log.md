@@ -6,4 +6,5 @@ Tool: Claude Code (Anthropic), model Claude Opus 5.5.
 
 | Date | Milestone | What Claude Code did | Owner review |
 | --- | --- | --- | --- |
+| 22 Nov 2026 | M1 | Planned M1. Wrote `src/router/{seed,tables,metrics,cost}.py`, `src/router/systems/{base,s0_tfidf,s1_encoder}.py`, `scripts/{train,select_s1,evaluate,build_summary}.py`, `configs/s0_tfidf.yaml`, `configs/s1_encoder.yaml`, tests for metrics and systems, the M1 notebook cells, the `report/summary.md` skeleton (headings, placeholders and empty tables only, no report prose), and README decision log rows. Diagnosed the DeBERTa NaN (float16 loading). Ran S0, S1 (five seeds), selection and E1 on validation. | Approved the M1 plan and chose Markdown to PDF for the summary. Code review: pending |
 | 22 Nov 2026 | M0 | Planned M0 from the README. Checked dataset and model IDs on the Hub. Wrote `pyproject.toml`, `configs/data.yaml`, `src/router/{data,preprocess,provenance}.py`, `scripts/make_splits.py`, `tests/`, the submission notebook skeleton, and README updates (open items, decision log). Ran the pipeline and tests. | Approved the M0 plan and confirmed the AI policy and the repo format. Code review: pending |
