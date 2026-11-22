@@ -27,7 +27,7 @@ CHECKPOINT_DIR = data.PROJECT_ROOT / "checkpoints"
 N_LATENCY_QUERIES = 200
 
 
-def main() -> None:
+def main(notes: list[str]) -> None:
     cfg = data.load_config("s1_encoder")
     label_names = label_names_in_id_order()
     val_in = data.load_split("val")
@@ -77,6 +77,7 @@ def main() -> None:
         "candidates": results,
         "winner": winner,
         "reason": reason,
+        "notes": notes,  # e.g. why a candidate has no run
     }
     with open(data.RESULTS_DIR / "s1_selection.json", "w") as f:
         json.dump(out, f, indent=2, default=str)
@@ -85,4 +86,8 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    import argparse
+
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--note", action="append", default=[], help="free-text note saved in the result file (repeatable)")
+    main(parser.parse_args().note)

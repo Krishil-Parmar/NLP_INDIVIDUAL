@@ -104,15 +104,14 @@ def probe_s1(checkpoint: str, steps: int, determinism: bool) -> None:
 
     outputs = []
     for attempt in range(2 if determinism else 1):
-        start = time.perf_counter()
-        model, tokenizer, _ = s1_encoder.train(train_df, cfg, checkpoint, 0, device, label_names, max_steps=steps)
-        seconds = time.perf_counter() - start
+        model, tokenizer, log = s1_encoder.train(train_df, cfg, checkpoint, 0, device, label_names, max_steps=steps)
+        seconds = log[-1]["seconds"]  # training loop time only, model loading excluded
         logits = s1_encoder.predict_logits(model, tokenizer, sample, device, max_length)
         outputs.append(logits)
         steps_per_epoch = int(np.ceil(len(train_df) / cfg["training"]["batch_size"]))
         full_run_min = seconds / steps * steps_per_epoch * cfg["training"]["epochs"] / 60
-        print(f"probe {attempt + 1}: {steps} steps in {seconds:.1f}s on {device} "
-              f"({seconds / steps:.3f}s/step incl. model load) -> one full run is about {full_run_min:.1f} min")
+        print(f"probe {attempt + 1}: {steps} steps in {seconds:.1f}s on {device} ({seconds / steps:.3f}s/step), "
+              f"final train loss {log[-1]['train_loss']:.4f} -> one full run is about {full_run_min:.1f} min")
     if determinism:
         diff = float(np.abs(outputs[0] - outputs[1]).max())
         same_argmax = bool((outputs[0].argmax(1) == outputs[1].argmax(1)).all())

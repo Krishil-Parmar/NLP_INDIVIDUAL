@@ -50,6 +50,11 @@ def load_base(checkpoint: str, label_names: list[str]):
         num_labels=len(label_names),
         id2label=dict(enumerate(label_names)),
         label2id={name: i for i, name in enumerate(label_names)},
+        # transformers 5 loads weights in the precision they were saved in, and some
+        # checkpoints (e.g. deberta-v3-small) are saved in float16. Training in
+        # float16 with AdamW turns the weights into NaN after one step, so always
+        # train in float32.
+        dtype=torch.float32,
     )
     return model, tokenizer
 
@@ -151,6 +156,6 @@ def save(model, tokenizer, folder: Path) -> None:
 def load(folder: Path, device: torch.device):
     """Load a fine-tuned checkpoint saved by save(). Returns (model, tokenizer)."""
     tokenizer = AutoTokenizer.from_pretrained(folder)
-    model = AutoModelForSequenceClassification.from_pretrained(folder).to(device)
+    model = AutoModelForSequenceClassification.from_pretrained(folder, dtype=torch.float32).to(device)
     model.eval()
     return model, tokenizer
