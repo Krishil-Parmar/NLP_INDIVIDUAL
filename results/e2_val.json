@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "timestamp_utc": "2026-11-22T12:22:27+00:00",
-    "git_commit": "f5b67b65a6bbf87875438edc2e5e2305b1c90a1b",
+    "timestamp_utc": "2026-11-22T23:18:24+00:00",
+    "git_commit": "f559503d309fecdb8b8984656c21186153df781b",
     "git_dirty": false,
     "seed": null,
     "dataset_revisions": {
@@ -742,9 +742,75 @@
     ]
   },
   "audit": {
-    "complete": false,
-    "n_done": 0,
+    "complete": true,
     "n_items": 100,
-    "unreadable_items": []
+    "real_error": 61,
+    "picked_suggestion": 57,
+    "neither": 4,
+    "ambiguous": 10,
+    "false_flag": 29,
+    "real_error_share": 0.61,
+    "real_error_ci95": [
+      0.5120301696819712,
+      0.6998312605888496
+    ]
+  },
+  "audit_by_annotator": {
+    "claude": {
+      "complete": true,
+      "n_items": 89,
+      "real_error": 53,
+      "picked_suggestion": 50,
+      "neither": 3,
+      "ambiguous": 9,
+      "false_flag": 27,
+      "real_error_share": 0.5955056179775281,
+      "real_error_ci95": [
+        0.49164224691050085,
+        0.6914656038799056
+      ]
+    },
+    "owner": {
+      "complete": true,
+      "n_items": 11,
+      "real_error": 8,
+      "picked_suggestion": 7,
+      "neither": 1,
+      "ambiguous": 1,
+      "false_flag": 2,
+      "real_error_share": 0.7272727272727273,
+      "real_error_ci95": [
+        0.4343546966810743,
+        0.9025394078669138
+      ]
+    }
+  },
+  "audit_agreement": {
+    "n_items": 11,
+    "same_verdict": 8,
+    "same_category": 8,
+    "disagreements": [
+      {
+        "item": 5,
+        "first_verdict": "a",
+        "second_verdict": "b",
+        "first_category": "false flag",
+        "second_category": "real error"
+      },
+      {
+        "item": 7,
+        "first_verdict": "both",
+        "second_verdict": "a",
+        "first_category": "ambiguous",
+        "second_category": "real error"
+      },
+      {
+        "item": 11,
+        "first_verdict": "b",
+        "second_verdict": "both",
+        "first_category": "real error",
+        "second_category": "ambiguous"
+      }
+    ]
   }
 }

@@ -4,8 +4,8 @@ Written by `scripts/evaluate_label_noise.py`. Do not edit by hand.
 
 ## Provenance
 
-- Generated (UTC): 2026-11-22T12:22:27+00:00
-- Git commit: `f5b67b65a6bbf87875438edc2e5e2305b1c90a1b`
+- Generated (UTC): 2026-11-22T23:18:24+00:00
+- Git commit: `f559503d309fecdb8b8984656c21186153df781b`
 - Seed: None
 - Python 3.12.4 on macOS-27.0-arm64-arm-64bit
 - Dataset `banking77` revision: `1846984189f2bc0ac51c6fc3a600fa9e1714e0c6`
@@ -67,6 +67,21 @@ The error rate is on the mixed set (in-scope plus out-of-scope), the same quanti
 
 Few-shot S4 prompt examples that are flagged train rows: 2 of 154.
 
-## Audit (owner, blind)
+## Audit (blind)
 
-Not scored yet: 0 of 100 items have a verdict.
+Who judged each item is in the `annotator` column of `results/e2_audit.csv` ("owner" or "claude"). The Claude judge saw only the sheet (query, two options in random order, three examples each), never the key or the owner's verdicts; its verdicts on every item are in `results/e2_audit_claude.csv`. README section 8.1 has the procedure.
+
+| annotator | items | real errors | suggestion fits | neither fits | ambiguous | false flags | real-error share (95% Wilson) |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| claude | 89 | 53 | 50 | 3 | 9 | 27 | 60% (49 to 69%) |
+| owner | 11 | 8 | 7 | 1 | 1 | 2 | 73% (43 to 90%) |
+
+**All items together:** 61 of 100 are real label errors (61%, 95% Wilson interval 51 to 70%): 57 where the suggested label fits better, 4 where neither fits. Ambiguous (both fit): 10. False flags (the given label fits): 29.
+
+**Owner and Claude judge on the same 11 items:** same verdict on 8 of 11, same scored category on 8 of 11.
+
+| item | owner | Claude judge |
+| --- | --- | --- |
+| 5 | a (false flag) | b (real error) |
+| 7 | both (ambiguous) | a (real error) |
+| 11 | b (real error) | both (ambiguous) |
