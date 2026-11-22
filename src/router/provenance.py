@@ -21,6 +21,7 @@ _TRACKED_PACKAGES = [
     "scikit-learn",
     "pandas",
     "numpy",
+    "cleanlab",
 ]
 
 

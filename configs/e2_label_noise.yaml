@@ -1,0 +1,58 @@
+# E2: label noise (README sections 6, 8 and 8.1).
+# Read by scripts/find_label_issues.py and scripts/evaluate_label_noise.py.
+# Every value here was fixed on 22 Nov 2026, before the cleaner was first run.
+
+# Rows that are checked: every in-scope train and validation row, pooled.
+# The test split is never read for E2 on validation.
+splits: [train, val]
+
+# The cleaner gives each row out-of-sample class probabilities: frozen sentence
+# embeddings, then logistic regression fitted in K folds, so no row is scored by
+# a model that saw its own label. mpnet was an S2 candidate, but S2 chose MiniLM,
+# so the cleaner is not one of the compared systems.
+cleaner:
+  embedding_model: sentence-transformers/all-mpnet-base-v2
+  batch_size: 64
+  folds: 5
+  seed: 0
+  C_grid: [0.1, 1, 10, 100]   # C kept: the lowest cross-validated log loss
+  max_iter: 2000
+
+# cleanlab.filter.find_label_issues. These are its defaults; n_jobs 1 only turns
+# off multiprocessing, which does not change which rows are flagged.
+cleanlab:
+  filter_by: prune_by_noise_rate
+  rank_by: self_confidence
+  n_jobs: 1
+
+# Stop before any retraining if one of these is crossed.
+stop_if:
+  max_train_share_flagged: 0.10      # more than 10% of train flagged
+  max_intent_share_removed: 0.3333   # an intent loses more than a third of its train rows
+  min_cleaner_cv_accuracy: 0.85      # weak probabilities would flag model errors, not label errors
+
+# Blind hand audit, done by the owner.
+audit:
+  n_items: 100
+  seed: 0
+  examples_per_option: 3   # unflagged train queries shown for each candidate label
+
+# Systems compared. The same system trained on cleaned labels has the tag
+# "<tag>_cleaned" (router.label_noise.cleaned_tag).
+systems:
+  - {tag: s0_tfidf, name: "S0 TF-IDF"}
+  - {tag: s1_distilroberta-base, name: "S1 encoder"}
+  - {tag: s2_all-MiniLM-L6-v2, name: "S2 embedding"}
+  - {tag: s3_quora-distilroberta-base, name: "S3 pairwise"}
+
+# S4 has no training data, so only the evaluation effect applies to it. Scored
+# from its cached replies on format-controlled validation; no API calls.
+llm_systems:
+  - {tag: s4_claude-sonnet-4-6, name: "S4 zero-shot"}
+  - {tag: s4_claude-sonnet-4-6-fewshot, name: "S4 few-shot"}
+
+# Paired bootstrap of (cleaned - original) macro-F1, stratified by intent.
+bootstrap:
+  resamples: 1000
+  seed: 0
+  ci: 0.95
