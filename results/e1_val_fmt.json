@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "timestamp_utc": "2026-11-22T08:59:23+00:00",
-    "git_commit": "e6692d11431d1592a99621cb242b320b2124bc74",
+    "timestamp_utc": "2026-11-22T09:59:42+00:00",
+    "git_commit": "2f9d479e58c24b6bd989855787b43783a0bc8109",
     "git_dirty": false,
     "seed": null,
     "dataset_revisions": {
@@ -1203,6 +1203,177 @@
           "true": "verify_my_identity",
           "predicted": "why_verify_identity",
           "count": 5
+        }
+      ]
+    },
+    "s4_claude-sonnet-4-6-fewshot": {
+      "seeds": [
+        0
+      ],
+      "n_queries": 1000,
+      "per_seed": [
+        {
+          "accuracy": 0.843,
+          "macro_precision": 0.8700300695556215,
+          "macro_recall": 0.8512539499019738,
+          "macro_f1": 0.8491011550050317,
+          "weighted_precision": 0.8700289788857514,
+          "weighted_recall": 0.843,
+          "weighted_f1": 0.8447965420907203
+        }
+      ],
+      "summary": {
+        "accuracy": {
+          "mean": 0.843,
+          "std": 0.0
+        },
+        "macro_precision": {
+          "mean": 0.8700300695556215,
+          "std": 0.0
+        },
+        "macro_recall": {
+          "mean": 0.8512539499019738,
+          "std": 0.0
+        },
+        "macro_f1": {
+          "mean": 0.8491011550050317,
+          "std": 0.0
+        },
+        "weighted_precision": {
+          "mean": 0.8700289788857514,
+          "std": 0.0
+        },
+        "weighted_recall": {
+          "mean": 0.843,
+          "std": 0.0
+        },
+        "weighted_f1": {
+          "mean": 0.8447965420907203,
+          "std": 0.0
+        }
+      },
+      "worst_intents": [
+        {
+          "intent": "topping_up_by_card",
+          "precision": 0.4,
+          "recall": 0.4,
+          "f1": 0.4,
+          "support": 10.0
+        },
+        {
+          "intent": "pending_top_up",
+          "precision": 0.5,
+          "recall": 0.5333333333333333,
+          "f1": 0.5161290322580645,
+          "support": 15.0
+        },
+        {
+          "intent": "transfer_timing",
+          "precision": 0.4230769230769231,
+          "recall": 0.8461538461538461,
+          "f1": 0.5641025641025641,
+          "support": 13.0
+        },
+        {
+          "intent": "transfer_not_received_by_recipient",
+          "precision": 0.625,
+          "recall": 0.5882352941176471,
+          "f1": 0.6060606060606061,
+          "support": 17.0
+        },
+        {
+          "intent": "pending_transfer",
+          "precision": 0.7272727272727273,
+          "recall": 0.5333333333333333,
+          "f1": 0.6153846153846154,
+          "support": 15.0
+        },
+        {
+          "intent": "top_up_failed",
+          "precision": 0.5,
+          "recall": 0.8666666666666667,
+          "f1": 0.6341463414634146,
+          "support": 15.0
+        },
+        {
+          "intent": "declined_transfer",
+          "precision": 0.6666666666666666,
+          "recall": 0.6153846153846154,
+          "f1": 0.64,
+          "support": 13.0
+        },
+        {
+          "intent": "card_linking",
+          "precision": 1.0,
+          "recall": 0.5,
+          "f1": 0.6666666666666666,
+          "support": 14.0
+        },
+        {
+          "intent": "get_physical_card",
+          "precision": 0.8571428571428571,
+          "recall": 0.5454545454545454,
+          "f1": 0.6666666666666666,
+          "support": 11.0
+        },
+        {
+          "intent": "balance_not_updated_after_bank_transfer",
+          "precision": 0.7333333333333333,
+          "recall": 0.6470588235294118,
+          "f1": 0.6875,
+          "support": 17.0
+        }
+      ],
+      "top_confused_pairs": [
+        {
+          "true": "card_linking",
+          "predicted": "lost_or_stolen_card",
+          "count": 5
+        },
+        {
+          "true": "card_payment_wrong_exchange_rate",
+          "predicted": "exchange_rate",
+          "count": 5
+        },
+        {
+          "true": "direct_debit_payment_not_recognised",
+          "predicted": "card_payment_not_recognised",
+          "count": 5
+        },
+        {
+          "true": "pending_top_up",
+          "predicted": "top_up_failed",
+          "count": 5
+        },
+        {
+          "true": "transfer_not_received_by_recipient",
+          "predicted": "transfer_timing",
+          "count": 5
+        },
+        {
+          "true": "apple_pay_or_google_pay",
+          "predicted": "top_up_failed",
+          "count": 4
+        },
+        {
+          "true": "get_physical_card",
+          "predicted": "change_pin",
+          "count": 4
+        },
+        {
+          "true": "pending_transfer",
+          "predicted": "transfer_timing",
+          "count": 4
+        },
+        {
+          "true": "topping_up_by_card",
+          "predicted": "pending_top_up",
+          "count": 4
+        },
+        {
+          "true": "automatic_top_up",
+          "predicted": "topping_up_by_card",
+          "count": 3
         }
       ]
     }

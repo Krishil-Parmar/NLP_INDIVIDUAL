@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "timestamp_utc": "2026-11-22T08:59:41+00:00",
-    "git_commit": "e6692d11431d1592a99621cb242b320b2124bc74",
+    "timestamp_utc": "2026-11-22T10:00:00+00:00",
+    "git_commit": "2f9d479e58c24b6bd989855787b43783a0bc8109",
     "git_dirty": true,
     "seed": 0,
     "dataset_revisions": {
@@ -333,6 +333,32 @@
         },
         "fpr_at_tpr": {
           "mean": 0.017142857142857126,
+          "std": 0.0
+        }
+      }
+    },
+    "s4_claude-sonnet-4-6-fewshot": {
+      "seeds": [
+        0
+      ],
+      "n_in_scope": 1000,
+      "n_oos": 350,
+      "per_seed": [
+        {
+          "auroc": 0.9880714285714285,
+          "fpr_at_tpr": 0.02285714285714291
+        }
+      ],
+      "thresholds": {
+        "0": 0.0
+      },
+      "summary": {
+        "auroc": {
+          "mean": 0.9880714285714285,
+          "std": 0.0
+        },
+        "fpr_at_tpr": {
+          "mean": 0.02285714285714291,
           "std": 0.0
         }
       }

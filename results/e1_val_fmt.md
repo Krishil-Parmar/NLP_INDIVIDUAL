@@ -4,8 +4,8 @@ Written by `scripts/evaluate.py`. Do not edit by hand.
 
 ## Provenance
 
-- Generated (UTC): 2026-11-22T08:59:23+00:00
-- Git commit: `e6692d11431d1592a99621cb242b320b2124bc74`
+- Generated (UTC): 2026-11-22T09:59:42+00:00
+- Git commit: `2f9d479e58c24b6bd989855787b43783a0bc8109`
 - Seed: None
 - Python 3.12.4 on macOS-27.0-arm64-arm-64bit
 - Dataset `banking77` revision: `1846984189f2bc0ac51c6fc3a600fa9e1714e0c6`
@@ -26,6 +26,7 @@ Macro averages are primary (each of the 77 intents counts equally). Std is the s
 | s2_all-mpnet-base-v2 | 1 | 90.90 ± 0.00 | 91.67 ± 0.00 | 91.33 ± 0.00 | 91.06 ± 0.00 | 91.52 ± 0.00 | 90.90 ± 0.00 | 90.78 ± 0.00 |
 | s3_quora-distilroberta-base | 5 | 90.38 ± 0.26 | 91.19 ± 0.24 | 90.75 ± 0.21 | 90.58 ± 0.21 | 91.12 ± 0.26 | 90.38 ± 0.26 | 90.38 ± 0.26 |
 | s4_claude-sonnet-4-6 | 1 | 76.30 ± 0.00 | 79.71 ± 0.00 | 77.01 ± 0.00 | 76.06 ± 0.00 | 79.86 ± 0.00 | 76.30 ± 0.00 | 75.83 ± 0.00 |
+| s4_claude-sonnet-4-6-fewshot | 1 | 84.30 ± 0.00 | 87.00 ± 0.00 | 85.13 ± 0.00 | 84.91 ± 0.00 | 87.00 ± 0.00 | 84.30 ± 0.00 | 84.48 ± 0.00 |
 
 ## s0_tfidf
 
@@ -218,3 +219,35 @@ Most frequent confusions (true intent predicted as another, counts summed over s
 | card_payment_wrong_exchange_rate | exchange_rate | 5 |
 | unable_to_verify_identity | verify_my_identity | 5 |
 | verify_my_identity | why_verify_identity | 5 |
+
+## s4_claude-sonnet-4-6-fewshot
+
+10 intents with the lowest F1 (averaged over seeds):
+
+| intent | precision | recall | f1 | support |
+| --- | --- | --- | --- | --- |
+| topping_up_by_card | 0.400 | 0.400 | 0.400 | 10 |
+| pending_top_up | 0.500 | 0.533 | 0.516 | 15 |
+| transfer_timing | 0.423 | 0.846 | 0.564 | 13 |
+| transfer_not_received_by_recipient | 0.625 | 0.588 | 0.606 | 17 |
+| pending_transfer | 0.727 | 0.533 | 0.615 | 15 |
+| top_up_failed | 0.500 | 0.867 | 0.634 | 15 |
+| declined_transfer | 0.667 | 0.615 | 0.640 | 13 |
+| card_linking | 1.000 | 0.500 | 0.667 | 14 |
+| get_physical_card | 0.857 | 0.545 | 0.667 | 11 |
+| balance_not_updated_after_bank_transfer | 0.733 | 0.647 | 0.688 | 17 |
+
+Most frequent confusions (true intent predicted as another, counts summed over seeds):
+
+| true | predicted | count |
+| --- | --- | --- |
+| card_linking | lost_or_stolen_card | 5 |
+| card_payment_wrong_exchange_rate | exchange_rate | 5 |
+| direct_debit_payment_not_recognised | card_payment_not_recognised | 5 |
+| pending_top_up | top_up_failed | 5 |
+| transfer_not_received_by_recipient | transfer_timing | 5 |
+| apple_pay_or_google_pay | top_up_failed | 4 |
+| get_physical_card | change_pin | 4 |
+| pending_transfer | transfer_timing | 4 |
+| topping_up_by_card | pending_top_up | 4 |
+| automatic_top_up | topping_up_by_card | 3 |
