@@ -1,0 +1,193 @@
+rank,split,source,orig_index,text,given_label,suggested_label,given_label_prob,suggested_label_prob
+1,train,banking77_train,93,WHAT IS THE SOLUTION OF THIS PROBLEM,card_arrival,card_not_working,0.0,0.8491
+2,val,banking77_train,4428,"i am not a premium customer but i want a virtual card, how do i get it",disposable_card_limits,getting_virtual_card,0.0,0.9861
+3,val,banking77_train,4301,what happened to the money after i put in the wrong info and it got declined,topping_up_by_card,wrong_amount_of_cash_received,0.0,0.9334
+4,train,banking77_train,472,Does the fee for exchange change?,card_payment_wrong_exchange_rate,exchange_charge,0.0,0.9981
+5,train,banking77_train,5623,Why did my payment get declined?,declined_transfer,declined_card_payment,1e-04,0.9968
+6,train,banking77_train,5643,"I'm trying to move money from my account to elsewhere, but it's giving me an error message.",declined_transfer,beneficiary_not_allowed,1e-04,0.9974
+7,train,banking77_train,1490,Can you tell me the status of my new card?,lost_or_stolen_card,card_arrival,1e-04,0.9909
+8,train,banking77_train,1786,how many days processing new card?,contactless_not_working,card_delivery_estimate,1e-04,0.8466
+9,train,banking77_train,7623,What currencies can I use to top up my account?,transfer_into_account,supported_cards_and_currencies,0.0002,0.9964
+10,train,banking77_train,79,maximum how many days get the courier?,card_arrival,card_delivery_estimate,0.0003,0.9933
+11,train,banking77_train,6757,"I would like to make a purchase, however my card has been declined. I would like to ask the reason for this. The past two weeks, the card has been working fine.",reverted_card_payment?,declined_card_payment,0.0004,0.906
+12,train,banking77_train,1791,The terminal I paid at wouldn't take my card. Is something wrong?,contactless_not_working,declined_card_payment,0.0004,0.8298
+13,train,banking77_train,7532,Why was my transaction declined?,failed_transfer,declined_transfer,0.0005,0.9833
+14,train,banking77_train,4792,There is a payment I don't recognise!,direct_debit_payment_not_recognised,card_payment_not_recognised,0.0005,0.9994
+15,train,banking77_train,8913,What do I do when a charge has been made that I did not make?,cash_withdrawal_not_recognised,card_payment_not_recognised,0.0006,0.9633
+16,train,banking77_train,1912,Can third party fees affect a transfer?,top_up_by_bank_transfer_charge,transfer_fee_charged,0.0006,0.9989
+17,val,banking77_train,1675,Where do I find PIN for my card?,pin_blocked,get_physical_card,0.0006,0.995
+18,train,banking77_train,5304,My cards were stolen,lost_or_stolen_phone,lost_or_stolen_card,0.0009,0.9875
+19,train,banking77_train,8597,Looks like my top-up has been cancelled,top_up_failed,top_up_reverted,0.0011,0.988
+20,train,banking77_train,9734,What services can I use to top up?,apple_pay_or_google_pay,top_up_by_cash_or_cheque,0.0011,0.9026
+21,train,banking77_train,6755,The card payment didn't work,reverted_card_payment?,declined_card_payment,0.0011,0.9969
+22,train,banking77_train,3864,How to verify my identity,why_verify_identity,verify_my_identity,0.0011,0.969
+23,train,banking77_train,8166,Can I revive a physical card.,order_physical_card,card_linking,0.0013,0.9562
+24,train,banking77_train,9034,Please provide currency exchange rates,exchange_charge,exchange_rate,0.0014,0.9603
+25,train,banking77_train,7584,Why can I not transfer money into my account?,transfer_into_account,beneficiary_not_allowed,0.0014,0.9847
+26,train,banking77_train,644,What is this fee debit on my account?,extra_charge_on_statement,direct_debit_payment_not_recognised,0.0015,0.986
+27,train,banking77_train,9842,im worried about fraud how do you protect my account,verify_my_identity,compromised_card,0.0017,0.8673
+28,train,banking77_train,8302,I believe my exchange rate is incorrect,wrong_exchange_rate_for_cash_withdrawal,card_payment_wrong_exchange_rate,0.0022,0.9975
+29,train,banking77_train,7446,I was unable to transfer money from my account.,failed_transfer,beneficiary_not_allowed,0.0022,0.9906
+30,train,banking77_train,5653,"please help me with this transfer, for some reason i can't transfer to a cryptocurency account",declined_transfer,beneficiary_not_allowed,0.0023,0.9959
+31,train,banking77_train,5652,Why does my card continually get declined? I thought I had enough money in there but I've tried several times now and it still isn't working.,declined_transfer,declined_card_payment,0.0025,0.8652
+32,train,banking77_train,1036,How long will I have to wait for my new card?,card_delivery_estimate,card_arrival,0.0025,0.9876
+33,train,banking77_train,8297,The amount of cash I requested to withdrawal did not match what I received when exchanged,wrong_exchange_rate_for_cash_withdrawal,wrong_amount_of_cash_received,0.0026,0.9888
+34,val,banking77_train,2969,Can I use this app for any currency?,supported_cards_and_currencies,exchange_via_app,0.0026,0.9132
+35,train,banking77_train,797,My account says I have money but I withdrew it in cash.,pending_cash_withdrawal,cash_withdrawal_not_recognised,0.0027,0.9893
+36,train,banking77_train,5586,What went wrong with my transfer?,declined_transfer,failed_transfer,0.0027,0.996
+37,train,banking77_train,1156,In what increments can I top-up my card?,automatic_top_up,top_up_limits,0.003,0.9521
+38,train,banking77_train,1931,i put money on my card and i dont see it on the balance,pending_top_up,topping_up_by_card,0.0035,0.9072
+39,train,banking77_train,9825,Can I use my social security card as a form of identity?,verify_my_identity,why_verify_identity,0.0037,0.94
+40,train,banking77_train,4471,There are charges on my card that I haven't purchased.,compromised_card,card_payment_not_recognised,0.0037,0.927
+41,train,banking77_train,6798,Card payment has be declined.,reverted_card_payment?,declined_card_payment,0.0043,0.9843
+42,train,banking77_train,9481,"Why did I get charged a fee, I thought it was free?",cash_withdrawal_charge,card_payment_fee_charged,0.0044,0.992
+43,val,banking77_train,3223,I refilled my account balance but got an error message.,top_up_reverted,beneficiary_not_allowed,0.0046,0.9189
+44,train,banking77_train,6723,"I tried to use my debit card, but the payment did not work.",reverted_card_payment?,declined_card_payment,0.0049,0.9081
+45,train,banking77_train,6088,Can you explain why my payment is still pending?,pending_transfer,pending_card_payment,0.0053,0.9936
+46,val,banking77_train,6943,How can I reset my PIN?,change_pin,pin_blocked,0.0054,0.9865
+47,train,banking77_train,8567,I didn't see the money I added to my card.,top_up_failed,topping_up_by_card,0.0054,0.9059
+48,val,banking77_train,6033,I have not seen any changes in my account balance(s) after making a transfer.,pending_transfer,balance_not_updated_after_bank_transfer,0.0063,0.6675
+49,val,banking77_train,8666,How long does it take for a transfer to post,balance_not_updated_after_bank_transfer,pending_transfer,0.0071,0.9297
+50,train,banking77_train,5036,What was the cause for my card to be declined?,declined_cash_withdrawal,declined_card_payment,0.0072,0.9688
+51,train,banking77_train,5995,How long does it take for a money transfer to show up?,pending_transfer,balance_not_updated_after_bank_transfer,0.0076,0.9251
+52,train,banking77_train,3263,My automatic top-up was unsuccessful,top_up_reverted,top_up_failed,0.0082,0.9731
+53,train,banking77_train,5923,Why am I being declined?,declined_card_payment,declined_cash_withdrawal,0.0082,0.9583
+54,train,banking77_train,8412,how do the cards work?,get_disposable_virtual_card,order_physical_card,0.0082,0.8658
+55,train,banking77_train,6073,Money was transferred to me and I am unable to see it,pending_transfer,balance_not_updated_after_bank_transfer,0.0083,0.7993
+56,train,banking77_train,5268,Can you tell me what i steps i should take since my card was stolen?,lost_or_stolen_phone,lost_or_stolen_card,0.0091,0.8936
+57,train,banking77_train,7504,I couldnt transfer money from my account.,failed_transfer,beneficiary_not_allowed,0.0097,0.9739
+58,train,banking77_train,118,Could you send me and up date on the arrival of my card?,card_arrival,card_delivery_estimate,0.01,0.9836
+59,train,banking77_train,75,How long will it take for me to get my card?,card_arrival,card_delivery_estimate,0.0106,0.9883
+60,train,banking77_train,8557,I requested for a top-up but it has not reflected,top_up_failed,pending_top_up,0.0108,0.9594
+61,train,banking77_train,3941,What do I have to do to prove my identity?,unable_to_verify_identity,verify_my_identity,0.0109,0.9881
+62,train,banking77_train,3955,I can get my identification verified.,unable_to_verify_identity,why_verify_identity,0.0109,0.4958
+63,train,banking77_train,8210,Why is the fee for taking money out so high? I feel I was overcharged and I would have never used this ATM if I would have known ahead of time.,wrong_exchange_rate_for_cash_withdrawal,cash_withdrawal_charge,0.0113,0.9876
+64,train,banking77_train,1304,What's wrong with my card? The clerk at the grocery store said it was declined.,card_not_working,declined_card_payment,0.0117,0.9205
+65,train,banking77_train,5160,When will the transaction go through?,pending_card_payment,transfer_not_received_by_recipient,0.0121,0.9527
+66,train,banking77_train,3275,What happened to the money that I deposited?,top_up_reverted,balance_not_updated_after_cheque_or_cash_deposit,0.0121,0.9744
+67,train,banking77_train,6852,I am not able to make a purchase because there is an issue with my card,reverted_card_payment?,card_not_working,0.0122,0.9257
+68,val,banking77_train,557,"When I was traveling abroad, the exchange rate was applied wrong.",card_payment_wrong_exchange_rate,wrong_exchange_rate_for_cash_withdrawal,0.0131,0.9864
+69,train,banking77_train,9815,If I don't have all my documents can they still verify my identity?,verify_my_identity,why_verify_identity,0.0137,0.9563
+70,train,banking77_train,2926,"I want to deposit funds, what payments are accepted?",supported_cards_and_currencies,top_up_by_cash_or_cheque,0.0138,0.835
+71,train,banking77_train,2036,The top-up is broken.,pending_top_up,top_up_failed,0.0141,0.9656
+72,train,banking77_train,7323,I was charge a fee that I wasn't told about,transfer_fee_charged,card_payment_fee_charged,0.0156,0.9823
+73,val,banking77_train,2735,When are you going to transfer the money?,transfer_not_received_by_recipient,transfer_timing,0.0172,0.9365
+74,train,banking77_train,605,Why is there an extra fee charged?,extra_charge_on_statement,card_payment_fee_charged,0.0178,0.9084
+75,train,banking77_train,7299,Does it cost anything to buy something from another country? Like is there going to be hidden transfer fees or currency conversion fees?,transfer_fee_charged,exchange_charge,0.0178,0.9789
+76,train,banking77_train,8780,When will my transfer process?,balance_not_updated_after_bank_transfer,pending_transfer,0.0179,0.8998
+77,train,banking77_train,2725,I tried to transfer some money and it hasn't done it yet - what's going on?,transfer_not_received_by_recipient,failed_transfer,0.019,0.914
+78,train,banking77_train,5907,A shop I go to didn't let me pay.,declined_card_payment,card_payment_fee_charged,0.0197,0.9135
+79,train,banking77_train,3204,What is the status of my top up?,top_up_reverted,pending_top_up,0.0197,0.9366
+80,train,banking77_train,3282,I am unable to use my top-up on the app. Could you explain this to me?,top_up_reverted,top_up_failed,0.0198,0.9635
+81,train,banking77_train,3160,Has my top-up gone through?,top_up_reverted,pending_top_up,0.0199,0.9766
+82,train,banking77_train,6043,How long will the transfer take?,pending_transfer,transfer_timing,0.02,0.9036
+83,train,banking77_train,8258,Is there a fee associated with using foreign exchange ATMs?,wrong_exchange_rate_for_cash_withdrawal,exchange_charge,0.0207,0.9627
+84,val,banking77_train,8036,I tried to deposit a cheque into my account and it is not letting me.,top_up_by_cash_or_cheque,balance_not_updated_after_cheque_or_cash_deposit,0.0208,0.9684
+85,train,banking77_train,5091,how come i was declined,declined_cash_withdrawal,declined_card_payment,0.0211,0.9206
+86,train,banking77_train,2041,I added money to the card but the transaction didn't go through,pending_top_up,top_up_failed,0.0229,0.9227
+87,train,banking77_train,1983,Is my top up not working?,pending_top_up,top_up_failed,0.0229,0.9369
+88,val,banking77_train,5567,How do I make my transfer go through,declined_transfer,failed_transfer,0.023,0.814
+89,train,banking77_train,8256,Why is the exchange rate different than expected on my transaction?,wrong_exchange_rate_for_cash_withdrawal,card_payment_wrong_exchange_rate,0.0246,0.9751
+90,train,banking77_train,5560,I have a problem with a transfer. It didn't work. Can you tell me why?,declined_transfer,failed_transfer,0.0247,0.9631
+91,train,banking77_train,2804,My transfer isn't in,transfer_not_received_by_recipient,failed_transfer,0.0263,0.9335
+92,train,banking77_train,3262,I topped up but my money is not showing. Why is that?,top_up_reverted,pending_top_up,0.0272,0.8411
+93,train,banking77_train,6864,Why wasn't my payment accepted by the app,reverted_card_payment?,declined_card_payment,0.0277,0.8911
+94,train,banking77_train,8726,My transfer is pending too long.,balance_not_updated_after_bank_transfer,pending_transfer,0.0279,0.9094
+95,val,banking77_train,2062,What is wrong with my top-up?,pending_top_up,top_up_failed,0.0279,0.9663
+96,val,banking77_train,7035,what are the reasons why you would not be able to process a payment,beneficiary_not_allowed,declined_card_payment,0.0287,0.8247
+97,train,banking77_train,8340,Whats wrong with my currency exchange?,wrong_exchange_rate_for_cash_withdrawal,card_payment_wrong_exchange_rate,0.0291,0.9597
+98,train,banking77_train,6640,Can you please tell me how long it takes for the transfer to be available.,transfer_timing,pending_transfer,0.0292,0.8803
+99,train,banking77_train,1997,My money hasn't been deposited yet. When will it be?,pending_top_up,balance_not_updated_after_cheque_or_cash_deposit,0.0294,0.9552
+100,train,banking77_train,4765,I have an unknown charge.,direct_debit_payment_not_recognised,card_payment_not_recognised,0.0301,0.9475
+101,train,banking77_train,3857,how do I speed up identity verification?,why_verify_identity,verify_my_identity,0.0301,0.9473
+102,train,banking77_train,4416,Where can I use a disposable card?,disposable_card_limits,get_disposable_virtual_card,0.0304,0.9596
+103,train,banking77_train,9042,"If someone in a different country sends me money, do I have to pay a fee?",exchange_charge,transfer_fee_charged,0.0304,0.9166
+104,train,banking77_train,869,My balance is not what I thought it was following an ATM withdrawal,pending_cash_withdrawal,wrong_amount_of_cash_received,0.0308,0.9167
+105,train,banking77_train,2808,I haven't received money from a transfer?,transfer_not_received_by_recipient,balance_not_updated_after_bank_transfer,0.0318,0.6326
+106,val,banking77_train,8216,Why did my exchange rate change?,wrong_exchange_rate_for_cash_withdrawal,card_payment_wrong_exchange_rate,0.0322,0.9409
+107,val,banking77_train,1777,I need a new PIN number.,pin_blocked,change_pin,0.0323,0.9582
+108,train,banking77_train,2178,Is it possible for a transaction to be cancelled?,cancel_transfer,reverted_card_payment?,0.0332,0.9337
+109,train,banking77_train,5198,Why didn't my payment process,pending_card_payment,declined_card_payment,0.0334,0.871
+110,train,banking77_train,4519,My card was stolen and used to make several purchases. Please freeze my card so no one can use it.,compromised_card,lost_or_stolen_card,0.0344,0.9132
+111,val,banking77_train,2976,"If I want to topup by card, how do I do it?",supported_cards_and_currencies,topping_up_by_card,0.0348,0.9352
+112,train,banking77_train,7942,How can I put more money into my account?,top_up_by_cash_or_cheque,transfer_into_account,0.0348,0.9515
+113,train,banking77_train,8708,I can still see money in my account after making a payment,balance_not_updated_after_bank_transfer,reverted_card_payment?,0.0354,0.9055
+114,train,banking77_train,1505,"My wallet was stolen, along with my cards. How do I put a freeze on my cards and order a new one?",lost_or_stolen_card,compromised_card,0.0379,0.9047
+115,train,banking77_train,833,Explain pending transactions.,pending_cash_withdrawal,pending_transfer,0.0392,0.8595
+116,train,banking77_train,3615,how do i dispute a payment I didnt make,card_payment_not_recognised,direct_debit_payment_not_recognised,0.0411,0.906
+117,val,banking77_train,6542,Why do I need to verify my funds?,verify_source_of_funds,why_verify_identity,0.0411,0.947
+118,train,banking77_train,1129,How do I access the option to top up?,automatic_top_up,topping_up_by_card,0.0419,0.8852
+119,train,banking77_train,1010,Can I get my card fast tracked?,card_delivery_estimate,card_arrival,0.0434,0.9439
+120,train,banking77_train,8029,What form of payments can I use for topping up?,top_up_by_cash_or_cheque,supported_cards_and_currencies,0.0444,0.9356
+121,train,banking77_train,2628,Why did I get charged extra?,card_payment_fee_charged,extra_charge_on_statement,0.0444,0.9282
+122,val,banking77_train,4532,How do I order a replacement for stolen card?,compromised_card,lost_or_stolen_card,0.0445,0.8495
+123,train,banking77_train,3993,What do I need to bring for identification?,unable_to_verify_identity,verify_my_identity,0.0449,0.9501
+124,train,banking77_train,3785,which identity details are required,why_verify_identity,verify_my_identity,0.0451,0.9534
+125,train,banking77_train,5860,The payment for the card did not go through,declined_card_payment,reverted_card_payment?,0.0454,0.9463
+126,train,banking77_train,1971,What happened to my Top-Up? It's not reflected.,pending_top_up,top_up_reverted,0.0455,0.9161
+127,train,banking77_train,2512,I received a fee I should not have.,card_payment_fee_charged,transfer_fee_charged,0.0456,0.8781
+128,train,banking77_train,7099,why did my account decline a incoming transfer,beneficiary_not_allowed,declined_transfer,0.0461,0.9356
+129,train,banking77_train,6862,Why have I received a rebate for my payment after a week?,reverted_card_payment?,direct_debit_payment_not_recognised,0.0461,0.9254
+130,val,banking77_train,3195,Why won't my top up go through?,top_up_reverted,pending_top_up,0.0465,0.7395
+131,train,banking77_train,7087,Why was my transfer stopped ?,beneficiary_not_allowed,failed_transfer,0.0468,0.9478
+132,train,banking77_train,2798,where has my transferred money gone?,transfer_not_received_by_recipient,balance_not_updated_after_bank_transfer,0.0473,0.8452
+133,train,banking77_train,8308,"Help me! When I was abroad, the exchange rate was wrong.",wrong_exchange_rate_for_cash_withdrawal,card_payment_wrong_exchange_rate,0.0483,0.9311
+134,train,banking77_train,4538,My wallet was stolen and all my credit cards were in there. HELP?!!?,compromised_card,lost_or_stolen_card,0.0498,0.4901
+135,train,banking77_train,3189,Why didn't my top up work?,top_up_reverted,top_up_failed,0.052,0.9439
+136,train,banking77_train,6728,I didn't cancel my card payment.,reverted_card_payment?,card_payment_not_recognised,0.0523,0.7399
+137,train,banking77_train,8422,can i get a virtual card,get_disposable_virtual_card,getting_virtual_card,0.0532,0.9368
+138,train,banking77_train,6008,My payment shows that it is pending will I be charged more money?,pending_transfer,pending_card_payment,0.0538,0.9266
+139,train,banking77_train,2085,How do i cancel a charge?,cancel_transfer,request_refund,0.057,0.9273
+140,train,banking77_train,3251,"I'm having an issue with transaction. I topped up my account and saw it went through, but that was a few days ago and the money isn't in my account any more. What's up with that?",top_up_reverted,transfer_not_received_by_recipient,0.0572,0.8053
+141,train,banking77_train,6809,My payment has not been accepted.,reverted_card_payment?,declined_card_payment,0.059,0.9172
+142,train,banking77_train,7121,"I have tried to submit a transfer a couple of times now, and for some reason, it continues to be unsuccessful. Do you know why this may be?",beneficiary_not_allowed,failed_transfer,0.0616,0.7843
+143,val,banking77_train,1084,I placed my order a week ago. Is it ok that my card isn't here yet?,card_delivery_estimate,card_arrival,0.0632,0.9344
+144,train,banking77_train,5771,Hi I'm waiting for a refund for an item I bought. I have contacted the merchant directly but had nothing back. Can you tell me whether or not you are able to refund me for the item?,Refund_not_showing_up,request_refund,0.0649,0.9329
+145,train,banking77_train,9321,I just got my card and cannot get it to work.,activate_my_card,card_not_working,0.0651,0.841
+146,train,banking77_train,1978,Top-up is loaded into the card and no update.,pending_top_up,topping_up_by_card,0.0683,0.6107
+147,train,banking77_train,8132,how much does a card cost and why do you charge me,order_physical_card,card_payment_fee_charged,0.0696,0.9086
+148,train,banking77_train,7209,How much do I have to pay if I want to transfer money?,transfer_fee_charged,top_up_by_bank_transfer_charge,0.0699,0.8921
+149,train,banking77_train,8818,I believe my card has been compromised as there are funds showing that I did not receive.,cash_withdrawal_not_recognised,compromised_card,0.0726,0.8655
+150,train,banking77_train,8292,My rate is not right when I used my card in a different country's money.,wrong_exchange_rate_for_cash_withdrawal,card_payment_wrong_exchange_rate,0.0732,0.9211
+151,train,banking77_train,6721,Money transfer help? How long?,transfer_timing,transfer_not_received_by_recipient,0.074,0.8481
+152,train,banking77_train,5985,Card payment didn't go through.,declined_card_payment,reverted_card_payment?,0.0799,0.8926
+153,val,banking77_train,1849,why do you charge for transfers?,top_up_by_bank_transfer_charge,transfer_fee_charged,0.0799,0.8828
+154,train,banking77_train,8739,Where is the transfer to my account that I made?,balance_not_updated_after_bank_transfer,transfer_timing,0.0804,0.9031
+155,train,banking77_train,7481,I attemped a transfer and it didn't go through.,failed_transfer,declined_transfer,0.086,0.9018
+156,train,banking77_train,9818,Do I need any kind of proof for the identity check?,verify_my_identity,why_verify_identity,0.0877,0.9039
+157,train,banking77_train,8764,I transferred some money a couple days ago but haven't received it yet. How long should I expect to wait?,balance_not_updated_after_bank_transfer,transfer_not_received_by_recipient,0.0898,0.737
+158,train,banking77_train,8494,I got my card a few days ago but am unable to top up. I'm thinking about closing my account because of this. What is going on?,top_up_failed,pending_top_up,0.0901,0.698
+159,val,banking77_train,5,When did you send me my new card?,card_arrival,card_delivery_estimate,0.1029,0.7884
+160,train,banking77_train,58,I know I'm getting a new card but would like know when I can expect to receive it.,card_arrival,card_delivery_estimate,0.1042,0.8632
+161,train,banking77_train,3637,I think my card is being used by someone else to make purchases that I didn't authorize! I checked my account and see that there have been quite a few purchases over the last two days that I have no idea where they came from. We need to freeze my card now! And I need to find a way to get my money back.,card_payment_not_recognised,compromised_card,0.1047,0.8739
+162,train,banking77_train,8765,How long does it take for money to reach my account?,balance_not_updated_after_bank_transfer,transfer_timing,0.1055,0.89
+163,train,banking77_train,186,If I have a credit card with you how I get set up to link to it?,card_linking,topping_up_by_card,0.1069,0.8539
+164,train,banking77_train,5936,I was so embarrassed. Why didn't my payment clear?,declined_card_payment,reverted_card_payment?,0.1081,0.4798
+165,val,banking77_train,6856,What happens if a merchant doesn't accept you payment?,reverted_card_payment?,declined_card_payment,0.1104,0.8347
+166,train,banking77_train,8682,Where is the transfer to my account?,balance_not_updated_after_bank_transfer,transfer_timing,0.1135,0.7509
+167,train,banking77_train,3300,Why did my top-up not get approved this time?,top_up_reverted,top_up_failed,0.1155,0.8269
+168,train,banking77_train,1024,I'm worried my card might be lost in the mail? How long does it usually take to arrive?,card_delivery_estimate,card_arrival,0.1211,0.8677
+169,val,banking77_train,5584,My recent transfer didn't go through - why not?,declined_transfer,failed_transfer,0.1216,0.7454
+170,train,banking77_train,9154,What options do I have when topping up a US card?,top_up_by_card_charge,supported_cards_and_currencies,0.1238,0.8663
+171,val,banking77_train,8337,"On my last trip, I received the incorrect exchange rate.",wrong_exchange_rate_for_cash_withdrawal,card_payment_wrong_exchange_rate,0.1266,0.872
+172,train,banking77_train,9776,why must I prove ID,verify_my_identity,why_verify_identity,0.1303,0.8465
+173,train,banking77_train,254,"I found my card that I thought I had lost, I need to reactive it, please help.",card_linking,lost_or_stolen_card,0.1327,0.8552
+174,train,banking77_train,3249,I topped up but the app declined it,top_up_reverted,top_up_failed,0.134,0.8572
+175,train,banking77_train,5667,"Why are all my transfers failing? I have the details right and they won't complete. I've been trying all day and they still won't go through, this is URGENT, please help.",declined_transfer,failed_transfer,0.1356,0.8632
+176,train,banking77_train,7375,Do I need to convert my currency from GBP before transferring?,receiving_money,balance_not_updated_after_bank_transfer,0.149,0.7784
+177,val,banking77_train,3795,what I need to verify my account,why_verify_identity,verify_my_identity,0.1493,0.8327
+178,train,banking77_train,3184,The app declined my top up. What did I do wrong?,top_up_reverted,top_up_failed,0.1504,0.8481
+179,train,banking77_train,8680,Why hasn't my money transfer shown up yet?,balance_not_updated_after_bank_transfer,pending_transfer,0.1507,0.7254
+180,train,banking77_train,7029,Why can I not do a transfer,beneficiary_not_allowed,failed_transfer,0.159,0.8059
+181,train,banking77_train,1090,Can you tell me how long it takes for a new card to come?,card_delivery_estimate,card_arrival,0.1593,0.7969
+182,train,banking77_train,5801,"Three months ago I bought a new house for my cat, fluffy. Unfortunately Fluffy was not a fan of the house and it had to be returned to Pet Smart last week. They said they have sent a refund but it's not there, can you tell me where it is?",Refund_not_showing_up,transfer_not_received_by_recipient,0.1597,0.8221
+183,val,banking77_train,1945,I topped up but it isn't in my account,pending_top_up,topping_up_by_card,0.1599,0.8186
+184,val,banking77_train,2762,I transferred some money but it is not here yet,transfer_not_received_by_recipient,balance_not_updated_after_bank_transfer,0.1603,0.8115
+185,train,banking77_train,7500,How can I find out why my transfer didn't go through?,failed_transfer,declined_transfer,0.1649,0.8208
+186,train,banking77_train,8704,"Although I transferred some money, it has not as of yet, arrived.",balance_not_updated_after_bank_transfer,transfer_not_received_by_recipient,0.166,0.8075
+187,train,banking77_train,8736,I transferred some money but it hasn't arrived yet,balance_not_updated_after_bank_transfer,transfer_not_received_by_recipient,0.1988,0.7962
+188,train,banking77_train,2711,I transferred money and it didn't get there.,transfer_not_received_by_recipient,failed_transfer,0.201,0.662
+189,train,banking77_train,6087,What is the average pending time for a transaction?,pending_transfer,pending_card_payment,0.2116,0.6722
+190,train,banking77_train,1969,My account is new why can I not top up,pending_top_up,top_up_failed,0.2133,0.713
+191,train,banking77_train,3269,Why did my top-up not go through?,top_up_reverted,top_up_failed,0.2239,0.6786
+192,train,banking77_train,3226,"My top-up was cancelled, could my bank be the problem?",top_up_reverted,top_up_failed,0.2661,0.7269
