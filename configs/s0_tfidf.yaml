@@ -1,0 +1,15 @@
+# S0: TF-IDF + logistic regression (README section 7).
+# The grid is searched on validation macro-F1. Test is never used here.
+
+system_tag: s0_tfidf
+seeds: [0, 1, 2, 3, 4]
+
+vectoriser:
+  lowercase: true       # the only place in the project where text is lowercased (README 6.2)
+  sublinear_tf: true    # use 1 + log(count) instead of raw counts
+
+grid:
+  ngram_range: [[1, 1], [1, 2]]
+  C: [1, 10, 100]       # inverse regularisation strength: bigger C = weaker regularisation
+
+max_iter: 2000

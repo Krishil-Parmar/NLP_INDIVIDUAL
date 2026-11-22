@@ -26,6 +26,7 @@ from transformers import AutoTokenizer
 from router import data
 from router import preprocess as pp
 from router.provenance import metadata_markdown, run_metadata
+from router.tables import md_table
 
 # Columns written to every split file, in this order.
 COLUMNS = ["text", "label", "label_id", "orig_index", "source"]
@@ -35,15 +36,6 @@ def check(condition: bool, message: str) -> None:
     """Stop the script with a clear message if an invariant does not hold."""
     if not condition:
         sys.exit(f"CHECK FAILED: {message}")
-
-
-def md_table(rows: list[dict]) -> str:
-    """Turn a list of dicts (same keys) into a markdown table."""
-    headers = list(rows[0].keys())
-    lines = ["| " + " | ".join(headers) + " |", "|" + " --- |" * len(headers)]
-    for row in rows:
-        lines.append("| " + " | ".join(str(row[h]) for h in headers) + " |")
-    return "\n".join(lines)
 
 
 def main(force: bool = False) -> None:

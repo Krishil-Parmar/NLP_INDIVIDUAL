@@ -1,0 +1,31 @@
+# S1: fine-tuned encoder with a softmax head (README section 7).
+# Hyperparameters are fixed standard values, not tuned (README section 5).
+
+seeds: [0, 1, 2, 3, 4]
+
+# Candidates compared on seed 0 with the selection rule below.
+candidates:
+  - distilbert/distilroberta-base
+  - microsoft/deberta-v3-small
+
+# Selection rule, fixed before any run (decision log, 22 Nov 2026):
+# higher validation macro-F1 wins if the gap is more than `min_f1_gap` points,
+# otherwise the lower CPU p95 latency at batch size 1 wins.
+selection:
+  min_f1_gap: 0.5
+
+# Chosen checkpoint. Filled in by hand after the selection run, from
+# results/s1_selection.json. Empty means "not selected yet".
+checkpoint: ""
+
+training:
+  learning_rate: 5.0e-5
+  weight_decay: 0.01
+  batch_size: 32
+  epochs: 5
+  warmup_fraction: 0.1   # share of steps where the learning rate ramps up from 0
+  max_grad_norm: 1.0     # gradient clipping
+  eval_batch_size: 64
+
+# Notebook FAST mode on a machine with no saved checkpoint: train this many steps only.
+fast_steps: 300

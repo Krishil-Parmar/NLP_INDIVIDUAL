@@ -11,3 +11,6 @@ checkpoints/
 
 # macOS
 .DS_Store
+
+# Summary build intermediates (pandoc / LaTeX)
+report/build/
