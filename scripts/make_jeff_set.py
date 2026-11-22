@@ -42,6 +42,13 @@ def check_report(agreement: dict, meta: dict) -> str:
         md_table(per_label),
         "## Disagreements (for the owner's review)",
         md_table(agreement["disagreements"]) if agreement["disagreements"] else "None.",
+        "## Marked unsure by the checker (for the owner's review)",
+        "The checker gave a label but thought a careful reader could pick another.",
+        md_table(agreement["unsure"]) if agreement["unsure"] else "None.",
+        "## Caveat",
+        "Both agents are Claude models working from the same definitions, so agreement shows the labels are clear to a model reader. "
+        "It does not show that real users write this clearly: the writer was asked for one clear label per message, "
+        "so the set is likely cleaner than real traffic.",
     ]
     return "\n\n".join(parts) + "\n"
 

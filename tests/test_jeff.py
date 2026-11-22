@@ -47,7 +47,9 @@ def test_label_agreement_counts_and_lists_disagreements():
     queries = jeff.assign_splits(toy_written(), support_per_intent=2, seed=0)
     check = queries[["id"]].assign(label=queries["intent"])
     check.loc[check["id"] == 1, "label"] = "upcoming_bills"
+    check["sure"] = ["no" if i == 9 else "yes" for i in check["id"]]
     agreement = jeff.label_agreement(queries, check)
+    assert [d["id"] for d in agreement["unsure"]] == [9]  # listed although the labels agree
     assert (agreement["n_queries"], agreement["agree"]) == (10, 9)
     assert agreement["per_label"]["safe_to_spend"] == {"agree": 3, "n": 4}
     assert [(d["id"], d["writer_label"], d["checker_label"]) for d in agreement["disagreements"]] == [

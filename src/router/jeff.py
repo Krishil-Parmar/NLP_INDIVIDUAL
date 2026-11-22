@@ -64,18 +64,21 @@ def assign_splits(df: pd.DataFrame, support_per_intent: int, seed: int) -> pd.Da
 def label_agreement(queries: pd.DataFrame, check: pd.DataFrame) -> dict:
     """How often a blind checker's label matches the writer's, by query id.
 
-    queries has columns id, intent (the writer's label); check has id, label.
+    queries has columns id, intent (the writer's label); check has id, label and
+    optionally sure ("yes" or "no": whether the checker thought a careful reader
+    could pick another label). Unsure items are listed even when the labels agree.
     """
-    merged = queries[["id", "text", "intent", "split"]].merge(check[["id", "label"]], on="id", how="inner")
+    check = check if "sure" in check.columns else check.assign(sure="yes")
+    merged = queries[["id", "text", "intent", "split"]].merge(check[["id", "label", "sure"]], on="id", how="inner")
     if len(merged) != len(queries):
         raise ValueError(f"the check covers {len(merged)} of {len(queries)} queries")
     same = merged["intent"] == merged["label"]
     per_label = merged.assign(same=same).groupby("intent")["same"].agg(["sum", "count"])
+    columns = {"intent": "writer_label", "label": "checker_label"}
     return {
         "n_queries": len(merged),
         "agree": int(same.sum()),
         "per_label": {k: {"agree": int(r["sum"]), "n": int(r["count"])} for k, r in per_label.iterrows()},
-        "disagreements": merged.loc[~same, ["id", "split", "text", "intent", "label"]]
-                               .rename(columns={"intent": "writer_label", "label": "checker_label"})
-                               .to_dict("records"),
+        "disagreements": merged.loc[~same, ["id", "split", "text", "intent", "label"]].rename(columns=columns).to_dict("records"),
+        "unsure": merged.loc[merged["sure"] == "no", ["id", "split", "text", "intent", "label"]].rename(columns=columns).to_dict("records"),
     }
