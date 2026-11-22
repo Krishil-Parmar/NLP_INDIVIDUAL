@@ -1,0 +1,82 @@
+# The Jeff set (README section 6.1): intents that map to the assistant's real tools.
+#
+# Source: the tool belt of Jeff, the assistant in the owner's Velm app
+# (services/backend/src/backend/adapters/jeff.py, JEFF_TOOL_SPECS, read 23 Nov 2026).
+# 12 intents map to one tool each. Two (safe_to_spend, upcoming_bills) are answered
+# from Jeff's state block with no tool call, and month_spending covers both the
+# current month (state block) and past months (get_month).
+#
+# The descriptions below are the only definition of each intent. The agent that
+# wrote the queries, the agent that checked them blind, and S4's Jeff prompt all
+# see this same text.
+
+file: data/jeff/jeff_queries.csv
+written_file: data/jeff/jeff_written.csv   # the writer's output, before splits
+queries_per_intent: 20
+support_per_intent: 10   # the rest are test
+oos_unrelated: 15
+oos_finance_adjacent: 25
+split_seed: 0
+
+intents:
+  - name: month_spending
+    tool: get_month (past months) or the state block (this month)
+    description: How much the user spent in one calendar month, in total, per category or against their budget.
+    not_this: Several months as a series (category_trend). A window that is not one calendar month (cashflow_overview).
+  - name: find_transactions
+    tool: get_transactions
+    description: Show individual purchases, for example at one merchant, the biggest ones, what made up a category total, or what a particular charge was.
+    not_this: Totals without the individual purchases (month_spending). Disputing or reversing a charge (out of scope).
+  - name: cashflow_overview
+    tool: get_cashflow
+    description: Money in versus money out over a period other than one calendar month (a quarter, the financial year, the last 90 days, since a date), where the money goes, or whether they are saving anything.
+    not_this: Two periods side by side (compare_periods). One calendar month (month_spending).
+  - name: compare_periods
+    tool: compare_periods
+    description: Their overall position in two time windows side by side, for example this year against last year, this quarter against last quarter, or before and after a change such as a new job.
+    not_this: One spending category tracked month by month (category_trend).
+  - name: category_trend
+    tool: get_trend
+    description: How spending in one category, or in total, has moved month by month over several months.
+    not_this: A single month (month_spending). Overall income and savings across two windows (compare_periods).
+  - name: recurring_bills
+    tool: get_recurring
+    description: The full list of their subscriptions and regular bills, or how much they are committed to every month.
+    not_this: Which bills are due soon (upcoming_bills).
+  - name: upcoming_bills
+    tool: state block (flags)
+    description: Which bills or payments are coming up soon, for example this week or before payday, and when a particular bill is due.
+    not_this: The full list of every subscription (recurring_bills).
+  - name: safe_to_spend
+    tool: state block (safe-to-spend)
+    description: How much they can safely spend today or until payday, given their bills and budget.
+    not_this: Whether one specific purchase is affordable (afford_purchase).
+  - name: afford_purchase
+    tool: simulate_spend
+    description: Whether they can afford one specific one-off purchase, or what buying it would do to their budget.
+    not_this: A repeating monthly amount (simulate_monthly_plan).
+  - name: simulate_monthly_plan
+    tool: simulate_plan
+    description: What a repeating monthly or fortnightly commitment would do over time, for example putting an extra amount away or paying extra off a loan every month.
+    not_this: Where they are heading with no change (project_savings). A one-off purchase (afford_purchase).
+  - name: project_savings
+    tool: project_cashflow
+    description: Where their money is heading if nothing changes, for example how much they will have saved by a date or in some months.
+    not_this: A what-if with a new repeating commitment (simulate_monthly_plan). Progress on a named goal (savings_goals).
+  - name: savings_goals
+    tool: get_goals
+    description: Their own savings goals and how they are tracking against them.
+    not_this: A general forecast of their savings (project_savings).
+  - name: refresh_data
+    tool: refresh_data
+    description: Asking for their bank data to be refreshed or re-synced because it looks out of date or a recent transaction is missing.
+    not_this: Problems with the bank itself, such as a failed transfer (out of scope).
+  - name: remember_fact
+    tool: save_fact
+    description: Telling the assistant a lasting fact about their money to remember, such as how often they are paid or a change in rent.
+    not_this: A question that needs an answer now.
+
+oos:
+  label: oos
+  unrelated: Clearly not about the user's money (weather, sport, cooking, travel plans, homework, coding).
+  finance_adjacent: About money or banking but outside what the assistant can do. It only reads and explains the user's own data, so it cannot move money, pay bills, make transfers, change card or account settings, open accounts or apply for credit, dispute charges, give investment, crypto, tax or legal advice, quote insurance, or handle bank support problems (a card that has not arrived, a failed transfer, a forgotten PIN).

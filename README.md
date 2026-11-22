@@ -17,7 +17,7 @@ Source: "Individual Project Evaluation Criteria (updated)", supplied by the owne
 | Category (20 points each) | What the rubric measures | Where this project earns it | What goes beyond the minimum |
 | --- | --- | --- | --- |
 | 1. Problem Understanding and Requirement Coverage | Clear explanation of the problem. Understanding of constraints and user needs. Evidence that the project actually solves the intended task. | Sections 1, 2.3 and 2.5 (requirements table, each requirement tied to an experiment) | A real product use case with a hard budget and latency constraint. Hypotheses written down before the test runs (section 4). |
-| 2. Model and Dataset Selection | Appropriateness of chosen model. Appropriateness of dataset. Preprocessing pipeline quality. | Sections 6, 6.2, 7 and 7.2 | Five systems compared through one interface. Label-noise audit. Owner-written domain-shift set. |
+| 2. Model and Dataset Selection | Appropriateness of chosen model. Appropriateness of dataset. Preprocessing pipeline quality. | Sections 6, 6.2, 7 and 7.2 | Five systems compared through one interface. Label-noise audit. A domain-shift set built from the assistant's real tool belt. |
 | 3. Implementation Quality | Code correctness. Clear modular structure. Notebook runs end to end without breaking. | Sections 9, 10 and 10.1 | Unit tests for metrics and policy. Pinned dependencies. Clean-run check on a fresh machine before submission. |
 | 4. Evaluation | Correct use of appropriate metrics. For classification: accuracy, F1, precision, recall. | Section 8 (E1) and section 8.1 | Five seeds and confidence intervals. Out-of-scope metrics. Risk-coverage and cost. Error analysis by reading examples. |
 | 5. Final Demo and Communication | Clear, engaging demonstration. Clarity on what it does, why it works and its limitations. | Sections 12.1 and 12.2 | The demo shows the matched example behind each decision, a running count of LLM calls saved, and one failure case on purpose. |
@@ -103,7 +103,7 @@ This table is the evidence for rubric category 1. Each user or product need beco
 | R4 | Time to first token must stay under 900ms | The router adds little latency. Report p50 and p95 on CPU against a limit of [L] ms set by the owner. | E6 latency |
 | R5 | The assistant's tool belt changes over time | A new intent can be added from about 10 examples with no retraining | E4 |
 | R6 | Users phrase the same request in many ways | Decisions are stable under rewording | E5 |
-| R7 | Real users are Australian and do not write like Banking77 | The router still works on owner-written queries | E7 |
+| R7 | Real users are Australian and do not write like Banking77 | The router still works on queries written for the assistant's own intents (the Jeff set, section 6.1) | E7 |
 
 R1 to R4 are on the core path. R5 to R7 are stretch.
 
@@ -111,7 +111,7 @@ R1 to R4 are on the core path. R5 to R7 are stretch.
 
 ## 3. Honest positioning
 
-None of the components here is new research. Pairwise few-shot intent detection, out-of-scope detection, confident learning and selective classification all exist. The contribution is the applied question, the evaluation design, the cost analysis and a small owner-written domain-shift test set. Do not write "novel architecture" anywhere in the report.
+None of the components here is new research. Pairwise few-shot intent detection, out-of-scope detection, confident learning and selective classification all exist. The contribution is the applied question, the evaluation design, the cost analysis and a small domain-shift test set built from the assistant's real tool belt. Do not write "novel architecture" anywhere in the report.
 
 ---
 
@@ -126,7 +126,7 @@ The owner must fill in the bracketed thresholds **before** any test-set run. Rec
 | RQ3 | Can new intents be added without retraining? | With 10 support examples per held-out intent, pairwise matcher is within [K] accuracy points of a fully retrained softmax model |
 | RQ4 | Does label noise change the conclusions? | System ranking is stable between original and cleaned labels (report if not) |
 | RQ5 | Is the router stable under rewording? | Prediction flip rate under validated paraphrases is below [F]% for the best router |
-| RQ6 | Does it survive domain shift? | Coverage at matched risk on the owner-written set drops by no more than [D] points versus Banking77 |
+| RQ6 | Does it survive domain shift? | Coverage at matched risk on the Jeff set drops by no more than [D] points versus Banking77 |
 
 A hypothesis that fails is a result, not a problem. Report it plainly.
 
@@ -152,7 +152,7 @@ Verify every dataset ID and split size on the Hugging Face Hub before use. IDs h
 | **Banking77** (Casanueva et al., 2020) | Primary in-scope benchmark | 77 fine-grained banking intents, 13,083 queries, 10,003 train and 3,080 test. No official validation split: carve a stratified 10% validation set from train with a fixed seed. |
 | **CLINC150** (Larson et al., 2019) | Out-of-scope queries, second benchmark | 150 intents over 10 domains (one is banking). 15,000 train, 3,000 validation, 4,500 test in scope. Out of scope in the Hub config `plus` used here: 250 train, 100 validation, 1,000 test (the paper's "full" variant has 100 OOS train). |
 | **Banking77 cleaned** | Label-noise experiment | Built in this project with cleanlab (confident learning). Keep the list of flagged indices in `data/processed/banking77_flagged.csv`. Hand-check a random 100 flagged items and report how many are real errors. **Built 22 Nov 2026 (M4b):** 192 of the 9,992 train and validation rows flagged (163 train, 29 validation) by `scripts/find_label_issues.py`; flagged rows are removed, never relabelled (`data.load_train("cleaned")`). Test was not checked. Blind audit sheet: `results/e2_audit.csv`. **Audited 23 Nov 2026:** 61 of 100 flagged items are real label errors (95% Wilson interval 51 to 70%), 10 ambiguous, 29 false flags; the owner judged items 1 to 11 and a Claude judge the rest (section 8.1). |
-| **Jeff set** (owner-written) | Domain-shift test | See 6.1. |
+| **Jeff set** (written by a Claude agent at the owner's request) | Domain-shift test | See 6.1. |
 
 Optional, only if time allows: Banking77-OOS (verify that it exists and how it was built before relying on it).
 
@@ -165,13 +165,13 @@ Both licences allow redistribution with attribution, so the processed splits in 
 
 ### 6.1 The Jeff set
 
-Written by the owner by hand. This is the project's own data contribution.
+Planned as owner-written. **Changed 23 Nov 2026 at the owner's request:** written by a separate Claude agent (Opus 5.5) from the intent definitions in `configs/jeff.yaml`. Those come from Jeff's tool belt in the owner's Velm app: 12 tools, plus the two answers Jeff gives from its state block (safe-to-spend and bills due soon). The agent saw no project code, data, models or results. It is still the project's own data contribution, but model-written, not user-written (limitation below).
 
 - 8 to 15 intents that map to the assistant's real tools.
 - 20 queries per intent, phrased the way a real Australian user would type them (PayID, BSB, super and similar terms are expected).
 - 40 out-of-scope queries, a mix of clearly unrelated and finance-adjacent but unsupported.
 - Split per intent: 10 **support** examples (the few-shot examples the matcher is allowed to see) and 10 **test** examples. Out-of-scope queries are test only.
-- File: `data/jeff/jeff_queries.csv` with columns `text, intent, split, notes`. Use `oos` as the out-of-scope label.
+- File: `data/jeff/jeff_queries.csv` with columns `id, text, intent, split, notes`. Use `oos` as the out-of-scope label; its `notes` say `unrelated` or `finance-adjacent`. The writer's file is `data/jeff/jeff_written.csv`; `scripts/make_jeff_set.py` checks it and assigns the splits at random (seed 0), so no one picks which examples go to support.
 - **Never train or tune thresholds on the Jeff test split.** It is run once, at the end.
 
 Status: not yet written. This blocks milestone M5 only.
@@ -322,7 +322,7 @@ E2 as implemented (`scripts/find_label_issues.py`, `scripts/evaluate_label_noise
 ├── data/
 │   ├── raw/                   downloaded datasets (gitignored)
 │   ├── processed/             splits, cleaned labels, paraphrases
-│   └── jeff/                  owner-written queries
+│   └── jeff/                  the Jeff set (intents defined in configs/jeff.yaml)
 ├── src/router/
 │   ├── data.py                loading, splits
 │   ├── preprocess.py          text normalisation, dedup, leakage check (section 6.2)
@@ -331,6 +331,7 @@ E2 as implemented (`scripts/find_label_issues.py`, `scripts/evaluate_label_noise
 │   ├── calibration.py         temperature scaling
 │   ├── metrics.py             risk-coverage, AURC, OOS metrics, bootstrap
 │   ├── label_noise.py         cleanlab flags, cleaned splits, blind audit (E2)
+│   ├── jeff.py                Jeff set checks, support/test split, label agreement
 │   └── cost.py                cost and latency model
 ├── scripts/                   make_splits, clean_labels, train, evaluate, make_figures
 ├── results/                   metrics as JSON or CSV, figures, preregistration.md, data_report.md, clean_run.md
@@ -402,7 +403,7 @@ Laid out so each rubric category can be found without searching. Build the skele
 | Data and preprocessing | About a quarter page | Datasets and why, split sizes, two or three numbers from `results/data_report.md` | 2 |
 | Systems | About a quarter page | One line per system saying why it is there (section 7.2) | 2 |
 | Results | About three quarters of a page | One table: accuracy, macro precision, recall and F1 per system, mean and standard deviation. The headline figure. Coverage at matched risk and cost saved in one sentence. Requirements R1 to R7 marked met or not met. | 4, 1 |
-| What it does, why it works, limitations | About a quarter page | Same three headings the demo uses. Limitations are specific: out-of-scope data from a different source, small owner-written set, label noise, single domain. | 5 |
+| What it does, why it works, limitations | About a quarter page | Same three headings the demo uses. Limitations are specific: out-of-scope data from a different source, small model-written Jeff set, label noise, single domain. | 5 |
 | Footer | A few lines | Repository link, how to run the notebook, AI use disclosure as the unit requires, key references | 3 |
 
 Stretch results get one sentence or one table row each. Anything that does not fit goes to the appendix.
@@ -488,7 +489,7 @@ Worth 20 points. The rubric asks for a clear, engaging demonstration that explai
 - [ ] Available compute (local GPU, Colab, other). Measured 22 Nov 2026: the owner's Apple M3 Pro (18 GB, MPS) trains one S1 DistilRoBERTa seed in about 5.5 minutes. It cannot train DeBERTa-v3-small in float32 (memory), so larger models need Colab or another GPU
 - [ ] The assistant's intent list (8 to 15 intents) and the Jeff set
 - [x] Exact LLM model for S4, its per-token price and a spend cap for the baseline runs (22 Nov 2026: `au.anthropic.claude-sonnet-4-6` on Bedrock, profile `unibucks`; US$3.30 / US$16.50 per million input / output tokens from the AWS Price List API; spend cap US$10 for M4, validation only. Test and Jeff-set runs at M5 need a fresh approval)
-- [ ] Threshold values N, M, K, F, D in section 4
+- [ ] Threshold values N, M, K, F, D in section 4 (drafted 23 Nov 2026 by Claude at the owner's request, with L, in `results/preregistration_draft.md`; waiting for the owner's confirmation)
 
 ---
 
