@@ -1,7 +1,12 @@
 # E6: router policy v1, risk-coverage and cost (README sections 7.1, 8 and 8.1). Read by scripts/evaluate_router.py.
 # Fixed before E6 was run (decision log, 22 Nov 2026).
 
-llm_system: s4_claude-sonnet-4-6      # sets the matched risk (its error rate) and the price of an escalation
+# The S4 variants. Rule fixed 22 Nov 2026 before the few-shot run and before E6 ran: the variant with the
+# lower error rate on the validation mixed set sets the matched risk and the price of an escalation;
+# both are reported. A stronger S4 can only make the router's bar harder.
+llm_systems:
+  - s4_claude-sonnet-4-6
+  - s4_claude-sonnet-4-6-fewshot
 
 # The routers that compete for "best router" (README 7.2: highest coverage at matched risk on validation).
 routers:

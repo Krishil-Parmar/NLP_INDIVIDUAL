@@ -3,6 +3,7 @@
 Run from the project root (the llm dependency group holds the Anthropic SDK):
     uv run --group llm python scripts/run_s4.py --split val --limit 5    # smoke test: 5 queries
     uv run --group llm python scripts/run_s4.py --split val              # the whole validation set
+    uv run --group llm python scripts/run_s4.py --split val --config s4_llm_fewshot   # few-shot variant
 
 Every query is lowercased and stripped of punctuation first (format_control),
 the same input as the primary E3 and E6 numbers. Replies are cached in
@@ -30,13 +31,16 @@ from router.systems import s4_llm
 from router.systems.base import PREDICTIONS_DIR, label_names_in_id_order, save_predictions
 
 
-def main(split: str, limit: int | None) -> None:
+def main(split: str, limit: int | None, config: str) -> None:
     if split == "test" and not (data.RESULTS_DIR / "preregistration.md").exists():
         sys.exit("Refusing to run S4 on the test split: results/preregistration.md does not exist yet (rigour rule 1).")
-    cfg = data.load_config("s4_llm")
+    cfg = data.load_config(config)
     label_names = label_names_in_id_order()
     template = (data.PROJECT_ROOT / cfg["prompt_file"]).read_text(encoding="utf-8")
-    system_prompt = s4_llm.build_system_prompt(template, label_names, cfg["oos_answer"])
+    examples = None
+    if "examples_per_intent" in cfg:  # few-shot variant: example messages come from the train split only
+        examples = s4_llm.pick_examples(data.load_split("train"), label_names, cfg["examples_per_intent"], cfg["example_seed"])
+    system_prompt = s4_llm.build_system_prompt(template, label_names, cfg["oos_answer"], examples)
     prices = cfg["prices_usd_per_million_tokens"]
 
     eval_df = data.load_eval_set(split, with_oos=True)
@@ -45,8 +49,10 @@ def main(split: str, limit: int | None) -> None:
     to_run = texts[:limit] if limit else texts
 
     cache = s4_llm.ResponseCache(data.PROJECT_ROOT / cfg["cache_file"])
+    # Spend so far counts every S4 variant's cache, so all of them share the one cap.
+    spent = sum(s4_llm.ResponseCache(data.PROJECT_ROOT / path).total_cost() for path in cfg["budget_cache_files"])
     tracker = s4_llm.SpendTracker(
-        cfg["spend_cap_usd"], cache.total_cost(), s4_llm.upper_bound_call_cost(system_prompt, cfg["max_tokens"], prices)
+        cfg["spend_cap_usd"], spent, s4_llm.upper_bound_call_cost(system_prompt, cfg["max_tokens"], prices)
     )
     meta = run_metadata({**data.load_config("data"), "s4_llm": cfg})  # recorded before any call
     print(f"{cfg['model_id']} | {len(to_run)} of {len(texts)} queries requested | "
@@ -74,7 +80,7 @@ def main(split: str, limit: int | None) -> None:
               f"| stop reasons: {dict(Counter(r['stop_reason'] for r in records))}")
         print(f"mean tokens per call: { {k: round(v, 1) for k, v in mean_usage.items()} }")
         print(f"mean cost per call ${cost.mean():.5f} | API latency p50 {np.percentile(latency, 50):.0f} ms, p95 {np.percentile(latency, 95):.0f} ms")
-        print(f"total spend (all cached calls) ${cache.total_cost():.4f} | projected cost of the {uncached_in_split} "
+        print(f"spend in this variant's cache ${cache.total_cost():.4f}, all S4 variants ${tracker.spent:.4f} | projected cost of the {uncached_in_split} "
               f"uncached queries in this split: ${uncached_in_split * cost.mean():.2f}")
         for record, label in list(zip(records, labels))[:5]:
             print(f"  {label:<32} <- {record['text']!r}  raw={record['raw']!r}")
@@ -88,6 +94,7 @@ def main(split: str, limit: int | None) -> None:
             "metadata": meta,
             "model_id": cfg["model_id"],
             "prompt_version": cfg["prompt_version"],
+            "examples_per_intent": cfg.get("examples_per_intent", 0),
             "n_queries": len(texts),
             "spend_usd_this_split": float(sum(r["cost_usd"] for r in all_records)),
             "mean_cost_per_call_usd": float(np.mean([r["cost_usd"] for r in all_records])),
@@ -105,5 +112,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--split", choices=["val", "test"], default="val")
     parser.add_argument("--limit", type=int, default=None, help="only the first N queries (smoke test)")
+    parser.add_argument("--config", choices=["s4_llm", "s4_llm_fewshot"], default="s4_llm", help="which S4 variant")
     args = parser.parse_args()
-    main(args.split, args.limit)
+    main(args.split, args.limit, args.config)

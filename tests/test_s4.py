@@ -82,3 +82,20 @@ def test_predictions_fail_when_a_reply_is_missing(tmp_path):
     cache = _cache_with(tmp_path, "p", {"where is my card": '{"intent": "card_arrival"}'})
     with pytest.raises(KeyError):
         s4_llm.predictions_from_cache(["where is my card", "not cached"], {"model_id": "m", "oos_answer": OOS}, LABELS, "p", cache)
+
+
+def test_few_shot_prompt_shows_each_intents_examples():
+    examples = {"card_arrival": ["where is my card", "card not here"], "top_up_failed": ["top up failed"], "pin_blocked": ["pin locked"]}
+    prompt = s4_llm.build_system_prompt("{intent_list}|{oos_answer}", LABELS, OOS, examples)
+    assert '- card_arrival (examples: "where is my card"; "card not here")' in prompt
+
+
+def test_pick_examples_is_seeded_and_format_controlled():
+    import pandas as pd
+
+    train = pd.DataFrame({"text": ["Where is my Card?", "Card not here.", "Still waiting!", "Top up failed.", "Why failed?", "PIN locked"],
+                          "label": ["card_arrival"] * 3 + ["top_up_failed"] * 2 + ["pin_blocked"]})
+    first = s4_llm.pick_examples(train, LABELS, per_intent=1, seed=0)
+    assert first == s4_llm.pick_examples(train, LABELS, per_intent=1, seed=0)  # same seed, same picks
+    assert all(text == text.lower() and "?" not in text and "." not in text for picks in first.values() for text in picks)
+    assert first["pin_blocked"] == ["pin locked"]

@@ -1,0 +1,43 @@
+# S4 few-shot variant: same model and settings as configs/s4_llm.yaml, with examples in the prompt.
+# S4: LLM baseline (README section 7). Read by src/router/systems/s4_llm.py and scripts/run_s4.py.
+# Owner decisions (22 Nov 2026): Amazon Bedrock, AWS profile unibucks, the model Jeff runs in production,
+# a US$10 spend cap for M4 (validation only).
+
+aws_profile: unibucks
+aws_region: ap-southeast-2
+# Jeff's production model (Velm infrastructure/cdk/stacks/api_stack.py): Claude Sonnet 4.6 through the
+# Australian cross-region inference profile, so requests run in ap-southeast-2 / ap-southeast-4 only.
+model_id: au.anthropic.claude-sonnet-4-6
+system_tag: s4_claude-sonnet-4-6-fewshot
+
+prompt_file: prompts/s4_intent_fewshot_v1.txt
+prompt_version: fewshot_v1
+# Few-shot variant (owner decision 22 Nov 2026, after zero-shot S4 scored 76.3% in-scope on validation):
+# the prompt also shows examples_per_intent train queries per intent, picked at random with example_seed
+# and format-controlled like the queries. Train split only, so validation and test stay unseen.
+examples_per_intent: 2
+example_seed: 0
+oos_answer: out_of_scope    # the answer the prompt asks for when no intent fits; mapped to the "oos" label
+structured_output: true     # JSON answer restricted to the 78 allowed values; false = plain-text answer, checked against the list
+
+temperature: 0              # rigour rule 7. Sent through extra_body: SDK 1.x has no temperature argument, Sonnet 4.6 still honours it
+max_tokens: 64
+
+# US dollars per million tokens. Source: AWS Price List API, service AmazonBedrockFoundationModels,
+# region ap-southeast-2, "Claude Sonnet 4.6", regional (au.) on-demand rates, checked 22 Nov 2026.
+prices_usd_per_million_tokens:
+  input: 3.30
+  output: 16.50
+  cache_write: 4.125
+  cache_read: 0.33
+price_checked: "2026-11-22"
+
+spend_cap_usd: 10.0          # hard stop for M4, counted over every call in all the budget cache files below
+requests_per_minute: 45      # account quota is 50 per minute for this model and profile
+max_workers: 4               # calls in flight at once (the rate limit still applies)
+sdk_max_retries: 4           # the SDK retries throttling (429) and server errors with backoff
+
+cache_file: results/s4_cache/claude-sonnet-4-6_fewshot_v1.jsonl
+budget_cache_files:          # every S4 variant's spend counts toward the one M4 cap
+  - results/s4_cache/claude-sonnet-4-6_v1.jsonl
+  - results/s4_cache/claude-sonnet-4-6_fewshot_v1.jsonl

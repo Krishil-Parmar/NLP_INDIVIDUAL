@@ -23,8 +23,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import numpy as np
+import pandas as pd
 
 from router.data import OOS_LABEL
+from router.preprocess import format_control
 from router.systems.base import Predictions
 
 INVALID = "invalid"  # label for a reply that is not one of the allowed answers (scored as an error)
@@ -34,10 +36,33 @@ INVALID = "invalid"  # label for a reply that is not one of the allowed answers 
 # Prompt and answer format
 # ---------------------------------------------------------------------------
 
-def build_system_prompt(template: str, label_names: list[str], oos_answer: str) -> str:
-    """Fill the prompt template with the intent list, one name per line."""
-    intent_list = "\n".join(f"- {name}" for name in label_names)
-    return template.format(intent_list=intent_list, oos_answer=oos_answer)
+def build_system_prompt(
+    template: str, label_names: list[str], oos_answer: str, examples: dict[str, list[str]] | None = None,
+) -> str:
+    """Fill the prompt template with the intent list, one name per line.
+
+    With examples (the few-shot variant), each name is followed by its example messages.
+    """
+    if examples is None:
+        lines = [f"- {name}" for name in label_names]
+    else:
+        lines = [f"- {name} (examples: " + "; ".join(f'"{text}"' for text in examples[name]) + ")" for name in label_names]
+    return template.format(intent_list="\n".join(lines), oos_answer=oos_answer)
+
+
+def pick_examples(train_df: pd.DataFrame, label_names: list[str], per_intent: int, seed: int) -> dict[str, list[str]]:
+    """per_intent train queries for every intent, picked at random with a fixed seed.
+
+    They are format-controlled like the queries S4 is asked about, so the
+    examples do not look different from the questions.
+    """
+    rng = np.random.default_rng(seed)
+    examples = {}
+    for name in label_names:
+        texts = sorted(train_df.loc[train_df["label"] == name, "text"].map(format_control).unique())
+        chosen = sorted(rng.choice(len(texts), size=per_intent, replace=False))
+        examples[name] = [texts[i] for i in chosen]
+    return examples
 
 
 def output_schema(label_names: list[str], oos_answer: str) -> dict:

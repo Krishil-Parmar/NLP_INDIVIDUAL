@@ -173,7 +173,7 @@ def compare(runs: dict, temperatures: dict, s4_wrong: np.ndarray, cfg: dict) -> 
 
         return metric
 
-    strata = next(iter(runs[cfg["llm_system"]].values()))[0]["is_oos"].to_numpy(dtype=bool)
+    strata = next(iter(runs[cfg["routers"][0]].values()))[0]["is_oos"].to_numpy(dtype=bool)
     out = []
     for a, b in cfg["comparisons"]:
         result = paired_bootstrap_diff(coverage_metric(a), coverage_metric(b), strata,
@@ -229,7 +229,7 @@ def pct(summary: dict, key: str) -> str:
     return f"{100 * summary[key]['mean']:.2f} ± {100 * summary[key]['std']:.2f}"
 
 
-def write_markdown(results, s4, comparisons, calibration, best, latency, figure, split, cfg, meta) -> str:
+def write_markdown(results, s4, s4_all, llm_tag, comparisons, calibration, best, latency, figure, split, cfg, meta) -> str:
     risks = [f"coverage_at_{r:g}" for r in cfg["fixed_risks"]]
     main_rows = [
         {"system": tag, "seeds": len(r["seeds"]),
@@ -258,7 +258,13 @@ def write_markdown(results, s4, comparisons, calibration, best, latency, figure,
         "## Provenance",
         metadata_markdown(meta),
         "## S4, the LLM being replaced",
-        f"`{s4['model_id']}` on Amazon Bedrock, zero-shot, temperature 0, format-controlled text. "
+        "Both S4 variants, same model, temperature 0, format-controlled text. The one with the lower error rate sets the "
+        "matched risk and the price of an escalation (rule fixed in `configs/e6_router.yaml` before either was scored here).",
+        md_table([{"variant": tag, "error rate (%)": f"{100 * ref['error_rate']:.2f}",
+                   "in-scope accuracy (%)": f"{100 * ref['in_scope_accuracy']:.2f}", "OOS recall (%)": f"{100 * ref['oos_recall']:.2f}",
+                   "invalid": ref["invalid"], "US$ per call": f"{ref['cost_per_call_usd']:.5f}",
+                   "sets matched risk": "yes" if tag == llm_tag else ""} for tag, ref in s4_all.items()]),
+        f"`{llm_tag}` (`{s4['model_id']}` on Amazon Bedrock). "
         f"Error rate on all queries (the matched risk): **{100 * s4['error_rate']:.2f}%**. "
         f"In-scope accuracy {100 * s4['in_scope_accuracy']:.2f}%, OOS recall {100 * s4['oos_recall']:.2f}%, invalid replies {s4['invalid']}. "
         f"Measured cost US${s4['cost_per_call_usd']:.5f} per call, so US${1000 * s4['cost_per_call_usd']:.3f} per 1,000 queries if every query goes to the LLM. "
@@ -307,16 +313,21 @@ def main(split: str) -> None:
         sys.exit("Refusing to score a test split: results/preregistration.md does not exist yet (rigour rule 1).")
     cfg = data.load_config("e6_router")
     label_names = label_names_in_id_order()
-    runs = load_runs(split, [cfg["llm_system"]] + cfg["routers"])
+    runs = load_runs(split, cfg["llm_systems"] + cfg["routers"])
 
-    with open(PREDICTIONS_DIR / cfg["llm_system"] / f"seed0_{split}_info.json") as f:
-        s4 = s4_reference(runs[cfg["llm_system"]][0][0], json.load(f))
-    s4_wrong = (runs[cfg["llm_system"]][0][0]["pred_label"] != runs[cfg["llm_system"]][0][0]["label"]).to_numpy()
+    # Every S4 variant is reported; the one with the lower error rate sets the matched risk and the
+    # price of an escalation (rule fixed in configs/e6_router.yaml). On test, the validation choice is kept.
+    s4_all = {}
+    for tag in cfg["llm_systems"]:
+        with open(PREDICTIONS_DIR / tag / f"seed0_{split}_info.json") as f:
+            s4_all[tag] = s4_reference(runs[tag][0][0], json.load(f))
+    policy = json.loads(POLICY_FILE.read_text()) if is_test else None
+    llm_tag = policy["llm_system"] if is_test else min(cfg["llm_systems"], key=lambda tag: s4_all[tag]["error_rate"])
+    s4 = s4_all[llm_tag]
+    s4_wrong = (runs[llm_tag][0][0]["pred_label"] != runs[llm_tag][0][0]["label"]).to_numpy()
 
     calibration = {}
     if is_test:  # apply the choices frozen on validation
-        with open(POLICY_FILE) as f:
-            policy = json.load(f)
         temperatures = {tag: {int(s): t for s, t in v["temperatures"].items()} for tag, v in policy["systems"].items() if v["temperatures"]}
         frozen = {tag: {int(s): t for s, t in v["thresholds"].items()} for tag, v in policy["systems"].items()}
     else:
@@ -337,12 +348,13 @@ def main(split: str) -> None:
     figure = draw(runs, temperatures, results, s4["error_rate"], cfg, split)
 
     meta = run_metadata({**data.load_config("data"), "e6_router": cfg}, seed=cfg["bootstrap"]["seed"])
-    payload = {"metadata": meta, "split": split, "s4": s4, "systems": results, "best_router": best,
-               "comparisons": comparisons, "calibration": calibration, "latency": latency, "figure": figure}
+    payload = {"metadata": meta, "split": split, "llm_system": llm_tag, "s4": s4, "s4_variants": s4_all,
+               "systems": results, "best_router": best, "comparisons": comparisons, "calibration": calibration,
+               "latency": latency, "figure": figure}
     with open(data.RESULTS_DIR / f"e6_{split}.json", "w") as f:
         json.dump(payload, f, indent=2, default=str)
     (data.RESULTS_DIR / f"e6_{split}.md").write_text(
-        write_markdown(results, s4, comparisons, calibration, best, latency, figure, split, cfg, meta)
+        write_markdown(results, s4, s4_all, llm_tag, comparisons, calibration, best, latency, figure, split, cfg, meta)
     )
     if not is_test:
         with open(data.RESULTS_DIR / f"calibration_{split}.json", "w") as f:
@@ -351,6 +363,7 @@ def main(split: str) -> None:
             "metadata": meta,
             "fitted_on": split,
             "rule": "per seed: threshold with the highest coverage whose selective risk <= S4's error rate; best router = highest mean coverage",
+            "llm_system": llm_tag,
             "matched_risk": s4["error_rate"],
             "llm_cost_per_call_usd": s4["cost_per_call_usd"],
             "best_router": best,
@@ -359,7 +372,10 @@ def main(split: str) -> None:
         with open(POLICY_FILE, "w") as f:
             json.dump(policy, f, indent=2, default=str)
 
-    print(f"S4 error rate (matched risk): {100 * s4['error_rate']:.2f}%  | cost per call ${s4['cost_per_call_usd']:.5f}")
+    for tag, ref in s4_all.items():
+        print(f"{tag}: error rate {100 * ref['error_rate']:.2f}%, in-scope accuracy {100 * ref['in_scope_accuracy']:.2f}%, "
+              f"OOS recall {100 * ref['oos_recall']:.2f}%, cost per call ${ref['cost_per_call_usd']:.5f}"
+              + ("  <- sets the matched risk" if tag == llm_tag else ""))
     print(pd.DataFrame({tag: {k: pct(r["summary"], k) for k in ["coverage", "selective_risk", "aurc", "saving_vs_llm"]}
                         | {"oos_handled": f"{r['summary']['oos_handled']['mean']:.1f}"}
                         for tag, r in results.items()}).T.to_string())
