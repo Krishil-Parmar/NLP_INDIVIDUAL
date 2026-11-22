@@ -35,10 +35,13 @@ def _toy_support() -> SupportSet:
     )
 
 
+PAIR_CFG = {"retrieval": {"top_intents": 3, "examples_per_intent": 2}, "pairs": {"n_positives": 1, "n_negatives": 2}}
+
+
 def test_training_pairs_are_correctly_labelled_and_never_self_pairs():
     support = _toy_support()
     label_of = dict(zip(support.texts, support.label_ids))
-    pairs = s3_pairwise.make_training_pairs(support, n_negatives=2, rng=np.random.default_rng(0))
+    pairs = s3_pairwise.make_training_pairs(support, PAIR_CFG, rng=np.random.default_rng(0))
     assert (pairs["text_a"] != pairs["text_b"]).all()
     for _, row in pairs.iterrows():
         same_intent = label_of[row["text_a"]] == label_of[row["text_b"]]
@@ -48,8 +51,20 @@ def test_training_pairs_are_correctly_labelled_and_never_self_pairs():
     assert (pairs.groupby("text_a")["label"].sum() == 1.0).all()
 
 
+def test_training_pairs_come_from_the_query_shortlist():
+    # The fix for the v1 shortcut: positives and negatives are both drawn from the
+    # query's own S2 shortlist, never from outside it.
+    support = _toy_support()
+    cfg = {"retrieval": {"top_intents": 2, "examples_per_intent": 1}, "pairs": {"n_positives": 1, "n_negatives": 2}}
+    pairs = s3_pairwise.make_training_pairs(support, cfg, rng=np.random.default_rng(0))
+    sims = support.embeddings @ support.embeddings.T
+    for i, text in enumerate(support.texts):
+        shortlist = {support.texts[j] for j in s3_pairwise.candidate_examples(sims[i], support.label_ids, 2, 1, exclude=i)}
+        assert set(pairs.loc[pairs["text_a"] == text, "text_b"]) <= shortlist
+
+
 def test_training_pairs_depend_on_the_seed_only():
     support = _toy_support()
-    a = s3_pairwise.make_training_pairs(support, 2, np.random.default_rng(1))
-    b = s3_pairwise.make_training_pairs(support, 2, np.random.default_rng(1))
+    a = s3_pairwise.make_training_pairs(support, PAIR_CFG, np.random.default_rng(1))
+    b = s3_pairwise.make_training_pairs(support, PAIR_CFG, np.random.default_rng(1))
     assert a.equals(b)

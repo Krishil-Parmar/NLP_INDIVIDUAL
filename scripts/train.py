@@ -144,7 +144,7 @@ def run_s3(seeds: list[int]) -> None:
     for seed in seeds:
         print(f"S3 {checkpoint} seed {seed} on {device}")
         start = time.perf_counter()
-        pairs = s3_pairwise.make_training_pairs(support, cfg["pairs"]["n_negatives"], np.random.default_rng(seed))
+        pairs = s3_pairwise.make_training_pairs(support, cfg, np.random.default_rng(seed))
         model, tokenizer, log = s3_pairwise.train(pairs, cfg, checkpoint, seed, device, max_length)
         train_seconds = time.perf_counter() - start
         preds = s3_pairwise.predict(model, tokenizer, encoder, support, val_mixed["text"].tolist(), label_names, cfg, device, max_length)
@@ -164,7 +164,7 @@ def probe_s3(steps: int) -> None:
     """Time S3: pair building, a few training steps, and prediction on 200 validation queries."""
     cfg, _, label_names, val_in, _, device, encoder, support, max_length = _s3_setup()
     start = time.perf_counter()
-    pairs = s3_pairwise.make_training_pairs(support, cfg["pairs"]["n_negatives"], np.random.default_rng(0))
+    pairs = s3_pairwise.make_training_pairs(support, cfg, np.random.default_rng(0))
     pair_seconds = time.perf_counter() - start
     _, _, log = s3_pairwise.train(pairs, cfg, cfg["checkpoint"], 0, device, max_length, max_steps=steps)
     step_seconds = log[-1]["seconds"] / steps

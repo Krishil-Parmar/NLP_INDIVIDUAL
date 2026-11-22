@@ -71,30 +71,37 @@ def similarities_in_chunks(query_embeddings: np.ndarray, support_embeddings: np.
         yield start, query_embeddings[start : start + chunk] @ support_embeddings.T
 
 
-def make_training_pairs(support: SupportSet, n_negatives: int, rng: np.random.Generator) -> pd.DataFrame:
+def make_training_pairs(support: SupportSet, cfg: dict, rng: np.random.Generator) -> pd.DataFrame:
     """Labelled pairs built from the train split only.
 
-    For each train query:
-      - 1 positive: a random OTHER train query with the same intent (label 1)
-      - n_negatives hard negatives: the closest example of each of the
-        n_negatives most similar OTHER intents, found with S2 (label 0)
-    Hard negatives teach the model the near misses it will meet at prediction time.
+    For each train query, both kinds of pair come from the query's own S2
+    shortlist (the same kind of candidates S3 sees at prediction time):
+      - n_positives pairs with shortlisted examples of the SAME intent (label 1)
+      - n_negatives pairs with randomly chosen shortlisted examples of OTHER intents (label 0)
+
+    Why the shortlist for both: an earlier version took positives at random from
+    the whole intent (so they usually looked different from the query) and
+    negatives as the most similar other-intent examples. The model learned the
+    shortcut "looks similar = different intent" and scored 11.8% on validation
+    (results/failed_runs/). Drawing both from the same shortlist means surface
+    similarity alone cannot separate the labels.
     """
+    top_intents = cfg["retrieval"]["top_intents"]
+    per_intent = cfg["retrieval"]["examples_per_intent"]
+    n_positives, n_negatives = cfg["pairs"]["n_positives"], cfg["pairs"]["n_negatives"]
     rows = []
     label_ids = support.label_ids
     for start, block in similarities_in_chunks(support.embeddings, support.embeddings):
         for offset, sim_row in enumerate(block):
             i = start + offset
-            same = np.flatnonzero(label_ids == label_ids[i])
-            same = same[same != i]  # never pair a query with itself
-            if len(same):
-                rows.append((support.texts[i], support.texts[int(rng.choice(same))], 1.0))
-            # Closest example of each of the n_negatives + 1 most similar intents. One extra
-            # is requested because the query's own intent is usually among them and is dropped.
-            nearest_per_intent = candidate_examples(sim_row, label_ids, n_negatives + 1, 1, exclude=i)
-            negatives = [j for j in nearest_per_intent if label_ids[j] != label_ids[i]][:n_negatives]
-            for j in negatives:
-                rows.append((support.texts[i], support.texts[j], 0.0))
+            shortlist = candidate_examples(sim_row, label_ids, top_intents, per_intent, exclude=i)  # never the query itself
+            positives = [j for j in shortlist if label_ids[j] == label_ids[i]]
+            negatives = [j for j in shortlist if label_ids[j] != label_ids[i]]
+            # replace=False: the same example is never paired twice with one query.
+            for j in rng.choice(positives, size=min(n_positives, len(positives)), replace=False):
+                rows.append((support.texts[i], support.texts[int(j)], 1.0))
+            for j in rng.choice(negatives, size=min(n_negatives, len(negatives)), replace=False):
+                rows.append((support.texts[i], support.texts[int(j)], 0.0))
     return pd.DataFrame(rows, columns=["text_a", "text_b", "label"])
 
 

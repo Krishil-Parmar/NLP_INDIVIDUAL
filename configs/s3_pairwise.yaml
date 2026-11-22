@@ -15,8 +15,10 @@ retrieval:
   top_intents: 10          # S2 shortlists this many intents per query...
   examples_per_intent: 2   # ...with this many closest examples each (20 pairs per query)
 
+# Per train query, pairs are drawn from its own S2 shortlist (see make_training_pairs):
 pairs:
-  n_negatives: 2           # per train query: 1 positive pair + this many hard negative pairs
+  n_positives: 1           # shortlisted examples of the same intent (label 1)
+  n_negatives: 2           # random shortlisted examples of other intents (label 0)
 
 training:
   learning_rate: 2.0e-5
