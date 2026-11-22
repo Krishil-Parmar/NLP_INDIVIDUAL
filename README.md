@@ -206,7 +206,7 @@ All systems output, per query: a predicted intent, an in-scope confidence score 
 | S1 | Fine-tuned encoder with softmax head | A small encoder (for example DistilRoBERTa or DeBERTa-v3-small). Confidence is max softmax probability, temperature-scaled on validation. |
 | S2 | Embedding nearest neighbour | Frozen sentence-embedding model, cosine similarity to labelled examples. No training. |
 | S3 | Pairwise paraphrase matcher | Cross-encoder scoring (query, example) pairs: "do these mean the same thing?". Initialise from an NLI or paraphrase checkpoint. Use S2 to retrieve the top-k candidates so inference stays fast. This is the topic 2 component and the main system. |
-| S4 | LLM zero-shot | Given the intent list and descriptions. Use the same model family the assistant runs in production (owner to confirm exact model). Temperature 0. Cache every response to disk. This is the accuracy ceiling and the cost reference, not a competitor to beat. |
+| S4 | LLM zero-shot | Given the intent list and descriptions. Use the same model family the assistant runs in production (owner to confirm exact model). Temperature 0. Cache every response to disk. This is the accuracy ceiling and the cost reference, not a competitor to beat. **Confirmed 22 Nov 2026:** `au.anthropic.claude-sonnet-4-6` on Amazon Bedrock (exactly Jeff's production model), zero-shot with the 77 intent names (Banking77 has no descriptions) plus `out_of_scope`, temperature 0, structured JSON answer, prompt in `prompts/s4_intent_v1.txt`, every reply cached in `results/s4_cache/` (`src/router/systems/s4_llm.py`, `scripts/run_s4.py`). |
 
 ### 7.1 Router policy
 
@@ -274,6 +274,15 @@ Selective classification terms:
 - **Flip rate:** share of queries whose predicted intent changes after a validated paraphrase.
 - **Cost model:** `cost_per_query = router_cost + (1 - coverage) * llm_cost`. Compute `llm_cost` from measured input and output tokens times a per-token price supplied by the owner. Do not hardcode a price from memory. State the price and its date in the report.
 - **Latency:** wall-clock per query on one named machine, batch size 1, warm model.
+
+E6 as implemented (`scripts/evaluate_router.py`, fixed 22 Nov 2026 before E6 was run):
+
+- **Correct:** HANDLE is correct when the predicted intent equals the true label. S0 to S3 cannot answer "out of scope", so handling an out-of-scope query is always an error; it is counted separately as "OOS handled".
+- **Matched risk r\*:** S4's error rate on the same mixed set (in-scope plus out-of-scope, format-controlled text). Per system and seed, the threshold is the one with the highest coverage whose selective risk is at or below r\*. Coverage at fixed risk 1%, 2% and 5% is reported too.
+- **AURC:** the step-function area under the risk-coverage curve (each distinct threshold's risk times the coverage it adds).
+- **Calibration:** S0 and S1 are temperature-scaled before routing (one temperature per seed, grid search minimising NLL on validation in-scope rows); ECE with 15 bins is reported before and after. S2 (cosine) and S3 (one sigmoid) are not rescaled, because a monotone rescaling cannot change their routing.
+- **Prices:** `llm_cost` is S4's measured mean cost per call (token usage, including prompt-cache reads and writes, times the Bedrock prices in `configs/s4_llm.yaml`: AWS Price List API, ap-southeast-2, regional `au.` profile, checked 22 Nov 2026). `router_cost` is taken as US$0 (a local model on hardware the assistant already runs); its time cost is reported as latency.
+- **Frozen for test:** per-seed temperatures and thresholds, and the best router (highest mean coverage at matched risk), are written to `results/policy_v1.json` and applied unchanged at M5.
 
 ---
 
@@ -466,7 +475,7 @@ Worth 20 points. The rubric asks for a clear, engaging demonstration that explai
 - [x] The unit's policy on AI assistance (22 Nov 2026: allowed with disclosure, see section 13)
 - [ ] Available compute (local GPU, Colab, other). Measured 22 Nov 2026: the owner's Apple M3 Pro (18 GB, MPS) trains one S1 DistilRoBERTa seed in about 5.5 minutes. It cannot train DeBERTa-v3-small in float32 (memory), so larger models need Colab or another GPU
 - [ ] The assistant's intent list (8 to 15 intents) and the Jeff set
-- [ ] Exact LLM model for S4, its per-token price and a spend cap for the baseline runs
+- [x] Exact LLM model for S4, its per-token price and a spend cap for the baseline runs (22 Nov 2026: `au.anthropic.claude-sonnet-4-6` on Bedrock, profile `unibucks`; US$3.30 / US$16.50 per million input / output tokens from the AWS Price List API; spend cap US$10 for M4, validation only. Test and Jeff-set runs at M5 need a fresh approval)
 - [ ] Threshold values N, M, K, F, D in section 4
 
 ---
