@@ -45,6 +45,21 @@ def normalise_text(text: str) -> str:
     return text.strip()
 
 
+def format_control(text: str) -> str:
+    """Lowercase and remove punctuation (apostrophes kept), for the E3 format control only.
+
+    Not part of the training pipeline. CLINC150's out-of-scope queries are all
+    lowercase with no punctuation, while most Banking77 queries are capitalised
+    and punctuated, so formatting alone gives the answer away. Applying this to
+    every evaluated query, in-scope and out-of-scope alike, removes that cue.
+    Apostrophes stay because both datasets use them ("what's") and dropping them
+    would create non-words.
+    """
+    text = text.lower().replace("’", "'")  # curly apostrophe -> straight one
+    text = re.sub(r"[^\w\s']", " ", text)  # anything not a letter, digit, space or apostrophe -> space
+    return _WHITESPACE.sub(" ", text).strip()
+
+
 def normalise_frame(df: pd.DataFrame) -> pd.DataFrame:
     """Return a copy of df with normalise_text applied to the text column."""
     df = df.copy()

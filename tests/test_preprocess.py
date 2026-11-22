@@ -131,3 +131,12 @@ def test_token_lengths_single_and_pair():
     tok = FakeTokenizer()
     assert pp.token_lengths(["one two", "three"], tok).tolist() == [4, 3]
     assert pp.token_lengths(["one two"], tok, pair_texts=["three"]).tolist() == [6]
+
+
+def test_format_control_removes_case_and_punctuation_but_keeps_apostrophes():
+    assert pp.format_control("Why hasn't my card arrived?") == "why hasn't my card arrived"
+    assert pp.format_control("I paid $5.00, twice!!  Help.") == "i paid 5 00 twice help"
+    assert pp.format_control("What’s my PIN?") == "what's my pin"  # curly apostrophe becomes a straight one
+    assert pp.format_control("top-up failed") == "top up failed"
+    # Already-controlled text does not change.
+    assert pp.format_control("what is my balance") == "what is my balance"

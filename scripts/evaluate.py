@@ -10,7 +10,11 @@ lowest F1 (F1 averaged over seeds) and the 10 most frequent confusions
 
 Writes results/e1_<split>.json and results/e1_<split>.md.
 
---split test is refused until results/preregistration.md exists (rigour rule 1).
+Splits ending in "_fmt" hold predictions on format-controlled text
+(scripts/predict_format_control.py): lowercased, punctuation removed. E1 on
+them shows how much in-scope accuracy that control costs each system.
+
+Test splits are refused until results/preregistration.md exists (rigour rule 1).
 """
 
 import argparse
@@ -78,6 +82,9 @@ def write_markdown(results: dict, split: str, meta: dict) -> str:
         "## Provenance",
         metadata_markdown(meta),
         f"## In-scope classification ({split}), percent, mean ± std over seeds",
+        *(["**Format-controlled text:** queries were lowercased and stripped of punctuation before prediction "
+           "(the E3 control, `router.preprocess.format_control`). The models were trained on the raw text."]
+          if split.endswith("_fmt") else []),
         "Macro averages are primary (each of the 77 intents counts equally). Std is the sample standard deviation across seeds.",
         md_table(main_rows),
     ]
@@ -98,8 +105,8 @@ def write_markdown(results: dict, split: str, meta: dict) -> str:
 
 
 def main(split: str) -> None:
-    if split == "test" and not (data.RESULTS_DIR / "preregistration.md").exists():
-        sys.exit("Refusing to score the test split: results/preregistration.md does not exist yet (rigour rule 1).")
+    if split.startswith("test") and not (data.RESULTS_DIR / "preregistration.md").exists():
+        sys.exit("Refusing to score a test split: results/preregistration.md does not exist yet (rigour rule 1).")
     label_names = label_names_in_id_order()
     runs = list_runs(split)
     if not runs:
@@ -117,5 +124,5 @@ def main(split: str) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--split", choices=["val", "test"], default="val")
+    parser.add_argument("--split", choices=["val", "test", "val_fmt", "test_fmt"], default="val")
     main(parser.parse_args().split)

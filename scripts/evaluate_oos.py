@@ -14,9 +14,17 @@ Per system (mean and std over seeds):
 Plus paired bootstrap intervals for the comparisons in configs/e3_oos.yaml, the
 OOS queries the inspected system accepted most confidently, and a ROC figure.
 
-On test, each seed's threshold is frozen from results/e3_val.json and applied
-unchanged, which gives an honest OOS recall. --split test is refused until
-results/preregistration.md exists (rigour rule 1).
+It also reports "surface cues": how well a trivial formatting rule (starts
+lowercase, no final punctuation, no comma) separates OOS from in-scope on its
+own. On the raw text it does very well, because CLINC150 queries are all
+lowercase and unpunctuated. The splits ending in "_fmt" hold predictions on
+format-controlled text (scripts/predict_format_control.py), where these cues
+are gone; those are the primary E3 numbers.
+
+On test, each seed's threshold is frozen from the matching validation file
+(results/e3_val.json or e3_val_fmt.json) and applied unchanged, which gives an
+honest OOS recall. Test splits are refused until results/preregistration.md
+exists (rigour rule 1).
 
 Writes results/e3_<split>.json, results/e3_<split>.md and results/figures/e3_<split>_roc.png.
 """
@@ -41,6 +49,25 @@ from router.tables import md_table
 
 FIGURES_DIR = data.RESULTS_DIR / "figures"
 INK, MUTED, GRID = "#0b0b0b", "#898781", "#e1e0d9"  # chart ink colours (dataviz reference palette)
+SPLITS = ["val", "test", "val_fmt", "test_fmt"]
+
+# Trivial formatting rules. Each returns True when the query "looks like" CLINC150.
+SURFACE_CUES = {
+    "starts lowercase": lambda text: text[:1].islower(),
+    "no final punctuation": lambda text: not text.rstrip().endswith(("?", ".", "!")),
+    "no comma": lambda text: "," not in text,
+}
+
+
+def surface_cues(df: pd.DataFrame) -> list[dict]:
+    """How well each formatting rule alone separates OOS from in-scope (AUROC 0.5 = not at all)."""
+    is_oos = df["is_oos"].to_numpy(dtype=bool)
+    rows = []
+    for name, rule in SURFACE_CUES.items():
+        cue = df["text"].map(rule).to_numpy(dtype=float)  # 1.0 where the rule fires
+        rows.append({"cue": name, "in_scope_share": float(cue[~is_oos].mean()),
+                     "oos_share": float(cue[is_oos].mean()), "auroc": oos_auroc(is_oos, cue)})
+    return rows
 
 
 def load_all_runs(split: str) -> dict[str, dict[int, pd.DataFrame]]:
@@ -173,8 +200,8 @@ def pct(summary: dict, key: str) -> str:
     return f"{100 * summary[key]['mean']:.2f} ± {100 * summary[key]['std']:.2f}"
 
 
-def write_markdown(results: dict, comparisons: list[dict], accepted: list[dict], figure: str | None,
-                   split: str, cfg: dict, meta: dict) -> str:
+def write_markdown(results: dict, comparisons: list[dict], accepted: list[dict], cues: list[dict],
+                   figure: str | None, split: str, cfg: dict, meta: dict) -> str:
     keep_pct = round(100 * cfg["in_scope_keep"])
     metric_names = {
         "auroc": "AUROC",
@@ -198,21 +225,40 @@ def write_markdown(results: dict, comparisons: list[dict], accepted: list[dict],
     accepted_rows = [
         {k: (f"{v:.3f}" if isinstance(v, float) else v) for k, v in row.items()} for row in accepted
     ]
+    is_validation = split.startswith("val")
+    text_note = (
+        "**Format-controlled text:** every query (in-scope and OOS) was lowercased and stripped of punctuation "
+        "before prediction (`router.preprocess.format_control`), so formatting cannot give the answer away. "
+        "These are the primary E3 numbers."
+        if split.endswith("_fmt") else
+        "**Raw text.** Formatting separates the two sources on its own (surface cues below), so these numbers "
+        f"overstate OOS detection. The primary numbers are in `results/e3_{split}_fmt.md`."
+    )
+    cue_rows = [
+        {"rule (fires = looks like CLINC150)": c["cue"], "in-scope share": f"{100 * c['in_scope_share']:.1f}",
+         "OOS share": f"{100 * c['oos_share']:.1f}", "AUROC of the rule alone": f"{100 * c['auroc']:.1f}"}
+        for c in cues
+    ]
     parts = [
         f"# E3 results on {split}",
         "Written by `scripts/evaluate_oos.py`. Do not edit by hand.",
         "## Provenance",
         metadata_markdown(meta),
         f"## Out-of-scope detection ({split}), percent, mean ± std over seeds",
+        text_note,
         f"{first['n_in_scope']} in-scope Banking77 queries and {first['n_oos']} CLINC150 out-of-scope queries. "
         "AUROC: OOS is the positive class, higher is better. "
         f"FPR at {keep_pct}% TPR: the threshold keeps at least {keep_pct}% of in-scope queries; "
         "FPR is the share of OOS queries also kept, lower is better "
-        + ("(so OOS recall at that threshold is 100 minus this number). " if split == "val" else ". ")
+        + ("(so OOS recall at that threshold is 100 minus this number). " if is_validation else ". ")
         + "Std is the sample standard deviation across seeds.",
         "**Limitation:** the OOS queries come from a different dataset (CLINC150) than the in-scope ones, "
-        "so rejection looks easier than in real use. The Jeff set's finance-adjacent OOS queries are the harder test.",
+        "so rejection looks easier than in real use even with formatting controlled (topics and length still differ). "
+        "The Jeff set's finance-adjacent OOS queries are the harder test.",
         md_table(main_rows),
+        "## Surface cues (no model)",
+        "AUROC of a trivial formatting rule on its own, on the text the systems saw. 50 means the rule carries no signal.",
+        md_table(cue_rows),
     ]
     if comparison_rows:
         parts += [
@@ -233,32 +279,35 @@ def write_markdown(results: dict, comparisons: list[dict], accepted: list[dict],
 
 
 def main(split: str) -> None:
-    if split == "test" and not (data.RESULTS_DIR / "preregistration.md").exists():
-        sys.exit("Refusing to score the test split: results/preregistration.md does not exist yet (rigour rule 1).")
+    is_test = split.startswith("test")
+    if is_test and not (data.RESULTS_DIR / "preregistration.md").exists():
+        sys.exit("Refusing to score a test split: results/preregistration.md does not exist yet (rigour rule 1).")
     cfg = data.load_config("e3_oos")
     tables = load_all_runs(split)
 
     val_thresholds: dict[str, dict[int, float]] = {}
-    if split == "test":  # freeze each seed's threshold from validation
-        with open(data.RESULTS_DIR / "e3_val.json") as f:
+    if is_test:  # freeze each seed's threshold from the matching validation run
+        with open(data.RESULTS_DIR / f"e3_{split.replace('test', 'val')}.json") as f:
             val = json.load(f)["systems"]
         val_thresholds = {tag: {int(s): t for s, t in r["thresholds"].items()} for tag, r in val.items()}
 
     results = {
-        tag: evaluate_system(runs, cfg["in_scope_keep"], val_thresholds.get(tag) if split == "test" else None)
+        tag: evaluate_system(runs, cfg["in_scope_keep"], val_thresholds.get(tag) if is_test else None)
         for tag, runs in tables.items()
     }
     comparisons = compare(tables, cfg)
     inspect = cfg["inspect_system"]
     accepted = most_confidently_accepted(tables[inspect]) if inspect in tables else []
+    cues = surface_cues(next(iter(next(iter(tables.values())).values())))  # same texts in every run
     figure = draw_roc(tables, cfg, split)
 
     meta = run_metadata({**data.load_config("data"), "e3_oos": cfg}, seed=cfg["bootstrap"]["seed"])
     with open(data.RESULTS_DIR / f"e3_{split}.json", "w") as f:
         json.dump({"metadata": meta, "split": split, "systems": results, "comparisons": comparisons,
-                   "most_confidently_accepted": accepted, "figure": figure}, f, indent=2, default=str)
+                   "most_confidently_accepted": accepted, "surface_cues": cues, "figure": figure},
+                  f, indent=2, default=str)
     (data.RESULTS_DIR / f"e3_{split}.md").write_text(
-        write_markdown(results, comparisons, accepted, figure, split, cfg, meta)
+        write_markdown(results, comparisons, accepted, cues, figure, split, cfg, meta)
     )
 
     print(pd.DataFrame({tag: {k: pct(r["summary"], k) for k in r["summary"]} for tag, r in results.items()}).T.to_string())
@@ -269,5 +318,5 @@ def main(split: str) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--split", choices=["val", "test"], default="val")
+    parser.add_argument("--split", choices=SPLITS, default="val")
     main(parser.parse_args().split)
