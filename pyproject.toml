@@ -5,6 +5,7 @@ description = "Router Before the LLM: a cost-aware intent router for a personal 
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
 dependencies = [
+    "cleanlab==2.9.0",
     "datasets==5.2.0",
     "matplotlib==3.11.2",
     "numpy==2.5.5",
