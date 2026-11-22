@@ -1,0 +1,32 @@
+# S3: pairwise paraphrase matcher (README section 7). Retriever = the chosen S2 model.
+# Hyperparameters are fixed standard values for cross-encoders, not tuned.
+
+# Paraphrase cross-encoder (trained on Quora question pairs, one output: same meaning or not).
+# Chosen because it is a paraphrase-detection model (topic 2) and is DistilRoBERTa-sized,
+# which trains on the available hardware (DeBERTa-v3 did not; see decision log).
+checkpoint: cross-encoder/quora-distilroberta-base
+# It uses the same RoBERTa tokeniser as this model, whose pair max_length (80) was
+# measured in M0 (data/processed/token_lengths.json).
+length_reference: distilbert/distilroberta-base
+
+seeds: [0, 1, 2, 3, 4]
+
+retrieval:
+  top_intents: 10          # S2 shortlists this many intents per query...
+  examples_per_intent: 2   # ...with this many closest examples each (20 pairs per query)
+
+pairs:
+  n_negatives: 2           # per train query: 1 positive pair + this many hard negative pairs
+
+training:
+  learning_rate: 2.0e-5
+  weight_decay: 0.01
+  batch_size: 32
+  epochs: 1
+  warmup_fraction: 0.1
+  max_grad_norm: 1.0
+
+score_batch_size: 128      # pairs scored at once during prediction
+
+# Notebook FAST mode on a machine with no saved checkpoint: train this many steps only.
+fast_steps: 100

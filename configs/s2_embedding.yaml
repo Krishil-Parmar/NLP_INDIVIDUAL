@@ -1,0 +1,18 @@
+# S2: embedding nearest neighbour (README section 7). No training, so it is deterministic
+# and runs once (seed 0). The support set is the Banking77 train split.
+
+seeds: [0]
+
+# Candidates compared with the same rule as S1 (fixed before any run):
+# higher validation macro-F1 wins if the gap is more than `min_f1_gap` points,
+# otherwise the lower CPU p95 latency at batch size 1 wins.
+candidates:
+  - sentence-transformers/all-MiniLM-L6-v2
+  - sentence-transformers/all-mpnet-base-v2
+selection:
+  min_f1_gap: 0.5
+
+# Chosen model, filled in by hand from results/s2_selection.json. S3 uses it as its retriever.
+checkpoint: ""
+
+batch_size: 64

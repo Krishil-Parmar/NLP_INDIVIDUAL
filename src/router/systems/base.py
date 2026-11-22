@@ -32,7 +32,8 @@ class Predictions:
     pred_label: list[str]
     confidence: np.ndarray
     oos_score: np.ndarray
-    logits: np.ndarray | None = None  # shape (n_queries, n_intents), softmax systems only
+    logits: np.ndarray | None = None  # raw per-intent scores, shape (n_queries, n_intents), if the system has them
+    matched_example: list[str] | None = None  # S2/S3: the labelled example the query was matched to (shown in the demo)
 
 
 def label_names_in_id_order() -> list[str]:
@@ -100,6 +101,8 @@ def save_predictions(
             "oos_score": preds.oos_score,
         }
     )
+    if preds.matched_example is not None:
+        out["matched_example"] = preds.matched_example
     out.to_csv(csv_path, index=False)
     if preds.logits is not None:
         np.save(logits_path, preds.logits.astype(np.float32))
