@@ -1,0 +1,88 @@
+{
+  "metadata": {
+    "timestamp_utc": "2026-11-22T01:02:55+00:00",
+    "git_commit": "22459da18323f95d81243ddc394095afffa5c693",
+    "git_dirty": false,
+    "seed": 0,
+    "dataset_revisions": {},
+    "python": "3.12.4",
+    "platform": "macOS-27.0-arm64-arm-64bit",
+    "packages": {
+      "torch": "2.15.0",
+      "transformers": "5.24.0",
+      "datasets": "5.2.0",
+      "sentence-transformers": "6.3.0",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "numpy": "2.5.5"
+    },
+    "config": {
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "candidates": [
+        "distilbert/distilroberta-base",
+        "microsoft/deberta-v3-small"
+      ],
+      "selection": {
+        "min_f1_gap": 0.5
+      },
+      "checkpoint": "",
+      "training": {
+        "learning_rate": 5e-05,
+        "weight_decay": 0.01,
+        "batch_size": 32,
+        "epochs": 5,
+        "warmup_fraction": 0.1,
+        "max_grad_norm": 1.0,
+        "eval_batch_size": 64
+      },
+      "fast_steps": 300
+    }
+  },
+  "checkpoint": "distilbert/distilroberta-base",
+  "device": "mps",
+  "max_length": 56,
+  "train_seconds": 328.7349229170941,
+  "epoch_log": [
+    {
+      "epoch": 1,
+      "steps": 281,
+      "train_loss": 2.86757386918594,
+      "seconds": 65.76951420796104,
+      "val_accuracy": 0.791
+    },
+    {
+      "epoch": 2,
+      "steps": 562,
+      "train_loss": 0.7314715800124131,
+      "seconds": 136.5073329579318,
+      "val_accuracy": 0.894
+    },
+    {
+      "epoch": 3,
+      "steps": 843,
+      "train_loss": 0.3248408424578528,
+      "seconds": 196.9105117910076,
+      "val_accuracy": 0.909
+    },
+    {
+      "epoch": 4,
+      "steps": 1124,
+      "train_loss": 0.18335049446950605,
+      "seconds": 261.2399500409374,
+      "val_accuracy": 0.912
+    },
+    {
+      "epoch": 5,
+      "steps": 1405,
+      "train_loss": 0.12169410735103584,
+      "seconds": 324.2507814579876,
+      "val_accuracy": 0.917
+    }
+  ]
+}

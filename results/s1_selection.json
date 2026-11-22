@@ -1,0 +1,79 @@
+{
+  "metadata": {
+    "timestamp_utc": "2026-11-22T01:33:51+00:00",
+    "git_commit": "22459da18323f95d81243ddc394095afffa5c693",
+    "git_dirty": false,
+    "seed": 0,
+    "dataset_revisions": {},
+    "python": "3.12.4",
+    "platform": "macOS-27.0-arm64-arm-64bit",
+    "packages": {
+      "torch": "2.15.0",
+      "transformers": "5.24.0",
+      "datasets": "5.2.0",
+      "sentence-transformers": "6.3.0",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "numpy": "2.5.5"
+    },
+    "config": {
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "candidates": [
+        "distilbert/distilroberta-base",
+        "microsoft/deberta-v3-small"
+      ],
+      "selection": {
+        "min_f1_gap": 0.5
+      },
+      "checkpoint": "",
+      "training": {
+        "learning_rate": 5e-05,
+        "weight_decay": 0.01,
+        "batch_size": 32,
+        "epochs": 5,
+        "warmup_fraction": 0.1,
+        "max_grad_norm": 1.0,
+        "eval_batch_size": 64
+      },
+      "fast_steps": 300
+    }
+  },
+  "latency_machine": "arm64 arm macOS-27.0-arm64-arm-64bit, torch threads 5",
+  "rule": {
+    "min_f1_gap": 0.5
+  },
+  "candidates": {
+    "distilbert/distilroberta-base": {
+      "status": "ok",
+      "val_metrics": {
+        "accuracy": 0.917,
+        "macro_precision": 0.9269009153945424,
+        "macro_recall": 0.9206383035586726,
+        "macro_f1": 0.9210051158923896,
+        "weighted_precision": 0.9223369282978804,
+        "weighted_recall": 0.917,
+        "weighted_f1": 0.9168324751506791
+      },
+      "cpu_latency": {
+        "n_queries": 200,
+        "mean_ms": 17.723357748473063,
+        "p50_ms": 17.58804201381281,
+        "p95_ms": 20.87466668453999
+      }
+    },
+    "microsoft/deberta-v3-small": {
+      "status": "missing"
+    }
+  },
+  "winner": "distilbert/distilroberta-base",
+  "reason": "only candidate with a completed run",
+  "notes": [
+    "microsoft/deberta-v3-small: no completed run. (1) transformers 5.24 loads it in its stored float16, and AdamW turned 105 weight tensors to NaN after one step on both CPU and MPS; fixed by loading in float32 (commit 22459da). (2) In float32 on this 18 GB Apple M3 Pro, the training process reached 12 GB RSS with 16.3 of 17.4 GB swap in use and did not finish 60 steps in 12 minutes (over 12 s/step vs 0.22 s/step for DistilRoBERTa), so five seeds were infeasible. Treated as failing on MPS under the pre-set rule."
+  ]
+}

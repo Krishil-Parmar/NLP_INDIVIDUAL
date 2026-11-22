@@ -4,7 +4,7 @@ A cost-aware intent router for a personal finance assistant. Individual universi
 
 This README is the single source of truth for the project. It is written so that Claude Code (or any new collaborator) can pick the work up cold. Read all of it before writing code.
 
-Last updated: 22 Nov 2026. Status: **M0 complete.** Environment pinned, preprocessing pipeline tested, splits fixed and saved, `results/data_report.md` written, submission notebook skeleton runs top to bottom. Next: M1 (S0, S1, E1 metrics, summary skeleton).
+Last updated: 22 Nov 2026. Status: **M1 complete (minimum submittable version).** S0 and S1 trained on Banking77 with five seeds, E1 on validation in `results/e1_val.md`, the notebook runs end to end with S0 and S1, and the two-page summary skeleton builds to 2 pages. Next: M2 (S2, S3, shared scoring interface, thin demo).
 
 ---
 
@@ -509,6 +509,7 @@ Read the first four before M1. Confirm every figure quoted in this README agains
 | 22 Nov 2026 | S1 checkpoint: `distilbert/distilroberta-base`. Rule fixed before any run: higher validation macro-F1 by more than 0.5 points wins, else lower CPU p95 latency; a candidate that cannot train on MPS loses | `microsoft/deberta-v3-small` could not be trained here. transformers 5 loads it in its stored float16, which made AdamW produce NaN after one step (fixed by loading in float32). In float32 it used 12 GB RAM with swap nearly full on the 18 GB M3 Pro and did not finish 60 steps in 12 minutes. Evidence in `results/s1_selection.json` |
 | 22 Nov 2026 | All S1 checkpoints load in float32 explicitly | transformers 5 otherwise uses the checkpoint's stored precision |
 | 22 Nov 2026 | Keep all five S1 checkpoints (317 MB each, gitignored); seeds [0, 1, 2, 3, 4] | M5 needs per-seed test predictions, and MPS is not bit-for-bit repeatable (same seed twice: max logit difference 2.1e-6, identical predictions), so retraining could shift the validation numbers |
+| 22 Nov 2026 | Notebook FAST mode measured: 16.6 s with saved checkpoints (M3 Pro); 10.4 min on CPU only without checkpoints, where S1 trains 300 steps (75.8% validation accuracy, labelled as fast mode) | Works without a GPU, but slowly. The fix is hosting the seed-0 S1 checkpoint for the notebook to download (open item in section 15), not fewer steps |
 | 22 Nov 2026 | Two-page summary written in Markdown and built to PDF with pandoc + XeLaTeX by `scripts/build_summary.py`, which fails above 2 pages and fills the results table from `results/` | Owner choice. No number is typed by hand (rigour rule 4). Word budgets (730 words in six parts) fit with about a third of page 2 spare |
 
 ---

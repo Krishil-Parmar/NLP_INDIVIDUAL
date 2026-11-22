@@ -1,0 +1,88 @@
+{
+  "metadata": {
+    "timestamp_utc": "2026-11-22T01:22:39+00:00",
+    "git_commit": "22459da18323f95d81243ddc394095afffa5c693",
+    "git_dirty": false,
+    "seed": 3,
+    "dataset_revisions": {},
+    "python": "3.12.4",
+    "platform": "macOS-27.0-arm64-arm-64bit",
+    "packages": {
+      "torch": "2.15.0",
+      "transformers": "5.24.0",
+      "datasets": "5.2.0",
+      "sentence-transformers": "6.3.0",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "numpy": "2.5.5"
+    },
+    "config": {
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "candidates": [
+        "distilbert/distilroberta-base",
+        "microsoft/deberta-v3-small"
+      ],
+      "selection": {
+        "min_f1_gap": 0.5
+      },
+      "checkpoint": "",
+      "training": {
+        "learning_rate": 5e-05,
+        "weight_decay": 0.01,
+        "batch_size": 32,
+        "epochs": 5,
+        "warmup_fraction": 0.1,
+        "max_grad_norm": 1.0,
+        "eval_batch_size": 64
+      },
+      "fast_steps": 300
+    }
+  },
+  "checkpoint": "distilbert/distilroberta-base",
+  "device": "mps",
+  "max_length": 56,
+  "train_seconds": 306.2216781669995,
+  "epoch_log": [
+    {
+      "epoch": 1,
+      "steps": 281,
+      "train_loss": 2.861766579312362,
+      "seconds": 56.040611458942294,
+      "val_accuracy": 0.805
+    },
+    {
+      "epoch": 2,
+      "steps": 562,
+      "train_loss": 0.7107506428324879,
+      "seconds": 111.87105374992825,
+      "val_accuracy": 0.882
+    },
+    {
+      "epoch": 3,
+      "steps": 843,
+      "train_loss": 0.32194683114829015,
+      "seconds": 168.68542224995326,
+      "val_accuracy": 0.899
+    },
+    {
+      "epoch": 4,
+      "steps": 1124,
+      "train_loss": 0.18644098876528045,
+      "seconds": 234.46050883398857,
+      "val_accuracy": 0.901
+    },
+    {
+      "epoch": 5,
+      "steps": 1405,
+      "train_loss": 0.12343063393733679,
+      "seconds": 302.46714083396364,
+      "val_accuracy": 0.908
+    }
+  ]
+}
