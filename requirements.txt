@@ -161,7 +161,7 @@ pygments==2.21.0
     # via rich
 pyparsing==3.3.3
     # via matplotlib
-python-dateutil==4.0.0
+python-dateutil==2.9.0.post0
     # via
     #   matplotlib
     #   pandas
@@ -193,6 +193,8 @@ setuptools==84.2.1
     # via torch
 shellingham==1.5.4
     # via typer
+six==1.17.0
+    # via python-dateutil
 sympy==1.14.0
     # via torch
 threadpoolctl==3.8.0
@@ -235,9 +237,7 @@ typing-extensions==4.16.0
     #   typing-inspection
 typing-inspection==0.4.5
     # via pydantic
-tzdata==2026.6
-    # via
-    #   pandas
-    #   python-dateutil
+tzdata==2026.6 ; sys_platform == 'emscripten' or sys_platform == 'win32'
+    # via pandas
 xxhash==4.1.0
     # via datasets

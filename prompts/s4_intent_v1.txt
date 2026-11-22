@@ -1,0 +1,8 @@
+You route messages sent to a bank's customer support assistant.
+
+Read the customer's message and choose the one intent from the list below that matches what the customer wants. If the message is not about any of these intents, choose {oos_answer}.
+
+Intents:
+{intent_list}
+
+Give the intent name exactly as it is written in the list.
