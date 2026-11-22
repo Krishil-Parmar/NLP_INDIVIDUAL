@@ -4,7 +4,7 @@ A cost-aware intent router for a personal finance assistant. Individual universi
 
 This README is the single source of truth for the project. It is written so that Claude Code (or any new collaborator) can pick the work up cold. Read all of it before writing code.
 
-Last updated: 22 Nov 2026. Status: **M2 complete.** S0 to S3 run on Banking77 validation (five seeds for S0, S1 and S3; S2 has no training, so one run) and all four return the same output schema. E1 on validation is in `results/e1_val.md`. The notebook runs end to end with all four systems, and the two-page summary skeleton builds to 2 pages. The demo router server (`demo/app.py`) answers typed queries offline; its Jeff screen front end builds and passes `flutter analyze` but has not yet been clicked through in a browser. Next: M3 (label cleaning E2, out-of-scope evaluation E3).
+Last updated: 22 Nov 2026. Status: **M3 complete (E3 on validation).** S0 to S3 run on Banking77 validation (five seeds for S0, S1 and S3; S2 has no training, so one run) and all four return the same output schema. E1 is in `results/e1_val.md`; E3 (out-of-scope detection, format-controlled) is in `results/e3_val_fmt.md`. The notebook runs end to end with all four systems and both experiments, and the two-page summary skeleton builds to 2 pages. The demo router server (`demo/app.py`) answers typed queries offline; its Jeff screen front end builds and passes `flutter analyze` but has not yet been clicked through in a browser. Next: M4 (risk-coverage, calibration, policy v1 thresholds, S4 and E6), then M4b (E2).
 
 ---
 
@@ -257,6 +257,14 @@ The router metrics are then defined in the same vocabulary, so a marker can see 
 - **HANDLE recall:** of the queries whose top prediction was correct, the share the router did handle instead of escalating.
 - **Out-of-scope precision and recall:** for the out-of-scope decision at the chosen threshold, alongside AUROC.
 
+Out-of-scope detection (E3), computed by `scripts/evaluate_oos.py` from each system's `oos_score` (1 minus confidence):
+
+- **AUROC:** OOS is the positive class. The chance that a random OOS query scores higher than a random in-scope one; 1.0 is perfect, 0.5 is chance. scikit-learn `roc_auc_score`.
+- **FPR at 95% TPR** (in-scope as the positive class, the Hendrycks and Gimpel convention): the threshold is the lowest `oos_score` that keeps at least 95% of in-scope queries (a query is kept when its score is at or below it). FPR is the share of OOS queries also kept. Lower is better.
+- **OOS recall at the chosen threshold:** the threshold is the one from the 95% rule, set on validation per seed. On validation, OOS recall is 1 minus the FPR by construction. On test, that threshold is applied unchanged, so test OOS recall is out of sample.
+- **Format control:** CLINC150 queries are all lowercase and unpunctuated, unlike most Banking77 queries, so formatting alone separates them (validation: "starts lowercase" scores AUROC 0.971). The primary E3 numbers therefore use format-controlled text: every evaluated query, in-scope and OOS, is lowercased and stripped of punctuation (apostrophes kept) by `router.preprocess.format_control` before prediction (`scripts/predict_format_control.py`, splits ending in `_fmt`). Models and support examples are unchanged. Raw-text numbers are reported next to them.
+- **Comparisons:** paired, stratified bootstrap, 1,000 resamples. In-scope and OOS queries are resampled separately (same class counts every time), both systems use the same rows, and each system's AUROC is the mean over its seeds. Report the difference with its 95% percentile interval. The function `paired_bootstrap_diff` in `src/router/metrics.py` is reused for later headline comparisons.
+
 Selective classification terms:
 
 - **Coverage:** share of queries the router decides itself (HANDLE or REJECT).
@@ -344,8 +352,9 @@ No deadline has been supplied yet, so these are ordered phases. Convert to dates
 | M0 | Repo scaffold, environment, data download, preprocessing (section 6.2), fixed splits, empty submission notebook that imports the package | `make_splits.py` runs clean, split sizes match section 6, `results/data_report.md` is written, the notebook runs top to bottom |
 | M1 | S0 and S1 on Banking77, validation only. E1 metric code (accuracy, precision, recall, F1). Skeleton of the two-page summary with an empty results table. | Validation accuracy in a sane range, seeds reproducible, the notebook runs end to end with S0 and S1. **This is the minimum submittable version. Keep it working from here on.** |
 | M2 | S2 and S3, shared scoring interface. Thin demo. | All four local systems emit the same output schema. The demo answers a typed query offline. |
-| M3 | Label cleaning (E2) and out-of-scope evaluation (E3) | Flagged list saved, 100 items audited, OOS metrics on validation |
+| M3 | Out-of-scope evaluation (E3) on validation, with the format control (section 8.1). Reordered 22 Nov 2026: E2 moved to M4b | OOS metrics on validation with bootstrap comparisons, notebook section, tests |
 | M4 | Metrics module with tests, calibration, router policy, S4 baseline | Risk-coverage code unit-tested on toy data, LLM responses cached |
+| M4b | Label cleaning (E2), started only once every core-path item in section 0 works (needs cleanlab, approved 22 Nov 2026) | Flagged list saved, 100 items audited by the owner, E1 on original vs cleaned labels |
 | M5 | Freeze everything, run E1 to E7 on test | `results/` complete, preregistration file predates the test runs |
 | M6 | Error analysis, figures, two-page summary, appendix, demo polish and script, clean-run check | Summary fits two pages and is reviewed by the owner, clean run recorded, demo rehearsed against a timer |
 
@@ -521,6 +530,11 @@ Read the first four before M1. Confirm every figure quoted in this README agains
 | 22 Nov 2026 | S3 seeds 3 and 4 trained locally on MPS, like seeds 0 to 2 (3.9 and 4.0 min). AWS Lambda was checked and not used | Lambda stops every call at 15 min and has no GPU. S3 took a measured 17.8 min per seed on CPU (M3 Pro probe), so it would need save-and-resume code across calls, and the account's EC2 GPU quota is 0. Training locally keeps all five seeds on one device. Owner chose local |
 | 22 Nov 2026 | Notebook FAST mode with all four systems measured: 55 s with saved checkpoints (M3 Pro, MPS); 5.2 min on CPU only without checkpoints, where S1 trains 300 steps (75.8% validation accuracy) and S3 is the paraphrase model without fine-tuning (80.5%), both labelled as fast mode | Runs without a GPU or checkpoints. Hosting the seed-0 S1 and S3 checkpoints (open item, section 15) would let the marker run the reported models |
 | 22 Nov 2026 | Demo latency, router server alone on MPS with S3: 27 to 184 ms per query over 8 typed queries (median about 42 ms) | Fast enough for a live demo. The first calls are the slowest |
+| 22 Nov 2026 | Milestones reordered: E3 now (M3), then the M4 core, then E2 as M4b. cleanlab approved for M4b | Section 0 marks E2 and E3 as stretch and section 13 forbids stretch work while a core item is missing; E6 and policy v1 are core. E3 on validation needed no training, so it went first. Owner choice |
+| 22 Nov 2026 | E3 threshold rule: the lowest `oos_score` that keeps at least 95% of in-scope validation queries, per seed, frozen for test. Comparisons by paired, stratified bootstrap (1,000 resamples, seed 0) | Fixed before any test run (section 8.1). Stratifying keeps the 1,000 / 350 class counts in every resample |
+| 22 Nov 2026 | E3 primary numbers use format-controlled text (lowercase, punctuation removed, apostrophes kept) for every evaluated query; raw-text numbers reported alongside | All 350 CLINC150 OOS validation queries are lowercase and unpunctuated, against 5.8% and 13.4% of Banking77, so a "starts lowercase" rule alone scores AUROC 0.971 (`results/e3_val.md`). The control removes that cue (AUROC 0.5) without retraining. It changed little: S3 99.70 to 99.72, S1 97.38 to 96.89. Owner choice |
+| 22 Nov 2026 | E3 on validation (format-controlled): AUROC S0 94.80, S1 96.89 ± 0.09, S2 MiniLM 99.91, S3 99.72 ± 0.04. S3 minus S1 +2.82 points (95% CI +2.21 to +3.56); S3 minus S2 -0.20 (CI -0.33 to -0.09) | RQ2 holds on validation. S3 does not beat its own retriever at OOS detection; report it. Two caveats: S2's in-scope scores may be helped by the near-duplicates (26.1% of validation; not measured), and CLINC150 OOS is an easier test than real use |
+| 22 Nov 2026 | Notebook FAST mode with the E3 section measured: 1.8 min with saved checkpoints (M3 Pro, MPS); 8.4 min on CPU only without checkpoints | E3 scores the 1,350 format-controlled validation queries with all four systems in the notebook itself, which costs about 3 min on CPU. Still under 10 min without a GPU |
 
 ---
 

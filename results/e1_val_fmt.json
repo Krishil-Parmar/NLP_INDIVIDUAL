@@ -1,0 +1,1039 @@
+{
+  "metadata": {
+    "timestamp_utc": "2026-11-22T07:34:09+00:00",
+    "git_commit": "d80b6e8710707b0837d7120fee1e4524c6c68f60",
+    "git_dirty": false,
+    "seed": null,
+    "dataset_revisions": {
+      "banking77": "1846984189f2bc0ac51c6fc3a600fa9e1714e0c6",
+      "clinc150": "155b9c710419136e17307b80d0a13e68cd46b4ec"
+    },
+    "python": "3.12.4",
+    "platform": "macOS-27.0-arm64-arm-64bit",
+    "packages": {
+      "torch": "2.15.0",
+      "transformers": "5.24.0",
+      "datasets": "5.2.0",
+      "sentence-transformers": "6.3.0",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "numpy": "2.5.5"
+    },
+    "config": {
+      "seed": 42,
+      "val_fraction": 0.1,
+      "banking77": {
+        "hub_id": "PolyAI/banking77",
+        "revision": "1846984189f2bc0ac51c6fc3a600fa9e1714e0c6",
+        "expected_sizes": {
+          "train": 10003,
+          "test": 3080
+        }
+      },
+      "clinc150": {
+        "hub_id": "clinc/clinc_oos",
+        "config": "plus",
+        "revision": "155b9c710419136e17307b80d0a13e68cd46b4ec",
+        "oos_label": "oos",
+        "expected_oos_sizes": {
+          "train": 250,
+          "validation": 100,
+          "test": 1000
+        }
+      },
+      "oos_pools": {
+        "val": [
+          "train",
+          "validation"
+        ],
+        "test": [
+          "test"
+        ]
+      },
+      "tokenisers": [
+        "distilbert/distilroberta-base",
+        "microsoft/deberta-v3-small",
+        "sentence-transformers/all-MiniLM-L6-v2"
+      ],
+      "length_percentile": 99
+    }
+  },
+  "split": "val_fmt",
+  "systems": {
+    "s0_tfidf": {
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "n_queries": 1000,
+      "per_seed": [
+        {
+          "accuracy": 0.891,
+          "macro_precision": 0.899817987778866,
+          "macro_recall": 0.8902852214485241,
+          "macro_f1": 0.8895115762394515,
+          "weighted_precision": 0.8986165059098109,
+          "weighted_recall": 0.891,
+          "weighted_f1": 0.8901194556594451
+        },
+        {
+          "accuracy": 0.891,
+          "macro_precision": 0.899817987778866,
+          "macro_recall": 0.8902852214485241,
+          "macro_f1": 0.8895115762394515,
+          "weighted_precision": 0.8986165059098109,
+          "weighted_recall": 0.891,
+          "weighted_f1": 0.8901194556594451
+        },
+        {
+          "accuracy": 0.891,
+          "macro_precision": 0.899817987778866,
+          "macro_recall": 0.8902852214485241,
+          "macro_f1": 0.8895115762394515,
+          "weighted_precision": 0.8986165059098109,
+          "weighted_recall": 0.891,
+          "weighted_f1": 0.8901194556594451
+        },
+        {
+          "accuracy": 0.891,
+          "macro_precision": 0.899817987778866,
+          "macro_recall": 0.8902852214485241,
+          "macro_f1": 0.8895115762394515,
+          "weighted_precision": 0.8986165059098109,
+          "weighted_recall": 0.891,
+          "weighted_f1": 0.8901194556594451
+        },
+        {
+          "accuracy": 0.891,
+          "macro_precision": 0.899817987778866,
+          "macro_recall": 0.8902852214485241,
+          "macro_f1": 0.8895115762394515,
+          "weighted_precision": 0.8986165059098109,
+          "weighted_recall": 0.891,
+          "weighted_f1": 0.8901194556594451
+        }
+      ],
+      "summary": {
+        "accuracy": {
+          "mean": 0.891,
+          "std": 0.0
+        },
+        "macro_precision": {
+          "mean": 0.899817987778866,
+          "std": 0.0
+        },
+        "macro_recall": {
+          "mean": 0.8902852214485242,
+          "std": 1.2412670766236366e-16
+        },
+        "macro_f1": {
+          "mean": 0.8895115762394517,
+          "std": 1.2412670766236366e-16
+        },
+        "weighted_precision": {
+          "mean": 0.8986165059098109,
+          "std": 0.0
+        },
+        "weighted_recall": {
+          "mean": 0.891,
+          "std": 0.0
+        },
+        "weighted_f1": {
+          "mean": 0.8901194556594451,
+          "std": 0.0
+        }
+      },
+      "worst_intents": [
+        {
+          "intent": "virtual_card_not_working",
+          "precision": 1.0,
+          "recall": 0.5,
+          "f1": 0.6666666666666666,
+          "support": 4.0
+        },
+        {
+          "intent": "transfer_into_account",
+          "precision": 0.6428571428571429,
+          "recall": 0.8181818181818181,
+          "f1": 0.72,
+          "support": 11.0
+        },
+        {
+          "intent": "transfer_timing",
+          "precision": 0.75,
+          "recall": 0.6923076923076923,
+          "f1": 0.72,
+          "support": 13.0
+        },
+        {
+          "intent": "balance_not_updated_after_bank_transfer",
+          "precision": 0.75,
+          "recall": 0.7058823529411765,
+          "f1": 0.7272727272727273,
+          "support": 17.0
+        },
+        {
+          "intent": "card_not_working",
+          "precision": 0.7272727272727273,
+          "recall": 0.7272727272727273,
+          "f1": 0.7272727272727273,
+          "support": 11.0
+        },
+        {
+          "intent": "card_payment_wrong_exchange_rate",
+          "precision": 0.8571428571428571,
+          "recall": 0.7058823529411765,
+          "f1": 0.7741935483870968,
+          "support": 17.0
+        },
+        {
+          "intent": "compromised_card",
+          "precision": 0.7,
+          "recall": 0.875,
+          "f1": 0.7777777777777778,
+          "support": 8.0
+        },
+        {
+          "intent": "top_up_by_bank_transfer_charge",
+          "precision": 1.0,
+          "recall": 0.6363636363636364,
+          "f1": 0.7777777777777778,
+          "support": 11.0
+        },
+        {
+          "intent": "topping_up_by_card",
+          "precision": 0.875,
+          "recall": 0.7,
+          "f1": 0.7777777777777778,
+          "support": 10.0
+        },
+        {
+          "intent": "verify_my_identity",
+          "precision": 0.6923076923076923,
+          "recall": 0.9,
+          "f1": 0.782608695652174,
+          "support": 10.0
+        }
+      ],
+      "top_confused_pairs": [
+        {
+          "true": "card_payment_wrong_exchange_rate",
+          "predicted": "wrong_exchange_rate_for_cash_withdrawal",
+          "count": 15
+        },
+        {
+          "true": "top_up_by_bank_transfer_charge",
+          "predicted": "top_up_by_card_charge",
+          "count": 15
+        },
+        {
+          "true": "balance_not_updated_after_bank_transfer",
+          "predicted": "balance_not_updated_after_cheque_or_cash_deposit",
+          "count": 10
+        },
+        {
+          "true": "balance_not_updated_after_bank_transfer",
+          "predicted": "pending_transfer",
+          "count": 10
+        },
+        {
+          "true": "card_payment_not_recognised",
+          "predicted": "direct_debit_payment_not_recognised",
+          "count": 10
+        },
+        {
+          "true": "cash_withdrawal_not_recognised",
+          "predicted": "compromised_card",
+          "count": 10
+        },
+        {
+          "true": "declined_transfer",
+          "predicted": "failed_transfer",
+          "count": 10
+        },
+        {
+          "true": "pending_card_payment",
+          "predicted": "declined_card_payment",
+          "count": 10
+        },
+        {
+          "true": "pending_top_up",
+          "predicted": "top_up_failed",
+          "count": 10
+        },
+        {
+          "true": "pin_blocked",
+          "predicted": "change_pin",
+          "count": 10
+        }
+      ]
+    },
+    "s1_distilroberta-base": {
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "n_queries": 1000,
+      "per_seed": [
+        {
+          "accuracy": 0.905,
+          "macro_precision": 0.9148883722302562,
+          "macro_recall": 0.9043187899511528,
+          "macro_f1": 0.9055426271000067,
+          "weighted_precision": 0.9117437150139164,
+          "weighted_recall": 0.905,
+          "weighted_f1": 0.9046885751817295
+        },
+        {
+          "accuracy": 0.881,
+          "macro_precision": 0.8934809683422744,
+          "macro_recall": 0.882541377990395,
+          "macro_f1": 0.882772311612976,
+          "weighted_precision": 0.8891857605771607,
+          "weighted_recall": 0.881,
+          "weighted_f1": 0.8800758106967532
+        },
+        {
+          "accuracy": 0.903,
+          "macro_precision": 0.9121037727054775,
+          "macro_recall": 0.9051425807270969,
+          "macro_f1": 0.9049357645220422,
+          "weighted_precision": 0.9094574830999754,
+          "weighted_recall": 0.903,
+          "weighted_f1": 0.9026938711167347
+        },
+        {
+          "accuracy": 0.888,
+          "macro_precision": 0.9014400955666144,
+          "macro_recall": 0.8923640393354115,
+          "macro_f1": 0.8922661617891683,
+          "weighted_precision": 0.8960659237329802,
+          "weighted_recall": 0.888,
+          "weighted_f1": 0.8877005595434159
+        },
+        {
+          "accuracy": 0.893,
+          "macro_precision": 0.9018299628659084,
+          "macro_recall": 0.8935135431471527,
+          "macro_f1": 0.8932164793666865,
+          "weighted_precision": 0.8991210190995795,
+          "weighted_recall": 0.893,
+          "weighted_f1": 0.8921927959802948
+        }
+      ],
+      "summary": {
+        "accuracy": {
+          "mean": 0.8939999999999999,
+          "std": 0.010099504938362086
+        },
+        "macro_precision": {
+          "mean": 0.9047486343421062,
+          "std": 0.008708296530943769
+        },
+        "macro_recall": {
+          "mean": 0.8955760662302417,
+          "std": 0.009386528024649293
+        },
+        "macro_f1": {
+          "mean": 0.8957466688781759,
+          "std": 0.009581884095021512
+        },
+        "weighted_precision": {
+          "mean": 0.9011147803047225,
+          "std": 0.009411993559654941
+        },
+        "weighted_recall": {
+          "mean": 0.8939999999999999,
+          "std": 0.010099504938362086
+        },
+        "weighted_f1": {
+          "mean": 0.8934703225037856,
+          "std": 0.010310895055079337
+        }
+      },
+      "worst_intents": [
+        {
+          "intent": "topping_up_by_card",
+          "precision": 0.6509557109557109,
+          "recall": 0.74,
+          "f1": 0.6912516469038208,
+          "support": 10.0
+        },
+        {
+          "intent": "transfer_not_received_by_recipient",
+          "precision": 0.7423529411764707,
+          "recall": 0.6588235294117647,
+          "f1": 0.6952839756592293,
+          "support": 17.0
+        },
+        {
+          "intent": "pending_top_up",
+          "precision": 0.7576556776556777,
+          "recall": 0.7066666666666667,
+          "f1": 0.7309031198686371,
+          "support": 15.0
+        },
+        {
+          "intent": "balance_not_updated_after_bank_transfer",
+          "precision": 0.7582602339181287,
+          "recall": 0.7529411764705882,
+          "f1": 0.7546320346320347,
+          "support": 17.0
+        },
+        {
+          "intent": "pin_blocked",
+          "precision": 0.8214141414141416,
+          "recall": 0.7454545454545455,
+          "f1": 0.7807792207792208,
+          "support": 11.0
+        },
+        {
+          "intent": "transfer_timing",
+          "precision": 0.8884848484848484,
+          "recall": 0.7230769230769232,
+          "f1": 0.7962318840579711,
+          "support": 13.0
+        },
+        {
+          "intent": "why_verify_identity",
+          "precision": 0.8336363636363637,
+          "recall": 0.7666666666666666,
+          "f1": 0.7974308300395258,
+          "support": 12.0
+        },
+        {
+          "intent": "country_support",
+          "precision": 0.7459249084249084,
+          "recall": 0.8923076923076924,
+          "f1": 0.8089799048642208,
+          "support": 13.0
+        },
+        {
+          "intent": "pending_transfer",
+          "precision": 0.7669891640866873,
+          "recall": 0.8666666666666668,
+          "f1": 0.8130218216318786,
+          "support": 15.0
+        },
+        {
+          "intent": "card_not_working",
+          "precision": 0.9155555555555555,
+          "recall": 0.7454545454545455,
+          "f1": 0.8208020050125313,
+          "support": 11.0
+        }
+      ],
+      "top_confused_pairs": [
+        {
+          "true": "card_about_to_expire",
+          "predicted": "country_support",
+          "count": 15
+        },
+        {
+          "true": "why_verify_identity",
+          "predicted": "verify_my_identity",
+          "count": 13
+        },
+        {
+          "true": "card_payment_wrong_exchange_rate",
+          "predicted": "wrong_exchange_rate_for_cash_withdrawal",
+          "count": 12
+        },
+        {
+          "true": "fiat_currency_support",
+          "predicted": "exchange_via_app",
+          "count": 12
+        },
+        {
+          "true": "transfer_not_received_by_recipient",
+          "predicted": "balance_not_updated_after_bank_transfer",
+          "count": 12
+        },
+        {
+          "true": "declined_transfer",
+          "predicted": "failed_transfer",
+          "count": 10
+        },
+        {
+          "true": "pending_top_up",
+          "predicted": "top_up_failed",
+          "count": 10
+        },
+        {
+          "true": "top_up_by_bank_transfer_charge",
+          "predicted": "top_up_by_card_charge",
+          "count": 10
+        },
+        {
+          "true": "balance_not_updated_after_bank_transfer",
+          "predicted": "pending_transfer",
+          "count": 9
+        },
+        {
+          "true": "pin_blocked",
+          "predicted": "change_pin",
+          "count": 9
+        }
+      ]
+    },
+    "s2_all-MiniLM-L6-v2": {
+      "seeds": [
+        0
+      ],
+      "n_queries": 1000,
+      "per_seed": [
+        {
+          "accuracy": 0.908,
+          "macro_precision": 0.915985001540708,
+          "macro_recall": 0.9128062101364339,
+          "macro_f1": 0.9104449301070581,
+          "weighted_precision": 0.9143372287938129,
+          "weighted_recall": 0.908,
+          "weighted_f1": 0.9072993367588196
+        }
+      ],
+      "summary": {
+        "accuracy": {
+          "mean": 0.908,
+          "std": 0.0
+        },
+        "macro_precision": {
+          "mean": 0.915985001540708,
+          "std": 0.0
+        },
+        "macro_recall": {
+          "mean": 0.9128062101364339,
+          "std": 0.0
+        },
+        "macro_f1": {
+          "mean": 0.9104449301070581,
+          "std": 0.0
+        },
+        "weighted_precision": {
+          "mean": 0.9143372287938129,
+          "std": 0.0
+        },
+        "weighted_recall": {
+          "mean": 0.908,
+          "std": 0.0
+        },
+        "weighted_f1": {
+          "mean": 0.9072993367588196,
+          "std": 0.0
+        }
+      },
+      "worst_intents": [
+        {
+          "intent": "transfer_not_received_by_recipient",
+          "precision": 0.6666666666666666,
+          "recall": 0.47058823529411764,
+          "f1": 0.5517241379310345,
+          "support": 17.0
+        },
+        {
+          "intent": "balance_not_updated_after_bank_transfer",
+          "precision": 0.6086956521739131,
+          "recall": 0.8235294117647058,
+          "f1": 0.7,
+          "support": 17.0
+        },
+        {
+          "intent": "pending_top_up",
+          "precision": 1.0,
+          "recall": 0.6,
+          "f1": 0.75,
+          "support": 15.0
+        },
+        {
+          "intent": "topping_up_by_card",
+          "precision": 0.7272727272727273,
+          "recall": 0.8,
+          "f1": 0.7619047619047619,
+          "support": 10.0
+        },
+        {
+          "intent": "order_physical_card",
+          "precision": 0.8181818181818182,
+          "recall": 0.75,
+          "f1": 0.782608695652174,
+          "support": 12.0
+        },
+        {
+          "intent": "compromised_card",
+          "precision": 0.8571428571428571,
+          "recall": 0.75,
+          "f1": 0.8,
+          "support": 8.0
+        },
+        {
+          "intent": "declined_transfer",
+          "precision": 0.8333333333333334,
+          "recall": 0.7692307692307693,
+          "f1": 0.8,
+          "support": 13.0
+        },
+        {
+          "intent": "get_physical_card",
+          "precision": 0.8888888888888888,
+          "recall": 0.7272727272727273,
+          "f1": 0.8,
+          "support": 11.0
+        },
+        {
+          "intent": "lost_or_stolen_card",
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "f1": 0.8,
+          "support": 8.0
+        },
+        {
+          "intent": "pin_blocked",
+          "precision": 0.8888888888888888,
+          "recall": 0.7272727272727273,
+          "f1": 0.8,
+          "support": 11.0
+        }
+      ],
+      "top_confused_pairs": [
+        {
+          "true": "transfer_not_received_by_recipient",
+          "predicted": "balance_not_updated_after_bank_transfer",
+          "count": 5
+        },
+        {
+          "true": "balance_not_updated_after_bank_transfer",
+          "predicted": "transfer_not_received_by_recipient",
+          "count": 2
+        },
+        {
+          "true": "balance_not_updated_after_cheque_or_cash_deposit",
+          "predicted": "wrong_amount_of_cash_received",
+          "count": 2
+        },
+        {
+          "true": "card_arrival",
+          "predicted": "card_delivery_estimate",
+          "count": 2
+        },
+        {
+          "true": "card_payment_wrong_exchange_rate",
+          "predicted": "wrong_exchange_rate_for_cash_withdrawal",
+          "count": 2
+        },
+        {
+          "true": "cash_withdrawal_not_recognised",
+          "predicted": "lost_or_stolen_card",
+          "count": 2
+        },
+        {
+          "true": "compromised_card",
+          "predicted": "lost_or_stolen_card",
+          "count": 2
+        },
+        {
+          "true": "declined_transfer",
+          "predicted": "failed_transfer",
+          "count": 2
+        },
+        {
+          "true": "get_physical_card",
+          "predicted": "change_pin",
+          "count": 2
+        },
+        {
+          "true": "pending_top_up",
+          "predicted": "top_up_failed",
+          "count": 2
+        }
+      ]
+    },
+    "s2_all-mpnet-base-v2": {
+      "seeds": [
+        0
+      ],
+      "n_queries": 1000,
+      "per_seed": [
+        {
+          "accuracy": 0.909,
+          "macro_precision": 0.9166846511303911,
+          "macro_recall": 0.9132752884225483,
+          "macro_f1": 0.9105961966856038,
+          "weighted_precision": 0.9152218674729125,
+          "weighted_recall": 0.909,
+          "weighted_f1": 0.9078458100314571
+        }
+      ],
+      "summary": {
+        "accuracy": {
+          "mean": 0.909,
+          "std": 0.0
+        },
+        "macro_precision": {
+          "mean": 0.9166846511303911,
+          "std": 0.0
+        },
+        "macro_recall": {
+          "mean": 0.9132752884225483,
+          "std": 0.0
+        },
+        "macro_f1": {
+          "mean": 0.9105961966856038,
+          "std": 0.0
+        },
+        "weighted_precision": {
+          "mean": 0.9152218674729125,
+          "std": 0.0
+        },
+        "weighted_recall": {
+          "mean": 0.909,
+          "std": 0.0
+        },
+        "weighted_f1": {
+          "mean": 0.9078458100314571,
+          "std": 0.0
+        }
+      },
+      "worst_intents": [
+        {
+          "intent": "transfer_not_received_by_recipient",
+          "precision": 0.75,
+          "recall": 0.5294117647058824,
+          "f1": 0.6206896551724138,
+          "support": 17.0
+        },
+        {
+          "intent": "compromised_card",
+          "precision": 0.6666666666666666,
+          "recall": 0.75,
+          "f1": 0.7058823529411765,
+          "support": 8.0
+        },
+        {
+          "intent": "pending_top_up",
+          "precision": 0.9,
+          "recall": 0.6,
+          "f1": 0.72,
+          "support": 15.0
+        },
+        {
+          "intent": "balance_not_updated_after_bank_transfer",
+          "precision": 0.6842105263157895,
+          "recall": 0.7647058823529411,
+          "f1": 0.7222222222222222,
+          "support": 17.0
+        },
+        {
+          "intent": "pin_blocked",
+          "precision": 0.875,
+          "recall": 0.6363636363636364,
+          "f1": 0.7368421052631579,
+          "support": 11.0
+        },
+        {
+          "intent": "topping_up_by_card",
+          "precision": 0.7777777777777778,
+          "recall": 0.7,
+          "f1": 0.7368421052631579,
+          "support": 10.0
+        },
+        {
+          "intent": "card_payment_not_recognised",
+          "precision": 0.9230769230769231,
+          "recall": 0.7058823529411765,
+          "f1": 0.8,
+          "support": 17.0
+        },
+        {
+          "intent": "lost_or_stolen_card",
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "f1": 0.8,
+          "support": 8.0
+        },
+        {
+          "intent": "pending_transfer",
+          "precision": 0.8125,
+          "recall": 0.8666666666666667,
+          "f1": 0.8387096774193549,
+          "support": 15.0
+        },
+        {
+          "intent": "transfer_timing",
+          "precision": 0.8461538461538461,
+          "recall": 0.8461538461538461,
+          "f1": 0.8461538461538461,
+          "support": 13.0
+        }
+      ],
+      "top_confused_pairs": [
+        {
+          "true": "transfer_not_received_by_recipient",
+          "predicted": "balance_not_updated_after_bank_transfer",
+          "count": 4
+        },
+        {
+          "true": "balance_not_updated_after_bank_transfer",
+          "predicted": "pending_transfer",
+          "count": 3
+        },
+        {
+          "true": "pending_top_up",
+          "predicted": "top_up_failed",
+          "count": 3
+        },
+        {
+          "true": "wrong_exchange_rate_for_cash_withdrawal",
+          "predicted": "card_payment_wrong_exchange_rate",
+          "count": 3
+        },
+        {
+          "true": "card_arrival",
+          "predicted": "card_delivery_estimate",
+          "count": 2
+        },
+        {
+          "true": "card_payment_not_recognised",
+          "predicted": "compromised_card",
+          "count": 2
+        },
+        {
+          "true": "card_payment_not_recognised",
+          "predicted": "direct_debit_payment_not_recognised",
+          "count": 2
+        },
+        {
+          "true": "compromised_card",
+          "predicted": "lost_or_stolen_card",
+          "count": 2
+        },
+        {
+          "true": "declined_transfer",
+          "predicted": "failed_transfer",
+          "count": 2
+        },
+        {
+          "true": "pin_blocked",
+          "predicted": "change_pin",
+          "count": 2
+        }
+      ]
+    },
+    "s3_quora-distilroberta-base": {
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "n_queries": 1000,
+      "per_seed": [
+        {
+          "accuracy": 0.903,
+          "macro_precision": 0.910925052815206,
+          "macro_recall": 0.9062344629802715,
+          "macro_f1": 0.9047313866045511,
+          "weighted_precision": 0.9102123263819085,
+          "weighted_recall": 0.903,
+          "weighted_f1": 0.9029294789944526
+        },
+        {
+          "accuracy": 0.901,
+          "macro_precision": 0.9080959828416707,
+          "macro_recall": 0.9059169180771648,
+          "macro_f1": 0.9031203007474912,
+          "weighted_precision": 0.9079611578308172,
+          "weighted_recall": 0.901,
+          "weighted_f1": 0.9006990025508183
+        },
+        {
+          "accuracy": 0.906,
+          "macro_precision": 0.9141551291555311,
+          "macro_recall": 0.9090017046512563,
+          "macro_f1": 0.9078610634169888,
+          "weighted_precision": 0.9132225437273425,
+          "weighted_recall": 0.906,
+          "weighted_f1": 0.9059903895545215
+        },
+        {
+          "accuracy": 0.907,
+          "macro_precision": 0.913326491301844,
+          "macro_recall": 0.9104103235521351,
+          "macro_f1": 0.9080242323591202,
+          "weighted_precision": 0.9144169677931289,
+          "weighted_recall": 0.907,
+          "weighted_f1": 0.9070035695382599
+        },
+        {
+          "accuracy": 0.902,
+          "macro_precision": 0.912781706917185,
+          "macro_recall": 0.9059447942414047,
+          "macro_f1": 0.9053911825183668,
+          "weighted_precision": 0.9100442954157013,
+          "weighted_recall": 0.902,
+          "weighted_f1": 0.9022036594056704
+        }
+      ],
+      "summary": {
+        "accuracy": {
+          "mean": 0.9038,
+          "std": 0.002588435821108959
+        },
+        "macro_precision": {
+          "mean": 0.9118568726062873,
+          "std": 0.002414003972849567
+        },
+        "macro_recall": {
+          "mean": 0.9075016407004466,
+          "std": 0.0020767452812337256
+        },
+        "macro_f1": {
+          "mean": 0.9058256331293035,
+          "std": 0.0021024843112218278
+        },
+        "weighted_precision": {
+          "mean": 0.9111714582297796,
+          "std": 0.002609441635998197
+        },
+        "weighted_recall": {
+          "mean": 0.9038,
+          "std": 0.002588435821108959
+        },
+        "weighted_f1": {
+          "mean": 0.9037652200087447,
+          "std": 0.0026446602448188146
+        }
+      },
+      "worst_intents": [
+        {
+          "intent": "transfer_not_received_by_recipient",
+          "precision": 0.8045454545454547,
+          "recall": 0.5294117647058824,
+          "f1": 0.638423645320197,
+          "support": 17.0
+        },
+        {
+          "intent": "balance_not_updated_after_bank_transfer",
+          "precision": 0.6308300395256917,
+          "recall": 0.8235294117647058,
+          "f1": 0.7143589743589743,
+          "support": 17.0
+        },
+        {
+          "intent": "compromised_card",
+          "precision": 0.8142857142857143,
+          "recall": 0.725,
+          "f1": 0.7647619047619048,
+          "support": 8.0
+        },
+        {
+          "intent": "topping_up_by_card",
+          "precision": 0.673846153846154,
+          "recall": 0.9,
+          "f1": 0.7700869565217391,
+          "support": 10.0
+        },
+        {
+          "intent": "why_verify_identity",
+          "precision": 0.7517948717948719,
+          "recall": 0.85,
+          "f1": 0.7967065527065527,
+          "support": 12.0
+        },
+        {
+          "intent": "order_physical_card",
+          "precision": 0.8144522144522146,
+          "recall": 0.8,
+          "f1": 0.8063768115942029,
+          "support": 12.0
+        },
+        {
+          "intent": "lost_or_stolen_card",
+          "precision": 0.7042424242424243,
+          "recall": 0.95,
+          "f1": 0.8079532163742689,
+          "support": 8.0
+        },
+        {
+          "intent": "pin_blocked",
+          "precision": 0.9111111111111111,
+          "recall": 0.7272727272727273,
+          "f1": 0.8084210526315789,
+          "support": 11.0
+        },
+        {
+          "intent": "declined_transfer",
+          "precision": 0.8098901098901099,
+          "recall": 0.8461538461538461,
+          "f1": 0.8273504273504273,
+          "support": 13.0
+        },
+        {
+          "intent": "failed_transfer",
+          "precision": 0.8,
+          "recall": 0.8571428571428571,
+          "f1": 0.8275862068965518,
+          "support": 14.0
+        }
+      ],
+      "top_confused_pairs": [
+        {
+          "true": "transfer_not_received_by_recipient",
+          "predicted": "balance_not_updated_after_bank_transfer",
+          "count": 22
+        },
+        {
+          "true": "balance_not_updated_after_bank_transfer",
+          "predicted": "pending_transfer",
+          "count": 14
+        },
+        {
+          "true": "compromised_card",
+          "predicted": "lost_or_stolen_card",
+          "count": 11
+        },
+        {
+          "true": "pending_top_up",
+          "predicted": "topping_up_by_card",
+          "count": 11
+        },
+        {
+          "true": "transfer_not_received_by_recipient",
+          "predicted": "transfer_timing",
+          "count": 11
+        },
+        {
+          "true": "card_payment_wrong_exchange_rate",
+          "predicted": "wrong_exchange_rate_for_cash_withdrawal",
+          "count": 10
+        },
+        {
+          "true": "declined_transfer",
+          "predicted": "failed_transfer",
+          "count": 10
+        },
+        {
+          "true": "card_arrival",
+          "predicted": "card_delivery_estimate",
+          "count": 9
+        },
+        {
+          "true": "pin_blocked",
+          "predicted": "change_pin",
+          "count": 9
+        },
+        {
+          "true": "unable_to_verify_identity",
+          "predicted": "why_verify_identity",
+          "count": 9
+        }
+      ]
+    }
+  }
+}
