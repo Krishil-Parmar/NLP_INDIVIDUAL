@@ -1,13 +1,23 @@
 """Cost and latency model (README section 8.1).
 
-For now this holds only the latency measurement. The cost model
-(cost_per_query = router_cost + (1 - coverage) * llm_cost) is added in M4.
+cost_per_query = router_cost + (1 - coverage) * llm_cost, where llm_cost is
+S4's measured cost per call and coverage is the share the router decides itself.
 """
 
 import time
 from collections.abc import Callable
 
 import numpy as np
+
+
+def cost_per_query(coverage: float, llm_cost: float, router_cost: float = 0.0) -> float:
+    """Average cost of one query when the router handles `coverage` of them and escalates the rest.
+
+    router_cost defaults to 0: the local model runs on hardware the assistant
+    already has (an assumption stated in README section 8.1). Its time cost is
+    reported separately as latency.
+    """
+    return router_cost + (1.0 - coverage) * llm_cost
 
 
 def measure_latency(

@@ -4,7 +4,8 @@
   primary (each intent counts equally); weighted averages are reported next to them.
 - E3 out-of-scope detection: AUROC, FPR at 95% TPR and rates at a fixed threshold.
 - A paired, stratified bootstrap for comparing two systems.
-Risk-coverage and AURC come in M4.
+- E6 router metrics: risk-coverage curve, AURC, coverage at a risk level,
+  HANDLE precision and recall, and expected calibration error.
 
 Standard metrics come from scikit-learn, not hand-written code.
 """
@@ -136,6 +137,88 @@ def fpr_at_tpr(is_oos: np.ndarray, oos_score: np.ndarray, keep: float = 0.95) ->
     threshold = in_scope_threshold(oos_score[~is_oos], keep)
     rates = rates_at_threshold(is_oos, oos_score, threshold)
     return {"threshold": threshold, "fpr": 1.0 - rates["oos_recall"], "in_scope_kept": rates["in_scope_kept"]}
+
+
+# ---------------------------------------------------------------------------
+# E6: router metrics (README section 8.1).
+# correct is a True/False array: the system's predicted intent is right. An
+# out-of-scope query is never right for S0-S3, which cannot answer "oos".
+# confidence: higher = more sure. Policy v1 HANDLEs a query when its
+# confidence is at or above the threshold, and escalates it otherwise.
+# ---------------------------------------------------------------------------
+
+def risk_coverage_curve(correct: np.ndarray, confidence: np.ndarray) -> pd.DataFrame:
+    """One row per distinct threshold, from the strictest to the loosest.
+
+    At threshold t (a confidence value that occurs in the data) the router
+    handles every query with confidence >= t. coverage = share of queries
+    handled; risk = share of the handled queries that are wrong (selective risk).
+    """
+    correct = np.asarray(correct, dtype=bool)
+    confidence = np.asarray(confidence, dtype=float)
+    order = np.argsort(-confidence, kind="stable")  # most confident first
+    sorted_conf = confidence[order]
+    errors_so_far = np.cumsum(~correct[order])  # running count of wrong answers
+    # The last position of each run of equal confidence: every query up to it is handled at that threshold.
+    last = np.flatnonzero(np.r_[sorted_conf[1:] != sorted_conf[:-1], True])
+    n_handled = last + 1
+    return pd.DataFrame({
+        "threshold": sorted_conf[last],
+        "coverage": n_handled / len(sorted_conf),
+        "risk": errors_so_far[last] / n_handled,
+        "n_handled": n_handled,
+    })
+
+
+def aurc(curve: pd.DataFrame) -> float:
+    """Area under the risk-coverage curve, as a step function: each point's risk
+    times the extra coverage it adds. Lower is better (Geifman and El-Yaniv, 2017)."""
+    coverage_added = np.diff(np.r_[0.0, curve["coverage"].to_numpy()])
+    return float(np.sum(curve["risk"].to_numpy() * coverage_added))
+
+
+def coverage_at_risk(correct: np.ndarray, confidence: np.ndarray, max_risk: float) -> dict[str, float]:
+    """The highest coverage whose selective risk is at or below max_risk, with its threshold.
+
+    If no threshold qualifies, the router handles nothing: coverage 0 and an
+    infinite threshold (no confidence can reach it).
+    """
+    curve = risk_coverage_curve(correct, confidence)
+    allowed = curve[curve["risk"] <= max_risk + 1e-12]  # tiny tolerance for floating-point ties
+    if allowed.empty:
+        return {"coverage": 0.0, "threshold": float("inf"), "risk": 0.0}
+    best = allowed.loc[allowed["coverage"].idxmax()]
+    return {"coverage": float(best["coverage"]), "threshold": float(best["threshold"]), "risk": float(best["risk"])}
+
+
+def handle_precision_recall(correct: np.ndarray, handled: np.ndarray) -> dict[str, float]:
+    """HANDLE precision: of the queries handled, the share handled correctly (1 - selective risk).
+    HANDLE recall: of the queries the system got right, the share it handled instead of escalating.
+    NaN when there is nothing to divide by."""
+    correct = np.asarray(correct, dtype=bool)
+    handled = np.asarray(handled, dtype=bool)
+    precision = float(correct[handled].mean()) if handled.any() else float("nan")
+    recall = float(handled[correct].mean()) if correct.any() else float("nan")
+    return {"handle_precision": precision, "handle_recall": recall}
+
+
+def expected_calibration_error(confidence: np.ndarray, correct: np.ndarray, n_bins: int = 15) -> float:
+    """Expected calibration error (Guo et al., 2017).
+
+    Split queries into equal-width confidence bins; in each bin compare the mean
+    confidence with the actual accuracy; average the gaps, weighted by how many
+    queries fall in each bin. 0 = perfectly calibrated.
+    """
+    confidence = np.asarray(confidence, dtype=float)
+    correct = np.asarray(correct, dtype=float)
+    edges = np.linspace(0.0, 1.0, n_bins + 1)
+    bin_of = np.digitize(confidence, edges[1:-1], right=True)  # bin index 0 .. n_bins-1
+    ece = 0.0
+    for b in range(n_bins):
+        in_bin = bin_of == b
+        if in_bin.any():
+            ece += in_bin.mean() * abs(correct[in_bin].mean() - confidence[in_bin].mean())
+    return float(ece)
 
 
 # ---------------------------------------------------------------------------

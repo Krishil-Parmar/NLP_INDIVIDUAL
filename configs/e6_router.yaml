@@ -1,0 +1,35 @@
+# E6: router policy v1, risk-coverage and cost (README sections 7.1, 8 and 8.1). Read by scripts/evaluate_router.py.
+# Fixed before E6 was run (decision log, 22 Nov 2026).
+
+llm_system: s4_claude-sonnet-4-6      # sets the matched risk (its error rate) and the price of an escalation
+
+# The routers that compete for "best router" (README 7.2: highest coverage at matched risk on validation).
+routers:
+  - s0_tfidf
+  - s1_distilroberta-base
+  - s2_all-MiniLM-L6-v2
+  - s3_quora-distilroberta-base
+
+calibrate: [s0_tfidf, s1_distilroberta-base]   # softmax systems: temperature-scaled before routing
+ece_systems: [s0_tfidf, s1_distilroberta-base, s3_quora-distilroberta-base]  # confidence is a probability (not S2's cosine)
+ece_bins: 15
+
+fixed_risks: [0.01, 0.02, 0.05]       # coverage is also reported at these selective-risk levels
+router_cost_usd: 0.0                  # local model on hardware the assistant already has; latency reported separately
+
+bootstrap:
+  resamples: 1000
+  seed: 0
+  ci: 0.95
+
+# Each pair (A, B) reports coverage at matched risk, A - B, with a paired bootstrap interval.
+comparisons:
+  - [s3_quora-distilroberta-base, s1_distilroberta-base]
+  - [s3_quora-distilroberta-base, s2_all-MiniLM-L6-v2]
+
+# Risk-coverage figure: same colours as the E3 figure, so a system keeps its colour everywhere.
+figure:
+  - {tag: s3_quora-distilroberta-base, name: "S3 pairwise", color: "#2a78d6", style: solid}
+  - {tag: s1_distilroberta-base, name: "S1 encoder", color: "#eb6834", style: solid}
+  - {tag: s2_all-MiniLM-L6-v2, name: "S2 embedding", color: "#1baf7a", style: solid}
+  - {tag: s0_tfidf, name: "S0 TF-IDF", color: "#898781", style: dashed}
