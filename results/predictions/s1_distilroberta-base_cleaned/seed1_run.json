@@ -1,0 +1,91 @@
+{
+  "metadata": {
+    "timestamp_utc": "2026-11-22T11:35:18+00:00",
+    "git_commit": "c0b819f252840c3f352e04b731def135d08a4447",
+    "git_dirty": false,
+    "seed": 1,
+    "dataset_revisions": {},
+    "python": "3.12.4",
+    "platform": "macOS-27.0-arm64-arm-64bit",
+    "packages": {
+      "torch": "2.15.0",
+      "transformers": "5.24.0",
+      "datasets": "5.2.0",
+      "sentence-transformers": "6.3.0",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "numpy": "2.5.5",
+      "cleanlab": "2.9.0"
+    },
+    "config": {
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "candidates": [
+        "distilbert/distilroberta-base",
+        "microsoft/deberta-v3-small"
+      ],
+      "selection": {
+        "min_f1_gap": 0.5
+      },
+      "checkpoint": "distilbert/distilroberta-base",
+      "training": {
+        "learning_rate": 5e-05,
+        "weight_decay": 0.01,
+        "batch_size": 32,
+        "epochs": 5,
+        "warmup_fraction": 0.1,
+        "max_grad_norm": 1.0,
+        "eval_batch_size": 64
+      },
+      "fast_steps": 300
+    }
+  },
+  "checkpoint": "distilbert/distilroberta-base",
+  "device": "mps",
+  "max_length": 56,
+  "train_seconds": 261.6248437920585,
+  "epoch_log": [
+    {
+      "epoch": 1,
+      "steps": 276,
+      "train_loss": 2.919607925242272,
+      "seconds": 51.323140874970704,
+      "val_accuracy": 0.813
+    },
+    {
+      "epoch": 2,
+      "steps": 552,
+      "train_loss": 0.6730314227549926,
+      "seconds": 103.32601770793553,
+      "val_accuracy": 0.889
+    },
+    {
+      "epoch": 3,
+      "steps": 828,
+      "train_loss": 0.2752671322474877,
+      "seconds": 155.19720508297905,
+      "val_accuracy": 0.903
+    },
+    {
+      "epoch": 4,
+      "steps": 1104,
+      "train_loss": 0.13916202594080698,
+      "seconds": 206.5985962919658,
+      "val_accuracy": 0.907
+    },
+    {
+      "epoch": 5,
+      "steps": 1380,
+      "train_loss": 0.08199403031418721,
+      "seconds": 258.6062925829319,
+      "val_accuracy": 0.906
+    }
+  ],
+  "labels": "cleaned",
+  "n_train_rows": 8829
+}

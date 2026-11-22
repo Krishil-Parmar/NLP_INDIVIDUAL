@@ -1,0 +1,68 @@
+{
+  "metadata": {
+    "timestamp_utc": "2026-11-22T11:57:34+00:00",
+    "git_commit": "df7302d0bbc8178fb0e2a41a9288c6a043a1a3e5",
+    "git_dirty": false,
+    "seed": 3,
+    "dataset_revisions": {},
+    "python": "3.12.4",
+    "platform": "macOS-27.0-arm64-arm-64bit",
+    "packages": {
+      "torch": "2.15.0",
+      "transformers": "5.24.0",
+      "datasets": "5.2.0",
+      "sentence-transformers": "6.3.0",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "numpy": "2.5.5",
+      "cleanlab": "2.9.0"
+    },
+    "config": {
+      "checkpoint": "cross-encoder/quora-distilroberta-base",
+      "length_reference": "distilbert/distilroberta-base",
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "retrieval": {
+        "top_intents": 10,
+        "examples_per_intent": 2
+      },
+      "pairs": {
+        "n_positives": 1,
+        "n_negatives": 2
+      },
+      "training": {
+        "learning_rate": 2e-05,
+        "weight_decay": 0.01,
+        "batch_size": 32,
+        "epochs": 1,
+        "warmup_fraction": 0.1,
+        "max_grad_norm": 1.0
+      },
+      "score_batch_size": 128,
+      "fast_steps": 100
+    }
+  },
+  "checkpoint": "cross-encoder/quora-distilroberta-base",
+  "retriever": "sentence-transformers/all-MiniLM-L6-v2",
+  "device": "mps",
+  "max_length": 80,
+  "n_training_pairs": 26461,
+  "positive_share": 0.3326782812440951,
+  "val_shortlist_recall": 0.996,
+  "train_seconds": 237.9599882500479,
+  "epoch_log": [
+    {
+      "epoch": 1,
+      "steps": 827,
+      "train_loss": 0.21841877671195128,
+      "seconds": 230.30631416698452
+    }
+  ],
+  "labels": "cleaned",
+  "n_train_rows": 8829
+}
