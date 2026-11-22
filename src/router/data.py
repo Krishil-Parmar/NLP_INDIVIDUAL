@@ -13,7 +13,6 @@ from pathlib import Path
 
 import pandas as pd
 import yaml
-from datasets import load_dataset
 
 # src/router/data.py -> parents[2] is the project root. Using an absolute root
 # means paths work no matter which folder a script or notebook is run from.
@@ -54,6 +53,10 @@ def load_banking77(cfg: dict) -> tuple[pd.DataFrame, pd.DataFrame, list[str]]:
     Returns (train_df, test_df, label_names). label_names[i] is the intent name
     for Hub label i, so label_id in our files equals the Hub's own label number.
     """
+    # Imported here, not at the top, because only make_splits.py downloads data.
+    # The notebook and the systems read saved CSVs and never need this library.
+    from datasets import load_dataset
+
     spec = cfg["banking77"]
     ds = load_dataset(spec["hub_id"], revision=spec["revision"], cache_dir=str(RAW_DIR))
     label_names: list[str] = ds["train"].features["label"].names
@@ -79,6 +82,8 @@ def load_clinc_oos(cfg: dict) -> dict[str, pd.DataFrame]:
     Returns {"train": df, "validation": df, "test": df} of OOS rows.
     OOS rows are found by intent name (cfg oos_label), not by a hard-coded number.
     """
+    from datasets import load_dataset  # see note in load_banking77
+
     spec = cfg["clinc150"]
     ds = load_dataset(
         spec["hub_id"], spec["config"], revision=spec["revision"], cache_dir=str(RAW_DIR)

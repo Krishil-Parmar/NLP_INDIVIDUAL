@@ -41,8 +41,12 @@ def git_commit() -> str:
 
 
 def git_is_dirty() -> bool:
-    """True if there are uncommitted changes to tracked or new files."""
-    return _git("status", "--porcelain") != ""
+    """True if any tracked file has uncommitted changes.
+
+    Untracked files are ignored on purpose: a script's own fresh output files are
+    untracked when it runs, and they say nothing about whether the code was committed.
+    """
+    return _git("status", "--porcelain", "--untracked-files=no") != ""
 
 
 def package_versions() -> dict[str, str]:
