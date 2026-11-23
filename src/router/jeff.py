@@ -15,13 +15,50 @@ configs/jeff.yaml (data/jeff/jeff_written.csv). This module:
 import numpy as np
 import pandas as pd
 
+from router import data
+
 OOS_LABEL = "oos"
 OOS_KINDS = {"unrelated": "oos_unrelated", "finance-adjacent": "oos_finance_adjacent"}  # notes value -> config key
 
 
 def intent_names(cfg: dict) -> list[str]:
-    """The in-scope intent names, in config order."""
+    """The in-scope intent names, in config order. A name's position is its label id."""
     return [intent["name"] for intent in cfg["intents"]]
+
+
+def intent_descriptions(cfg: dict) -> dict[str, str]:
+    """{intent name: its definition}, the text S4's Jeff prompt shows next to each name."""
+    return {intent["name"]: f"{intent['description']} Not this: {intent['not_this']}" for intent in cfg["intents"]}
+
+
+def oos_description(cfg: dict) -> str:
+    """What counts as out of scope, in the words the writer and the checker were given."""
+    return f"{cfg['oos']['unrelated']} Or {cfg['oos']['finance_adjacent'][0].lower()}{cfg['oos']['finance_adjacent'][1:]}"
+
+
+def load_jeff(split: str) -> pd.DataFrame:
+    """One split of the Jeff set ("support" or "test") with columns id, text, label, is_oos,
+    the layout router.systems.base.save_predictions expects. Raw text."""
+    cfg = data.load_config("jeff")
+    df = pd.read_csv(data.PROJECT_ROOT / cfg["file"], keep_default_na=False)
+    part = df[df["split"] == split]
+    if part.empty:
+        raise ValueError(f"no Jeff rows with split {split!r}")
+    return pd.DataFrame({
+        "id": part["id"].to_numpy(), "text": part["text"].to_numpy(), "label": part["intent"].to_numpy(),
+        "is_oos": (part["intent"] == OOS_LABEL).to_numpy(),
+    })
+
+
+def jeff_support() -> tuple[pd.DataFrame, list[str]]:
+    """(support split with a label_id column, intent names in id order): what S2 and S3 match against in E7."""
+    names = intent_names(data.load_config("jeff"))
+    support = load_jeff("support")
+    support["label_id"] = support["label"].map({name: i for i, name in enumerate(names)})
+    if support["label_id"].isna().any():
+        raise ValueError("a support row has a label that is not one of the Jeff intents")
+    support["label_id"] = support["label_id"].astype(int)
+    return support, names
 
 
 def check_written(df: pd.DataFrame, cfg: dict) -> list[str]:
@@ -59,6 +96,31 @@ def assign_splits(df: pd.DataFrame, support_per_intent: int, seed: int) -> pd.Da
         rows = out.index[out["intent"] == intent].to_numpy()
         out.loc[rng.choice(rows, size=support_per_intent, replace=False), "split"] = "support"
     return out
+
+
+def routing_row(correct: np.ndarray, confidence: np.ndarray, is_oos: np.ndarray, r_star: float,
+                frozen_threshold: float, fixed_risks: list[float]) -> dict[str, float]:
+    """E7 routing metrics for one run (one system, one seed) on the Jeff test split.
+
+    Two views of policy v1: the threshold recomputed on these queries at the
+    matched risk r_star (the RQ6 number, as in RQ1), and the threshold frozen on
+    Banking77 validation applied unchanged (what a deployed router would do).
+    """
+    from router.metrics import aurc, coverage_at_risk, risk_coverage_curve  # here to keep the module light
+
+    at_matched = coverage_at_risk(correct, confidence, r_star)
+    handled = confidence >= frozen_threshold
+    row = {
+        "coverage_at_matched_risk": at_matched["coverage"],
+        "selective_risk_at_matched_risk": at_matched["risk"],
+        "coverage_frozen_threshold": float(handled.mean()),
+        "selective_risk_frozen_threshold": float((~correct[handled]).mean()) if handled.any() else 0.0,
+        "oos_handled_frozen_threshold": float((handled & is_oos).sum()),
+        "aurc": aurc(risk_coverage_curve(correct, confidence)),
+    }
+    for risk in fixed_risks:
+        row[f"coverage_at_{risk:g}"] = coverage_at_risk(correct, confidence, risk)["coverage"]
+    return row
 
 
 def label_agreement(queries: pd.DataFrame, check: pd.DataFrame) -> dict:

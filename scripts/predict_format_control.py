@@ -31,23 +31,7 @@ from router.preprocess import format_control
 from router.provenance import run_metadata
 from router.seed import pick_device
 from router.systems.base import PREDICTIONS_DIR, list_runs, save_predictions
-from router.systems.registry import load_predictor
-
-CONFIG_FOR_SYSTEM = {"s1": "s1_encoder", "s2": "s2_embedding", "s3": "s3_pairwise"}
-
-
-def system_and_checkpoint(tag: str) -> tuple[str, str | None]:
-    """Turn a result folder name back into (system, model ID), e.g.
-    "s2_all-mpnet-base-v2" -> ("s2", "sentence-transformers/all-mpnet-base-v2")."""
-    system = tag.split("_")[0]  # the part before the first underscore: "s0", "s1", ...
-    if system == "s0":
-        return "s0", None
-    cfg = data.load_config(CONFIG_FOR_SYSTEM[system])
-    for name in cfg.get("candidates", []) + [cfg["checkpoint"]]:
-        if f"{system}_{name.split('/')[-1]}" == tag:
-            return system, name
-    raise ValueError(f"No model ID in the configs matches result folder {tag!r}")
-
+from router.systems.registry import load_predictor, system_and_checkpoint
 
 def main(split: str) -> None:
     if split == "test" and not (data.RESULTS_DIR / "preregistration.md").exists():

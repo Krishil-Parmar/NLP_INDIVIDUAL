@@ -260,3 +260,32 @@ def paired_bootstrap_diff(
         "ci_high": float(high),
         "n_resamples": n_resamples,
     }
+
+
+def bootstrap_ci(
+    metric: Callable[[np.ndarray], float],
+    strata: np.ndarray,
+    n_resamples: int = 1000,
+    seed: int = 0,
+    ci: float = 0.95,
+) -> dict[str, float]:
+    """One system's metric with a bootstrap confidence interval.
+
+    The single-system sibling of paired_bootstrap_diff, with the same resampling:
+    rows drawn with replacement inside each stratum, percentile interval.
+    """
+    rng = np.random.default_rng(seed)
+    strata = np.asarray(strata)
+    groups = [np.flatnonzero(strata == value) for value in np.unique(strata)]
+    values = np.empty(n_resamples)
+    for r in range(n_resamples):
+        rows = np.concatenate([rng.choice(group, size=len(group), replace=True) for group in groups])
+        values[r] = metric(rows)
+    tail = (1.0 - ci) / 2
+    low, high = np.quantile(values, [tail, 1.0 - tail])
+    return {
+        "value": float(metric(np.arange(len(strata)))),
+        "ci_low": float(low),
+        "ci_high": float(high),
+        "n_resamples": n_resamples,
+    }

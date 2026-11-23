@@ -114,7 +114,7 @@ def pct(summary: dict, key: str) -> str:
 
 def write_markdown(out: dict, meta: dict) -> str:
     split, results = out["split"], out["systems"]
-    cell_names = [f"{t} train, {e}" for t, e in CELLS]
+    cell_names = list(out["rankings"])  # four cells, or two when no evaluated row is flagged (test)
     main = [{"system": name, "seeds": r["seeds"], **{c: pct(r["cells"][c], "macro_f1") for c in cell_names}} for name, r in results.items()]
     acc = [{"system": name, **{c: pct(r["cells"][c], "accuracy") for c in cell_names}} for name, r in results.items()]
     ranks = [{"cell": c, "ranking (best first, by mean macro-F1)": " > ".join(out["rankings"][c])} for c in cell_names]
@@ -141,14 +141,23 @@ def write_markdown(out: dict, meta: dict) -> str:
         md_table(acc),
         "## Rankings",
         md_table(ranks),
-        f"**Ranking stable in all four cells: {'yes' if out['ranking_stable'] else 'no'}.**",
+        f"**Ranking stable in all {len(cell_names)} cells: {'yes' if out['ranking_stable'] else 'no'}.**",
         "## Training effect: cleaned minus original train labels, all rows",
         f"Paired bootstrap, stratified by intent, {out['bootstrap']['resamples']} resamples, {int(100 * out['bootstrap']['ci'])}% percentile interval.",
         md_table(effect),
-        "## S4 evaluation effect (format-controlled validation, cached replies, no API calls)",
-        "The error rate is on the mixed set (in-scope plus out-of-scope), the same quantity E6 uses as the matched risk. "
-        "No flagged row is out of scope, so removing flagged rows only removes in-scope rows.",
-        md_table(s4_rows) if s4_rows else "No S4 predictions found.",
+    ]
+    if out["n_flagged_eval"] == 0:
+        parts += [f"No {split} row was checked for label errors (cleanlab checked train and validation only), so every row is "
+                  "scored against its original label and the \"flagged removed\" cells are not reported. S4 has no training "
+                  "data, so it has no cleaned version."]
+    else:
+        parts += [
+            "## S4 evaluation effect (format-controlled validation, cached replies, no API calls)",
+            "The error rate is on the mixed set (in-scope plus out-of-scope), the same quantity E6 uses as the matched risk. "
+            "No flagged row is out of scope, so removing flagged rows only removes in-scope rows.",
+            md_table(s4_rows) if s4_rows else "No S4 predictions found.",
+        ]
+    parts += [
         f"Few-shot S4 prompt examples that are flagged train rows: {few['n_flagged']} of {few['n_examples']}.",
         "## Audit (blind)",
         *audit_markdown(out["audit"], out["audit_by_annotator"], out["audit_agreement"]),
@@ -227,6 +236,8 @@ def main(split: str) -> None:
     in_scope = ~eval_df["is_oos"].to_numpy(dtype=bool)
     flagged_rows = label_noise.is_flagged(eval_df, flagged)
     keep = {"all": in_scope, "flagged removed": in_scope & ~flagged_rows}
+    # Test was never checked for label errors, so "flagged removed" would equal "all": report the two "all" cells only.
+    cells_used = CELLS if flagged_rows.any() else [cell for cell in CELLS if cell[1] == "all"]
 
     available = list_runs(split, include_cleaned=True)
     results = {}
@@ -237,12 +248,12 @@ def main(split: str) -> None:
         if available[tag] != available[clean]:
             sys.exit(f"{tag} and {clean} have different seeds: {available[tag]} vs {available[clean]}")
         runs = {"original": load_runs(tag, available[tag], split, eval_df), "cleaned": load_runs(clean, available[clean], split, eval_df)}
-        cells = {f"{t} train, {e}": cell_metrics(runs[t], keep[e], label_names) for t, e in CELLS}
+        cells = {f"{t} train, {e}": cell_metrics(runs[t], keep[e], label_names) for t, e in cells_used}
         effect = training_effect(runs["original"], runs["cleaned"], in_scope, label_names, cfg["bootstrap"])
         results[system["name"]] = {"tag": tag, "cleaned_tag": clean, "seeds": len(available[tag]), "cells": cells, "training_effect": effect}
         print(f"{system['name']}: " + ", ".join(f"{c} {pct(v, 'macro_f1')}" for c, v in cells.items()))
 
-    cell_names = [f"{t} train, {e}" for t, e in CELLS]
+    cell_names = [f"{t} train, {e}" for t, e in cells_used]
     rankings = {c: ranking(results, c) for c in cell_names}
     fmt_split = f"{split}_fmt"
     audit, audit_by_annotator, audit_agreement = score_the_audit()

@@ -4,6 +4,12 @@ Run from the project root (the llm dependency group holds the Anthropic SDK):
     uv run --group llm python scripts/run_s4.py --split val --limit 5    # smoke test: 5 queries
     uv run --group llm python scripts/run_s4.py --split val              # the whole validation set
     uv run --group llm python scripts/run_s4.py --split val --config s4_llm_fewshot   # few-shot variant
+    uv run --group llm python scripts/run_s4.py --split test --config s4_jeff          # the Jeff set (E7)
+
+A config with "dataset: jeff" runs S4 on the Jeff set instead of Banking77: the
+14 Jeff intents with their definitions from configs/jeff.yaml, few-shot examples
+from the Jeff support split, and the Jeff test split as the queries. Its
+predictions are saved as split "jeff_<split>_fmt".
 
 Every query is lowercased and stripped of punctuation first (format_control),
 the same input as the primary E3 and E6 numbers. Replies are cached in
@@ -24,26 +30,45 @@ from collections import Counter
 
 import numpy as np
 
-from router import data
+from router import data, jeff
 from router.preprocess import format_control
 from router.provenance import run_metadata
 from router.systems import s4_llm
 from router.systems.base import PREDICTIONS_DIR, label_names_in_id_order, save_predictions
 
 
-def main(split: str, limit: int | None, config: str) -> None:
-    if split == "test" and not (data.RESULTS_DIR / "preregistration.md").exists():
+def dataset_inputs(cfg: dict, split: str) -> dict:
+    """What S4 is given and asked about for this config's dataset (Banking77 unless "dataset: jeff")."""
+    if cfg.get("dataset", "banking77") == "jeff":
+        if split != "test":
+            sys.exit("The Jeff set has no validation split: use --split test.")
+        jeff_cfg = data.load_config("jeff")
+        return {"label_names": jeff.intent_names(jeff_cfg), "example_pool": jeff.load_jeff("support"),
+                "descriptions": jeff.intent_descriptions(jeff_cfg), "oos_description": jeff.oos_description(jeff_cfg),
+                "eval_df": jeff.load_jeff("test"), "out_split": f"jeff_{split}_fmt"}
+    return {"label_names": label_names_in_id_order(), "example_pool": data.load_split("train"),
+            "descriptions": None, "oos_description": "",
+            "eval_df": data.load_eval_set(split, with_oos=True), "out_split": f"{split}_fmt"}
+
+
+def main(split: str, limit: int | None, config: str, show_prompt: bool = False) -> None:
+    if split == "test" and not show_prompt and not (data.RESULTS_DIR / "preregistration.md").exists():
         sys.exit("Refusing to run S4 on the test split: results/preregistration.md does not exist yet (rigour rule 1).")
     cfg = data.load_config(config)
-    label_names = label_names_in_id_order()
+    inputs = dataset_inputs(cfg, split)
+    label_names = inputs["label_names"]
     template = (data.PROJECT_ROOT / cfg["prompt_file"]).read_text(encoding="utf-8")
     examples = None
-    if "examples_per_intent" in cfg:  # few-shot variant: example messages come from the train split only
-        examples = s4_llm.pick_examples(data.load_split("train"), label_names, cfg["examples_per_intent"], cfg["example_seed"])
-    system_prompt = s4_llm.build_system_prompt(template, label_names, cfg["oos_answer"], examples)
+    if "examples_per_intent" in cfg:  # few-shot variant: examples come from train (Banking77) or support (Jeff) only
+        examples = s4_llm.pick_examples(inputs["example_pool"], label_names, cfg["examples_per_intent"], cfg["example_seed"])
+    system_prompt = s4_llm.build_system_prompt(template, label_names, cfg["oos_answer"], examples,
+                                               inputs["descriptions"], inputs["oos_description"])
+    if show_prompt:  # print the prompt and stop: no query is read and no call is made
+        print(system_prompt)
+        return
     prices = cfg["prices_usd_per_million_tokens"]
 
-    eval_df = data.load_eval_set(split, with_oos=True)
+    eval_df = inputs["eval_df"]
     controlled = eval_df.assign(text=eval_df["text"].map(format_control))
     texts = controlled["text"].tolist()
     to_run = texts[:limit] if limit else texts
@@ -87,7 +112,7 @@ def main(split: str, limit: int | None, config: str) -> None:
 
     if uncached_in_split == 0:
         preds = s4_llm.predictions_from_cache(texts, cfg, label_names, system_prompt, cache)
-        out_split = f"{split}_fmt"
+        out_split = inputs["out_split"]
         save_predictions(cfg["system_tag"], 0, out_split, controlled, preds)
         all_records = [cache.get(key(t)) for t in texts]
         info = {
@@ -112,6 +137,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--split", choices=["val", "test"], default="val")
     parser.add_argument("--limit", type=int, default=None, help="only the first N queries (smoke test)")
-    parser.add_argument("--config", choices=["s4_llm", "s4_llm_fewshot"], default="s4_llm", help="which S4 variant")
+    parser.add_argument("--config", choices=["s4_llm", "s4_llm_fewshot", "s4_jeff", "s4_jeff_fewshot"], default="s4_llm",
+                        help="which S4 variant (and dataset)")
+    parser.add_argument("--show-prompt", action="store_true", help="print the system prompt and stop (no API call)")
     args = parser.parse_args()
-    main(args.split, args.limit, args.config)
+    main(args.split, args.limit, args.config, args.show_prompt)

@@ -32,12 +32,15 @@ prices_usd_per_million_tokens:
   cache_read: 0.33
 price_checked: "2026-11-22"
 
-spend_cap_usd: 10.0          # hard stop for M4, counted over every call in all the budget cache files below
+spend_cap_usd: 13.20         # hard stop, counted over every call in all the budget cache files below:
+                             # US$3.19 spent on validation (M4) + US$10 approved for M5 (owner, 23 Nov 2026)
 requests_per_minute: 45      # account quota is 50 per minute for this model and profile
 max_workers: 4               # calls in flight at once (the rate limit still applies)
 sdk_max_retries: 4           # the SDK retries throttling (429) and server errors with backoff
 
 cache_file: results/s4_cache/claude-sonnet-4-6_fewshot_v1.jsonl
-budget_cache_files:          # every S4 variant's spend counts toward the one M4 cap
+budget_cache_files:          # every S4 variant's spend counts toward the one cap
   - results/s4_cache/claude-sonnet-4-6_v1.jsonl
   - results/s4_cache/claude-sonnet-4-6_fewshot_v1.jsonl
+  - results/s4_cache/claude-sonnet-4-6_jeff_v1.jsonl
+  - results/s4_cache/claude-sonnet-4-6_jeff_fewshot_v1.jsonl

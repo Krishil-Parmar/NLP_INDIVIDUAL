@@ -39,6 +39,7 @@ from router.calibration import calibrated_confidence, fit_temperature
 from router.cost import cost_per_query
 from router.metrics import (
     aurc,
+    bootstrap_ci,
     coverage_at_risk,
     expected_calibration_error,
     handle_precision_recall,
@@ -132,6 +133,8 @@ def evaluate_router(by_seed: dict, temperatures: dict | None, frozen: dict | Non
         row = {
             "aurc": aurc(risk_coverage_curve(correct, confidence)),
             "coverage": coverage,
+            # Recomputed on this split at its own matched risk: the RQ1 number on test (equals coverage on validation).
+            "coverage_at_matched_risk": coverage_at_risk(correct, confidence, r_star)["coverage"],
             "selective_risk": float((~correct[handled]).mean()) if handled.any() else 0.0,
             **handle_precision_recall(correct, handled),
             "oos_handled": float((handled & is_oos).sum()),
@@ -159,26 +162,53 @@ def s4_reference(df: pd.DataFrame, info: dict) -> dict:
     }
 
 
+def coverage_metric(runs: dict, temperatures: dict, s4_wrong: np.ndarray, tag: str):
+    """Seed-mean coverage at matched risk on a subset of rows, with r* recomputed on those rows."""
+    arrays = [correct_and_confidence(df, logits, temperatures.get(tag, {}).get(seed))
+              for seed, (df, logits) in runs[tag].items()]
+
+    def metric(rows: np.ndarray) -> float:
+        r_star = s4_wrong[rows].mean()
+        return float(np.mean([coverage_at_risk(c[rows], conf[rows], r_star)["coverage"] for c, conf in arrays]))
+
+    return metric
+
+
 def compare(runs: dict, temperatures: dict, s4_wrong: np.ndarray, cfg: dict) -> list[dict]:
     """Paired bootstrap of coverage at matched risk, A - B. r* is recomputed on every resample."""
     boot = cfg["bootstrap"]
-
-    def coverage_metric(tag: str):
-        arrays = [correct_and_confidence(df, logits, temperatures.get(tag, {}).get(seed))
-                  for seed, (df, logits) in runs[tag].items()]
-
-        def metric(rows: np.ndarray) -> float:
-            r_star = s4_wrong[rows].mean()
-            return float(np.mean([coverage_at_risk(c[rows], conf[rows], r_star)["coverage"] for c, conf in arrays]))
-
-        return metric
-
     strata = next(iter(runs[cfg["routers"][0]].values()))[0]["is_oos"].to_numpy(dtype=bool)
     out = []
     for a, b in cfg["comparisons"]:
-        result = paired_bootstrap_diff(coverage_metric(a), coverage_metric(b), strata,
+        result = paired_bootstrap_diff(coverage_metric(runs, temperatures, s4_wrong, a),
+                                       coverage_metric(runs, temperatures, s4_wrong, b), strata,
                                        n_resamples=boot["resamples"], seed=boot["seed"], ci=boot["ci"])
         out.append({"a": a, "b": b, **result})
+    return out
+
+
+def coverage_intervals(runs: dict, temperatures: dict, s4_wrong: np.ndarray, cfg: dict) -> dict:
+    """Each router's coverage at matched risk with a bootstrap interval (r* recomputed on every resample)."""
+    boot = cfg["bootstrap"]
+    strata = next(iter(runs[cfg["routers"][0]].values()))[0]["is_oos"].to_numpy(dtype=bool)
+    return {tag: bootstrap_ci(coverage_metric(runs, temperatures, s4_wrong, tag), strata,
+                              n_resamples=boot["resamples"], seed=boot["seed"], ci=boot["ci"])
+            for tag in cfg["routers"]}
+
+
+def test_calibration(runs: dict, temperatures: dict, cfg: dict) -> dict:
+    """ECE on the test split's in-scope rows, before and after the temperatures frozen on validation."""
+    out = {}
+    for tag in cfg["ece_systems"]:
+        out[tag] = {}
+        for seed, (df, logits) in runs[tag].items():
+            in_scope = ~df["is_oos"].to_numpy(dtype=bool)
+            correct = (df["pred_label"] == df["label"]).to_numpy()[in_scope]
+            row = {"ece_before": expected_calibration_error(df["confidence"].to_numpy(dtype=float)[in_scope], correct, cfg["ece_bins"])}
+            if tag in temperatures:
+                after = calibrated_confidence(logits[in_scope], temperatures[tag][seed])
+                row |= {"temperature": temperatures[tag][seed], "ece_after": expected_calibration_error(after, correct, cfg["ece_bins"])}
+            out[tag][seed] = row
     return out
 
 
@@ -229,11 +259,14 @@ def pct(summary: dict, key: str) -> str:
     return f"{100 * summary[key]['mean']:.2f} ± {100 * summary[key]['std']:.2f}"
 
 
-def write_markdown(results, s4, s4_all, llm_tag, comparisons, calibration, best, latency, figure, split, cfg, meta) -> str:
+def write_markdown(results, s4, s4_all, llm_tag, comparisons, calibration, best, latency, figure, split, cfg, meta,
+                   intervals=None, best_on_split=None) -> str:
+    is_test = split.startswith("test")
     risks = [f"coverage_at_{r:g}" for r in cfg["fixed_risks"]]
+    coverage_header = "coverage at frozen thresholds (%)" if is_test else "coverage at matched risk (%)"
     main_rows = [
         {"system": tag, "seeds": len(r["seeds"]),
-         "coverage at matched risk (%)": pct(r["summary"], "coverage"),
+         coverage_header: pct(r["summary"], "coverage"),
          "selective risk (%)": pct(r["summary"], "selective_risk"),
          "HANDLE precision (%)": pct(r["summary"], "handle_precision"),
          "HANDLE recall (%)": pct(r["summary"], "handle_recall"),
@@ -258,8 +291,10 @@ def write_markdown(results, s4, s4_all, llm_tag, comparisons, calibration, best,
         "## Provenance",
         metadata_markdown(meta),
         "## S4, the LLM being replaced",
-        "Both S4 variants, same model, temperature 0, format-controlled text. The one with the lower error rate sets the "
-        "matched risk and the price of an escalation (rule fixed in `configs/e6_router.yaml` before either was scored here).",
+        ("Every S4 variant run on this split, same model, temperature 0, format-controlled text. The variant frozen on validation "
+         "(`results/policy_v1.json`) sets the matched risk and the price of an escalation." if is_test else
+         "Both S4 variants, same model, temperature 0, format-controlled text. The one with the lower error rate sets the "
+         "matched risk and the price of an escalation (rule fixed in `configs/e6_router.yaml` before either was scored here)."),
         md_table([{"variant": tag, "error rate (%)": f"{100 * ref['error_rate']:.2f}",
                    "in-scope accuracy (%)": f"{100 * ref['in_scope_accuracy']:.2f}", "OOS recall (%)": f"{100 * ref['oos_recall']:.2f}",
                    "invalid": ref["invalid"], "US$ per call": f"{ref['cost_per_call_usd']:.5f}",
@@ -269,16 +304,29 @@ def write_markdown(results, s4, s4_all, llm_tag, comparisons, calibration, best,
         f"In-scope accuracy {100 * s4['in_scope_accuracy']:.2f}%, OOS recall {100 * s4['oos_recall']:.2f}%, invalid replies {s4['invalid']}. "
         f"Measured cost US${s4['cost_per_call_usd']:.5f} per call, so US${1000 * s4['cost_per_call_usd']:.3f} per 1,000 queries if every query goes to the LLM. "
         f"API latency p50 {s4['api_latency_ms']['p50']:.0f} ms, p95 {s4['api_latency_ms']['p95']:.0f} ms (from Sydney).",
-        f"## Policy v1 at matched risk, mean ± std over seeds",
-        f"Each router handles the queries at or above its threshold and escalates the rest to S4. The threshold gives the "
-        f"highest coverage whose selective risk is at or below S4's error rate. {n_oos} of the queries are out of scope; "
+        ("## Policy v1 with the thresholds frozen on validation, mean ± std over seeds" if is_test else
+         "## Policy v1 at matched risk, mean ± std over seeds"),
+        ("Each router handles the queries at or above the threshold frozen on validation (`results/policy_v1.json`) and escalates the rest to S4. "
+         if is_test else
+         "Each router handles the queries at or above its threshold and escalates the rest to S4. The threshold gives the "
+         "highest coverage whose selective risk is at or below S4's error rate. ") +
+        f"{n_oos} of the queries are out of scope; "
         f"\"OOS handled\" counts those the router answered itself, the dangerous error. Router cost is taken as US$0 (local model); "
         f"the saving is against sending every query to S4.",
         md_table(main_rows),
-        f"**Best router** (highest mean coverage at matched risk, the rule fixed in README 7.2): `{best}`.",
+        (f"**Best router** (frozen on validation, README 7.2): `{best}`. Highest coverage at matched risk on this split: `{best_on_split}`."
+         if is_test else f"**Best router** (highest mean coverage at matched risk, the rule fixed in README 7.2): `{best}`."),
         "## Coverage at fixed risk levels",
         md_table(fixed_rows),
     ]
+    if intervals:
+        ci_rows = [{"system": tag, "coverage at matched risk (%)": pct(results[tag]["summary"], "coverage_at_matched_risk"),
+                    f"{round(100 * cfg['bootstrap']['ci'])}% CI (seed mean)": f"[{100 * v['ci_low']:.2f}, {100 * v['ci_high']:.2f}]"}
+                   for tag, v in intervals.items()]
+        parts += ["## Coverage at matched risk, recomputed on this split" + (" (the RQ1 number)" if is_test else ""),
+                  "The threshold is the one with the highest coverage whose selective risk is at or below S4's error rate on these "
+                  "queries. Stratified bootstrap of the seed-mean coverage, with the matched risk recomputed on every resample.",
+                  md_table(ci_rows)]
     if comparison_rows:
         parts += ["## Comparisons (paired, stratified bootstrap of coverage at matched risk)",
                   "The matched risk is recomputed on every resample. An interval that spans 0 means no clear difference.",
@@ -293,9 +341,12 @@ def write_markdown(results, s4, s4_all, llm_tag, comparisons, calibration, best,
                 "ECE before (%)": f"{100 * np.mean([r['ece_before'] for r in rows]):.2f}",
                 "ECE after (%)": f"{100 * np.mean([r['ece_after'] for r in rows]):.2f}" if "ece_after" in rows[0] else "-",
             })
-        parts += ["## Calibration (in-scope rows, fitted and measured on the same validation set)",
-                  "Temperature scaling for the softmax systems; ECE with 15 bins. In-sample, so the after-scaling ECE is optimistic; the honest number comes from test at M5.",
-                  md_table(cal_rows)]
+        parts += (["## Calibration on test (in-scope rows, temperatures frozen on validation)",
+                   "ECE with 15 bins, before and after the validation temperatures. Out of sample, so this is the honest calibration number.",
+                   md_table(cal_rows)] if is_test else
+                  ["## Calibration (in-scope rows, fitted and measured on the same validation set)",
+                   "Temperature scaling for the softmax systems; ECE with 15 bins. In-sample, so the after-scaling ECE is optimistic; the honest number comes from test at M5.",
+                   md_table(cal_rows)])
     if latency:
         lat_rows = [{"system": tag, "p50 (ms)": f"{v['p50_ms']:.1f}", "p95 (ms)": f"{v['p95_ms']:.1f}"} for tag, v in latency["systems"].items()]
         parts += [f"## Latency (batch size 1, warm model, {latency['machine']}, {latency['n_queries']} queries)", md_table(lat_rows)]
@@ -313,15 +364,18 @@ def main(split: str) -> None:
         sys.exit("Refusing to score a test split: results/preregistration.md does not exist yet (rigour rule 1).")
     cfg = data.load_config("e6_router")
     label_names = label_names_in_id_order()
-    runs = load_runs(split, cfg["llm_systems"] + cfg["routers"])
+    policy = json.loads(POLICY_FILE.read_text()) if is_test else None
+    # On test only the S4 variant frozen on validation is required (zero-shot S4 is not run on test).
+    available = list_runs(split)
+    llm_systems = [tag for tag in cfg["llm_systems"] if not is_test or tag == policy["llm_system"] or tag in available]
+    runs = load_runs(split, llm_systems + cfg["routers"])
 
     # Every S4 variant is reported; the one with the lower error rate sets the matched risk and the
     # price of an escalation (rule fixed in configs/e6_router.yaml). On test, the validation choice is kept.
     s4_all = {}
-    for tag in cfg["llm_systems"]:
+    for tag in llm_systems:
         with open(PREDICTIONS_DIR / tag / f"seed0_{split}_info.json") as f:
             s4_all[tag] = s4_reference(runs[tag][0][0], json.load(f))
-    policy = json.loads(POLICY_FILE.read_text()) if is_test else None
     llm_tag = policy["llm_system"] if is_test else min(cfg["llm_systems"], key=lambda tag: s4_all[tag]["error_rate"])
     s4 = s4_all[llm_tag]
     s4_wrong = (runs[llm_tag][0][0]["pred_label"] != runs[llm_tag][0][0]["label"]).to_numpy()
@@ -330,6 +384,7 @@ def main(split: str) -> None:
     if is_test:  # apply the choices frozen on validation
         temperatures = {tag: {int(s): t for s, t in v["temperatures"].items()} for tag, v in policy["systems"].items() if v["temperatures"]}
         frozen = {tag: {int(s): t for s, t in v["thresholds"].items()} for tag, v in policy["systems"].items()}
+        calibration = test_calibration(runs, temperatures, cfg)
     else:
         calibration = fit_calibration(runs, cfg, label_names)
         temperatures = {tag: {seed: row["temperature"] for seed, row in by_seed.items()}
@@ -341,20 +396,26 @@ def main(split: str) -> None:
         results[tag] = evaluate_router(runs[tag], temperatures.get(tag), frozen.get(tag) if is_test else None,
                                        s4["error_rate"], s4["cost_per_call_usd"], cfg)
         results[tag]["n_oos"] = int(next(iter(runs[tag].values()))[0]["is_oos"].sum())
-    best = max(cfg["routers"], key=lambda tag: results[tag]["summary"]["coverage"]["mean"])
+    best_on_split = max(cfg["routers"], key=lambda tag: results[tag]["summary"]["coverage_at_matched_risk"]["mean"])
+    best = policy["best_router"] if is_test else best_on_split  # on test the validation choice is kept (README 7.2)
     comparisons = compare(runs, temperatures, s4_wrong, cfg)
+    intervals = coverage_intervals(runs, temperatures, s4_wrong, cfg)
+    for tag, interval in intervals.items():
+        results[tag]["coverage_at_matched_risk_ci"] = interval
     latency_file = data.RESULTS_DIR / "latency.json"
     latency = json.loads(latency_file.read_text()) if latency_file.exists() else None
     figure = draw(runs, temperatures, results, s4["error_rate"], cfg, split)
 
     meta = run_metadata({**data.load_config("data"), "e6_router": cfg}, seed=cfg["bootstrap"]["seed"])
     payload = {"metadata": meta, "split": split, "llm_system": llm_tag, "s4": s4, "s4_variants": s4_all,
-               "systems": results, "best_router": best, "comparisons": comparisons, "calibration": calibration,
+               "systems": results, "best_router": best, "best_router_on_split": best_on_split,
+               "comparisons": comparisons, "calibration": calibration,
                "latency": latency, "figure": figure}
     with open(data.RESULTS_DIR / f"e6_{split}.json", "w") as f:
         json.dump(payload, f, indent=2, default=str)
     (data.RESULTS_DIR / f"e6_{split}.md").write_text(
-        write_markdown(results, s4, s4_all, llm_tag, comparisons, calibration, best, latency, figure, split, cfg, meta)
+        write_markdown(results, s4, s4_all, llm_tag, comparisons, calibration, best, latency, figure, split, cfg, meta,
+                       intervals, best_on_split)
     )
     if not is_test:
         with open(data.RESULTS_DIR / f"calibration_{split}.json", "w") as f:

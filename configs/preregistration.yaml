@@ -1,0 +1,13 @@
+# Pre-registered thresholds (README section 4), the machine-readable copy of results/preregistration.md.
+# Chosen by Claude at the owner's request and confirmed by the owner on 23 Nov 2026, before any test run.
+# Read by scripts/report_verdicts.py. Never edit after the first test-split run (log a deviation instead).
+
+N: 0.60      # RQ1: the best router's coverage at matched risk on Banking77 test_fmt is at least N
+M: 0.01      # RQ2: S3 minus S1 OOS AUROC on test_fmt is at least M (0.01 = 1 point)
+K: 0.05      # RQ3: with 10 support examples per held-out intent, S3 is within K accuracy of a retrained softmax (E4)
+F: 0.10      # RQ5: the best router's flip rate under validated paraphrases is below F (E5)
+D: 0.20      # RQ6: Banking77 test coverage minus Jeff test coverage (best router, at matched risk) is at most D
+L_ms: 100    # R4: the best router's p95 latency on CPU, batch size 1, is at most L_ms
+
+# Verdict rule: "met" when the point estimate reaches the threshold, "not met" otherwise. The 95% bootstrap
+# interval is reported next to it; when the interval crosses the threshold the verdict is labelled "not clear-cut".

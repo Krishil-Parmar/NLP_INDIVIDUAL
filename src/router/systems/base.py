@@ -14,6 +14,7 @@ Prediction files are saved per system, seed and split:
 """
 
 import json
+import re
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -127,12 +128,12 @@ def list_runs(split: str, include_cleaned: bool = False) -> dict[str, list[int]]
     runs: dict[str, list[int]] = {}
     if not PREDICTIONS_DIR.exists():
         return runs
+    # The split must match exactly: a plain glob "seed*_test.csv" would also match "seed0_jeff_test.csv".
+    pattern = re.compile(rf"seed(\d+)_{re.escape(split)}\.csv")
     for folder in sorted(PREDICTIONS_DIR.iterdir()):
         if folder.name.endswith(CLEANED_SUFFIX) and not include_cleaned:
             continue
-        seeds = sorted(
-            int(p.name[len("seed") :].split("_")[0]) for p in folder.glob(f"seed*_{split}.csv")
-        )
+        seeds = sorted(int(match.group(1)) for p in folder.glob("seed*.csv") if (match := pattern.fullmatch(p.name)))
         if seeds:
             runs[folder.name] = seeds
     return runs

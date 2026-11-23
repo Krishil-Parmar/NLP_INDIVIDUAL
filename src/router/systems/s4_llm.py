@@ -38,16 +38,25 @@ INVALID = "invalid"  # label for a reply that is not one of the allowed answers 
 
 def build_system_prompt(
     template: str, label_names: list[str], oos_answer: str, examples: dict[str, list[str]] | None = None,
+    descriptions: dict[str, str] | None = None, oos_description: str = "",
 ) -> str:
     """Fill the prompt template with the intent list, one name per line.
 
-    With examples (the few-shot variant), each name is followed by its example messages.
+    With descriptions (the Jeff prompts), each name is followed by its definition.
+    With examples (the few-shot variants), each line ends with its example messages.
+    Without either, a line is just the name, so the Banking77 prompts are unchanged
+    and their cached replies still match. oos_description fills {oos_description}
+    in templates that have it; other templates ignore it.
     """
-    if examples is None:
-        lines = [f"- {name}" for name in label_names]
-    else:
-        lines = [f"- {name} (examples: " + "; ".join(f'"{text}"' for text in examples[name]) + ")" for name in label_names]
-    return template.format(intent_list="\n".join(lines), oos_answer=oos_answer)
+    lines = []
+    for name in label_names:
+        line = f"- {name}"
+        if descriptions is not None:
+            line += f": {descriptions[name]}"
+        if examples is not None:
+            line += " (examples: " + "; ".join(f'"{text}"' for text in examples[name]) + ")"
+        lines.append(line)
+    return template.format(intent_list="\n".join(lines), oos_answer=oos_answer, oos_description=oos_description)
 
 
 def pick_examples(train_df: pd.DataFrame, label_names: list[str], per_intent: int, seed: int) -> dict[str, list[str]]:
