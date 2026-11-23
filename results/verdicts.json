@@ -1,0 +1,83 @@
+{
+  "metadata": {
+    "timestamp_utc": "2026-11-23T06:26:53+00:00",
+    "git_commit": "703a0d9f933a537917d214f5c56dd4c9701beccb",
+    "git_dirty": false,
+    "seed": null,
+    "dataset_revisions": {},
+    "python": "3.12.4",
+    "platform": "macOS-27.0-arm64-arm-64bit",
+    "packages": {
+      "torch": "2.15.0",
+      "transformers": "5.24.0",
+      "datasets": "5.2.0",
+      "sentence-transformers": "6.3.0",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "numpy": "2.5.5",
+      "cleanlab": "2.9.0"
+    },
+    "config": {
+      "preregistration": {
+        "N": 0.6,
+        "M": 0.01,
+        "K": 0.05,
+        "F": 0.1,
+        "D": 0.2,
+        "L_ms": 100
+      }
+    }
+  },
+  "thresholds": {
+    "N": 0.6,
+    "M": 0.01,
+    "K": 0.05,
+    "F": 0.1,
+    "D": 0.2,
+    "L_ms": 100
+  },
+  "verdicts": [
+    {
+      "id": "RQ1",
+      "hypothesis": "best router (s2_all-MiniLM-L6-v2) coverage at matched risk on Banking77 test >= 60%",
+      "result": "77.47% [76.44, 78.43] (matched risk 10.27%)",
+      "verdict": "met"
+    },
+    {
+      "id": "RQ2",
+      "hypothesis": "S3 minus S1 OOS AUROC on test >= 1 point",
+      "result": "+3.08 points [+2.60, +3.61]",
+      "verdict": "met"
+    },
+    {
+      "id": "RQ3",
+      "hypothesis": "S3 within 5 accuracy points of a retrained softmax (E4)",
+      "result": "E4 not run",
+      "verdict": "not tested"
+    },
+    {
+      "id": "RQ4",
+      "hypothesis": "system ranking stable between original and cleaned training labels",
+      "result": "order S1 encoder > S2 embedding > S3 pairwise > S0 TF-IDF; training effect, macro-F1 points: S0 TF-IDF -0.01 [-0.38, +0.37]; S1 encoder -0.26 [-0.50, -0.02]; S2 embedding +0.28 [-0.04, +0.61]; S3 pairwise +0.30 [-0.11, +0.74]",
+      "verdict": "met"
+    },
+    {
+      "id": "RQ5",
+      "hypothesis": "best router flip rate under paraphrase < 10% (E5)",
+      "result": "E5 not run",
+      "verdict": "not tested"
+    },
+    {
+      "id": "RQ6",
+      "hypothesis": "coverage drop from Banking77 test to the Jeff set <= 20 points",
+      "result": "+75.80 points: Banking77 77.47% [76.44, 78.43], Jeff 1.67% [0.00, 6.67] (Jeff matched risk 0.56%)",
+      "verdict": "not met"
+    },
+    {
+      "id": "R4",
+      "hypothesis": "best router p95 latency <= 100 ms (Apple M3 Pro, CPU only, 5 torch threads, batch 1)",
+      "result": "p95 6.4 ms over 200 queries",
+      "verdict": "met"
+    }
+  ]
+}

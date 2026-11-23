@@ -1,0 +1,499 @@
+{
+  "metadata": {
+    "timestamp_utc": "2026-11-23T06:24:23+00:00",
+    "git_commit": "703a0d9f933a537917d214f5c56dd4c9701beccb",
+    "git_dirty": false,
+    "seed": 0,
+    "dataset_revisions": {
+      "banking77": "1846984189f2bc0ac51c6fc3a600fa9e1714e0c6",
+      "clinc150": "155b9c710419136e17307b80d0a13e68cd46b4ec"
+    },
+    "python": "3.12.4",
+    "platform": "macOS-27.0-arm64-arm-64bit",
+    "packages": {
+      "torch": "2.15.0",
+      "transformers": "5.24.0",
+      "datasets": "5.2.0",
+      "sentence-transformers": "6.3.0",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "numpy": "2.5.5",
+      "cleanlab": "2.9.0"
+    },
+    "config": {
+      "seed": 42,
+      "val_fraction": 0.1,
+      "banking77": {
+        "hub_id": "PolyAI/banking77",
+        "revision": "1846984189f2bc0ac51c6fc3a600fa9e1714e0c6",
+        "expected_sizes": {
+          "train": 10003,
+          "test": 3080
+        }
+      },
+      "clinc150": {
+        "hub_id": "clinc/clinc_oos",
+        "config": "plus",
+        "revision": "155b9c710419136e17307b80d0a13e68cd46b4ec",
+        "oos_label": "oos",
+        "expected_oos_sizes": {
+          "train": 250,
+          "validation": 100,
+          "test": 1000
+        }
+      },
+      "oos_pools": {
+        "val": [
+          "train",
+          "validation"
+        ],
+        "test": [
+          "test"
+        ]
+      },
+      "tokenisers": [
+        "distilbert/distilroberta-base",
+        "microsoft/deberta-v3-small",
+        "sentence-transformers/all-MiniLM-L6-v2"
+      ],
+      "length_percentile": 99,
+      "e3_oos": {
+        "in_scope_keep": 0.95,
+        "bootstrap": {
+          "resamples": 1000,
+          "seed": 0,
+          "ci": 0.95
+        },
+        "comparisons": [
+          [
+            "s3_quora-distilroberta-base",
+            "s1_distilroberta-base"
+          ],
+          [
+            "s3_quora-distilroberta-base",
+            "s2_all-MiniLM-L6-v2"
+          ],
+          [
+            "s3_quora-distilroberta-base",
+            "s0_tfidf"
+          ]
+        ],
+        "inspect_system": "s3_quora-distilroberta-base",
+        "figure": [
+          {
+            "tag": "s3_quora-distilroberta-base",
+            "name": "S3 pairwise",
+            "color": "#2a78d6",
+            "style": "solid"
+          },
+          {
+            "tag": "s1_distilroberta-base",
+            "name": "S1 encoder",
+            "color": "#eb6834",
+            "style": "solid"
+          },
+          {
+            "tag": "s2_all-MiniLM-L6-v2",
+            "name": "S2 embedding",
+            "color": "#1baf7a",
+            "style": "solid"
+          },
+          {
+            "tag": "s0_tfidf",
+            "name": "S0 TF-IDF",
+            "color": "#898781",
+            "style": "dashed"
+          }
+        ]
+      }
+    }
+  },
+  "split": "test_fmt",
+  "systems": {
+    "s0_tfidf": {
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "n_in_scope": 3079,
+      "n_oos": 1000,
+      "per_seed": [
+        {
+          "auroc": 0.9554137707047743,
+          "fpr_at_tpr": 0.20299999999999996,
+          "oos_recall_at_val_threshold": 0.796,
+          "in_scope_kept_at_val_threshold": 0.9506333225073076
+        },
+        {
+          "auroc": 0.9554137707047743,
+          "fpr_at_tpr": 0.20299999999999996,
+          "oos_recall_at_val_threshold": 0.796,
+          "in_scope_kept_at_val_threshold": 0.9506333225073076
+        },
+        {
+          "auroc": 0.9554137707047743,
+          "fpr_at_tpr": 0.20299999999999996,
+          "oos_recall_at_val_threshold": 0.796,
+          "in_scope_kept_at_val_threshold": 0.9506333225073076
+        },
+        {
+          "auroc": 0.9554137707047743,
+          "fpr_at_tpr": 0.20299999999999996,
+          "oos_recall_at_val_threshold": 0.796,
+          "in_scope_kept_at_val_threshold": 0.9506333225073076
+        },
+        {
+          "auroc": 0.9554137707047743,
+          "fpr_at_tpr": 0.20299999999999996,
+          "oos_recall_at_val_threshold": 0.796,
+          "in_scope_kept_at_val_threshold": 0.9506333225073076
+        }
+      ],
+      "thresholds": {
+        "0": 0.6559916755769799,
+        "1": 0.6559916755769799,
+        "2": 0.6559916755769799,
+        "3": 0.6559916755769799,
+        "4": 0.6559916755769799
+      },
+      "summary": {
+        "auroc": {
+          "mean": 0.9554137707047744,
+          "std": 1.2412670766236366e-16
+        },
+        "fpr_at_tpr": {
+          "mean": 0.20299999999999993,
+          "std": 3.1031676915590914e-17
+        },
+        "oos_recall_at_val_threshold": {
+          "mean": 0.796,
+          "std": 0.0
+        },
+        "in_scope_kept_at_val_threshold": {
+          "mean": 0.9506333225073076,
+          "std": 0.0
+        }
+      }
+    },
+    "s1_distilroberta-base": {
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "n_in_scope": 3079,
+      "n_oos": 1000,
+      "per_seed": [
+        {
+          "auroc": 0.9648720363754465,
+          "fpr_at_tpr": 0.17300000000000004,
+          "oos_recall_at_val_threshold": 0.811,
+          "in_scope_kept_at_val_threshold": 0.9532315686911335
+        },
+        {
+          "auroc": 0.9661123741474504,
+          "fpr_at_tpr": 0.17500000000000004,
+          "oos_recall_at_val_threshold": 0.806,
+          "in_scope_kept_at_val_threshold": 0.9561545956479376
+        },
+        {
+          "auroc": 0.9613832413121144,
+          "fpr_at_tpr": 0.19699999999999995,
+          "oos_recall_at_val_threshold": 0.785,
+          "in_scope_kept_at_val_threshold": 0.9571289379668724
+        },
+        {
+          "auroc": 0.9654101981162715,
+          "fpr_at_tpr": 0.18600000000000005,
+          "oos_recall_at_val_threshold": 0.798,
+          "in_scope_kept_at_val_threshold": 0.9551802533290029
+        },
+        {
+          "auroc": 0.9624160441701851,
+          "fpr_at_tpr": 0.19899999999999995,
+          "oos_recall_at_val_threshold": 0.795,
+          "in_scope_kept_at_val_threshold": 0.9516076648262423
+        }
+      ],
+      "thresholds": {
+        "0": 0.45749342,
+        "1": 0.4351917,
+        "2": 0.45921224,
+        "3": 0.4519776,
+        "4": 0.43266374
+      },
+      "summary": {
+        "auroc": {
+          "mean": 0.9640387788242937,
+          "std": 0.0020347023014077453
+        },
+        "fpr_at_tpr": {
+          "mean": 0.186,
+          "std": 0.012041594578792251
+        },
+        "oos_recall_at_val_threshold": {
+          "mean": 0.799,
+          "std": 0.010074720839804952
+        },
+        "in_scope_kept_at_val_threshold": {
+          "mean": 0.9546606040922377,
+          "std": 0.0022336796185838848
+        }
+      }
+    },
+    "s2_all-MiniLM-L6-v2": {
+      "seeds": [
+        0
+      ],
+      "n_in_scope": 3079,
+      "n_oos": 1000,
+      "per_seed": [
+        {
+          "auroc": 0.9969935043845403,
+          "fpr_at_tpr": 0.007000000000000006,
+          "oos_recall_at_val_threshold": 0.993,
+          "in_scope_kept_at_val_threshold": 0.9486846378694381
+        }
+      ],
+      "thresholds": {
+        "0": 0.2548190951347351
+      },
+      "summary": {
+        "auroc": {
+          "mean": 0.9969935043845403,
+          "std": 0.0
+        },
+        "fpr_at_tpr": {
+          "mean": 0.007000000000000006,
+          "std": 0.0
+        },
+        "oos_recall_at_val_threshold": {
+          "mean": 0.993,
+          "std": 0.0
+        },
+        "in_scope_kept_at_val_threshold": {
+          "mean": 0.9486846378694381,
+          "std": 0.0
+        }
+      }
+    },
+    "s3_quora-distilroberta-base": {
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "n_in_scope": 3079,
+      "n_oos": 1000,
+      "per_seed": [
+        {
+          "auroc": 0.9949145826567068,
+          "fpr_at_tpr": 0.017000000000000015,
+          "oos_recall_at_val_threshold": 0.983,
+          "in_scope_kept_at_val_threshold": 0.9480350763234816
+        },
+        {
+          "auroc": 0.9949004546930824,
+          "fpr_at_tpr": 0.014000000000000012,
+          "oos_recall_at_val_threshold": 0.986,
+          "in_scope_kept_at_val_threshold": 0.9499837609613511
+        },
+        {
+          "auroc": 0.9948075673920105,
+          "fpr_at_tpr": 0.015000000000000013,
+          "oos_recall_at_val_threshold": 0.984,
+          "in_scope_kept_at_val_threshold": 0.9548554725560247
+        },
+        {
+          "auroc": 0.9948393959077622,
+          "fpr_at_tpr": 0.014000000000000012,
+          "oos_recall_at_val_threshold": 0.986,
+          "in_scope_kept_at_val_threshold": 0.9509581032802858
+        },
+        {
+          "auroc": 0.994895095810328,
+          "fpr_at_tpr": 0.014000000000000012,
+          "oos_recall_at_val_threshold": 0.984,
+          "in_scope_kept_at_val_threshold": 0.952582007145177
+        }
+      ],
+      "thresholds": {
+        "0": 0.3995872,
+        "1": 0.53061044,
+        "2": 0.44223922,
+        "3": 0.40909284,
+        "4": 0.35191816
+      },
+      "summary": {
+        "auroc": {
+          "mean": 0.9948714192919781,
+          "std": 4.5741858180674535e-05
+        },
+        "fpr_at_tpr": {
+          "mean": 0.014800000000000013,
+          "std": 0.0013038404810405309
+        },
+        "oos_recall_at_val_threshold": {
+          "mean": 0.9846,
+          "std": 0.001341640786499875
+        },
+        "in_scope_kept_at_val_threshold": {
+          "mean": 0.9512828840532641,
+          "std": 0.002588076883811187
+        }
+      }
+    },
+    "s4_claude-sonnet-4-6-fewshot": {
+      "seeds": [
+        0
+      ],
+      "n_in_scope": 3079,
+      "n_oos": 1000,
+      "per_seed": [
+        {
+          "auroc": 0.9865384865215979,
+          "fpr_at_tpr": 0.02400000000000002,
+          "oos_recall_at_val_threshold": 0.976,
+          "in_scope_kept_at_val_threshold": 0.9970769730431959
+        }
+      ],
+      "thresholds": {
+        "0": 0.0
+      },
+      "summary": {
+        "auroc": {
+          "mean": 0.9865384865215979,
+          "std": 0.0
+        },
+        "fpr_at_tpr": {
+          "mean": 0.02400000000000002,
+          "std": 0.0
+        },
+        "oos_recall_at_val_threshold": {
+          "mean": 0.976,
+          "std": 0.0
+        },
+        "in_scope_kept_at_val_threshold": {
+          "mean": 0.9970769730431959,
+          "std": 0.0
+        }
+      }
+    }
+  },
+  "comparisons": [
+    {
+      "a": "s3_quora-distilroberta-base",
+      "b": "s1_distilroberta-base",
+      "diff": 0.030832640467684413,
+      "ci_low": 0.02600639493341977,
+      "ci_high": 0.03612548717115937,
+      "n_resamples": 1000
+    },
+    {
+      "a": "s3_quora-distilroberta-base",
+      "b": "s2_all-MiniLM-L6-v2",
+      "diff": -0.002122085092562176,
+      "ci_low": -0.0030830009743422868,
+      "ci_high": -0.0012607802858072975,
+      "n_resamples": 1000
+    },
+    {
+      "a": "s3_quora-distilroberta-base",
+      "b": "s0_tfidf",
+      "diff": 0.039457648587203686,
+      "ci_low": 0.03317113916856134,
+      "ci_high": 0.04599696492367658,
+      "n_resamples": 1000
+    }
+  ],
+  "most_confidently_accepted": [
+    {
+      "text": "can i deposit a check",
+      "pred_label": "top_up_by_cash_or_cheque",
+      "confidence": 0.99852604,
+      "matched_example": "Can I deposit a check?"
+    },
+    {
+      "text": "i need to update my address",
+      "pred_label": "edit_personal_details",
+      "confidence": 0.9976579,
+      "matched_example": "I need to update my address."
+    },
+    {
+      "text": "is there a way to change your houses address",
+      "pred_label": "edit_personal_details",
+      "confidence": 0.9879897,
+      "matched_example": "I need to change my home address."
+    },
+    {
+      "text": "can you tell me what credit cards i have open",
+      "pred_label": "supported_cards_and_currencies",
+      "confidence": 0.97497964,
+      "matched_example": "What other credit cards can I use?"
+    },
+    {
+      "text": "how long do i have to wait to get my refund",
+      "pred_label": "Refund_not_showing_up",
+      "confidence": 0.96566397,
+      "matched_example": "How long will it take to refund me"
+    },
+    {
+      "text": "please take all my money out of my checking account and close the account",
+      "pred_label": "terminate_account",
+      "confidence": 0.9546964,
+      "matched_example": "Help me terminate and close my account."
+    },
+    {
+      "text": "do you know if it is possible to close my savings account",
+      "pred_label": "terminate_account",
+      "confidence": 0.9092206,
+      "matched_example": "How can I close my account?"
+    },
+    {
+      "text": "can i use direct deposit for my tax refund",
+      "pred_label": "direct_debit_payment_not_recognised",
+      "confidence": 0.9007742,
+      "matched_example": "I want a refund on a direct debit."
+    },
+    {
+      "text": "how do i make money",
+      "pred_label": "receiving_money",
+      "confidence": 0.8760041,
+      "matched_example": "How can I receive money?"
+    },
+    {
+      "text": "i have too many credit cards is there any way you can help me organize them",
+      "pred_label": "supported_cards_and_currencies",
+      "confidence": 0.85451823,
+      "matched_example": "What other credit cards can I use?"
+    }
+  ],
+  "surface_cues": [
+    {
+      "cue": "starts lowercase",
+      "in_scope_share": 0.9996752192270217,
+      "oos_share": 1.0,
+      "auroc": 0.5001623903864891
+    },
+    {
+      "cue": "no final punctuation",
+      "in_scope_share": 1.0,
+      "oos_share": 1.0,
+      "auroc": 0.5
+    },
+    {
+      "cue": "no comma",
+      "in_scope_share": 1.0,
+      "oos_share": 1.0,
+      "auroc": 0.5
+    }
+  ],
+  "figure": "results/figures/e3_test_fmt_roc.png"
+}
