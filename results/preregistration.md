@@ -92,4 +92,20 @@ The machine-readable copy of the thresholds is `configs/preregistration.yaml`. `
 
 Any change after the first test file exists is recorded here: what changed, why, and whether any test number had been seen.
 
-None so far.
+1. **Run order (23 Nov 2026).**
+   - **What changed:** the runs above did not happen in the listed order.
+     - Runs 1, 2, 3 and 5 ran one after another, from 11:14 to 11:55 (AEDT).
+     - Run 6 (both Jeff S4 variants) ran alongside them, from 11:14 to 11:22, since it writes to new cache files only.
+     - Run 4 (few-shot S4 on Banking77 `test_fmt`) ran last, because it appends to a tracked cache file.
+   - **Effect on results:** none. No setting changed, and each test split was still touched once per system.
+   - **Test numbers seen:** none.
+2. **Run 4 was interrupted and resumed (23 Nov 2026).**
+   - **What happened:**
+     - The laptop went to sleep with the lid closed at 12:51 and lost its network connection. At about 12:59 a call failed with a connection error (`[Errno 8] nodename nor servname provided`), and the script stopped on it, as designed.
+     - By then 2,568 of its 4,073 calls had replied. Every reply was already saved in the cache, and the cache file was checked as intact (every line valid JSON).
+     - No S4 prediction file for `test_fmt` had been written, since the script writes it only at the end.
+   - **What was done:**
+     - With the owner's approval, the same command was run again at 14:25. It reused the 2,568 cached replies and made only the 1,505 missing calls. No call was repeated and no reply was replaced.
+     - The laptop slept again during this run, which delayed it but caused no error. It finished at 17:23 with 0 invalid replies out of 4,079.
+   - **Test numbers seen:** none before or during the resume.
+   - **Spend:** US$9.89 in total across the four S4 caches, of which about US$6.70 is new for M5, within the US$10 approved.

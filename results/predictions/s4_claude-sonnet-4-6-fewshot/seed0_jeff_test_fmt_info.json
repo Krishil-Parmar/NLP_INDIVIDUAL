@@ -1,0 +1,107 @@
+{
+  "metadata": {
+    "timestamp_utc": "2026-11-23T00:18:17+00:00",
+    "git_commit": "6b8a7772faee496f405d2f1b16d6c13e7031034e",
+    "git_dirty": false,
+    "seed": null,
+    "dataset_revisions": {
+      "banking77": "1846984189f2bc0ac51c6fc3a600fa9e1714e0c6",
+      "clinc150": "155b9c710419136e17307b80d0a13e68cd46b4ec"
+    },
+    "python": "3.12.4",
+    "platform": "macOS-27.0-arm64-arm-64bit",
+    "packages": {
+      "torch": "2.15.0",
+      "transformers": "5.24.0",
+      "datasets": "5.2.0",
+      "sentence-transformers": "6.3.0",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "numpy": "2.5.5",
+      "cleanlab": "2.9.0"
+    },
+    "config": {
+      "seed": 42,
+      "val_fraction": 0.1,
+      "banking77": {
+        "hub_id": "PolyAI/banking77",
+        "revision": "1846984189f2bc0ac51c6fc3a600fa9e1714e0c6",
+        "expected_sizes": {
+          "train": 10003,
+          "test": 3080
+        }
+      },
+      "clinc150": {
+        "hub_id": "clinc/clinc_oos",
+        "config": "plus",
+        "revision": "155b9c710419136e17307b80d0a13e68cd46b4ec",
+        "oos_label": "oos",
+        "expected_oos_sizes": {
+          "train": 250,
+          "validation": 100,
+          "test": 1000
+        }
+      },
+      "oos_pools": {
+        "val": [
+          "train",
+          "validation"
+        ],
+        "test": [
+          "test"
+        ]
+      },
+      "tokenisers": [
+        "distilbert/distilroberta-base",
+        "microsoft/deberta-v3-small",
+        "sentence-transformers/all-MiniLM-L6-v2"
+      ],
+      "length_percentile": 99,
+      "s4_llm": {
+        "aws_profile": "unibucks",
+        "aws_region": "ap-southeast-2",
+        "model_id": "au.anthropic.claude-sonnet-4-6",
+        "system_tag": "s4_claude-sonnet-4-6-fewshot",
+        "dataset": "jeff",
+        "prompt_file": "prompts/s4_jeff_fewshot_v1.txt",
+        "prompt_version": "jeff_fewshot_v1",
+        "examples_per_intent": 2,
+        "example_seed": 0,
+        "oos_answer": "out_of_scope",
+        "structured_output": true,
+        "temperature": 0,
+        "max_tokens": 64,
+        "prices_usd_per_million_tokens": {
+          "input": 3.3,
+          "output": 16.5,
+          "cache_write": 4.125,
+          "cache_read": 0.33
+        },
+        "price_checked": "2026-11-22",
+        "spend_cap_usd": 13.2,
+        "requests_per_minute": 45,
+        "max_workers": 4,
+        "sdk_max_retries": 4,
+        "cache_file": "results/s4_cache/claude-sonnet-4-6_jeff_fewshot_v1.jsonl",
+        "budget_cache_files": [
+          "results/s4_cache/claude-sonnet-4-6_v1.jsonl",
+          "results/s4_cache/claude-sonnet-4-6_fewshot_v1.jsonl",
+          "results/s4_cache/claude-sonnet-4-6_jeff_v1.jsonl",
+          "results/s4_cache/claude-sonnet-4-6_jeff_fewshot_v1.jsonl"
+        ]
+      }
+    }
+  },
+  "model_id": "au.anthropic.claude-sonnet-4-6",
+  "prompt_version": "jeff_fewshot_v1",
+  "examples_per_intent": 2,
+  "n_queries": 180,
+  "spend_usd_this_split": 0.14867407500000002,
+  "mean_cost_per_call_usd": 0.0008259670833333334,
+  "api_latency_ms": {
+    "p50": 637.268104008399,
+    "p95": 875.3938339708837
+  },
+  "first_call_utc": "2026-11-23T00:18:19+00:00",
+  "last_call_utc": "2026-11-23T00:22:18+00:00"
+}
