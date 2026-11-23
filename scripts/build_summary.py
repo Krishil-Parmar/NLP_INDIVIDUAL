@@ -6,9 +6,11 @@ Run from the project root:
                                                     # budgeted length, to test what fits
 
 What it does:
-  1. Fills the results table between the RESULTS markers from results/e1_test.json,
-     once that file exists (M5). Until then the cells stay empty. No number is typed by hand.
-  2. Uses results/figures/headline.png, or a grey placeholder of the same size until M4.
+  1. Fills the results table between the RESULTS markers: classification metrics from
+     results/e1_test.json and coverage at matched risk from results/e6_test_fmt.json, once
+     those files exist (M5). Until then the cells stay empty. No number is typed by hand.
+  2. Uses the E6 test risk-coverage figure as the headline, or a grey placeholder of the
+     same size until it exists.
   3. Runs pandoc (markdown -> LaTeX) and XeLaTeX (LaTeX -> PDF) inside report/build/.
   4. Reads the page count from the XeLaTeX log and fails if it is over 2 pages.
 
@@ -33,7 +35,7 @@ from router import data  # noqa: E402
 REPORT_DIR = data.PROJECT_ROOT / "report"
 BUILD_DIR = REPORT_DIR / "build"
 SOURCE = REPORT_DIR / "summary.md"
-HEADLINE = data.RESULTS_DIR / "figures" / "headline.png"
+HEADLINE = data.RESULTS_DIR / "figures" / "e6_test_fmt_risk_coverage.png"  # written by evaluate_router.py at M5
 MAX_PAGES = 2
 
 TODO_PATTERN = re.compile(r"\[TODO (\d+) words: [^\]]*\]")
@@ -45,7 +47,7 @@ ROWS = [
     ("S1 Fine-tuned encoder", "s1_"),
     ("S2 Embedding k-NN", "s2_"),
     ("S3 Pairwise matcher", "s3_"),
-    ("S4 LLM zero-shot", "s4_"),
+    ("S4 LLM few-shot", "s4_"),
 ]
 METRICS = ["accuracy", "macro_precision", "macro_recall", "macro_f1"]
 
@@ -62,12 +64,21 @@ def fill_todos(text: str) -> str:
     return TODO_PATTERN.sub(replace, text)
 
 
+def load_result(name: str) -> dict | None:
+    path = data.RESULTS_DIR / name
+    return json.loads(path.read_text()) if path.exists() else None
+
+
+def mean_std(summary: dict, key: str) -> str:
+    return f"{100 * summary[key]['mean']:.1f} ± {100 * summary[key]['std']:.1f}"
+
+
 def results_block() -> str:
-    """The results table, filled from results/e1_test.json where results exist."""
-    systems = {}
-    path = data.RESULTS_DIR / "e1_test.json"
-    if path.exists():
-        systems = json.loads(path.read_text())["systems"]
+    """The results table: E1 (raw test) and E6 coverage at matched risk (format-controlled test)."""
+    e1 = load_result("e1_test.json")
+    e6 = load_result("e6_test_fmt.json")
+    systems = e1["systems"] if e1 else {}
+    routers = e6["systems"] if e6 else {}
     lines = [
         "<!-- RESULTS:START -->",
         "| System | Accuracy | Macro precision | Macro recall | Macro F1 | Coverage at matched risk |",
@@ -78,15 +89,20 @@ def results_block() -> str:
         tags = [t for t in systems if t.startswith(prefix)]
         cells = [""] * len(METRICS)
         if len(tags) == 1:  # exactly one run folder per system on test (the chosen model)
-            summary = systems[tags[0]]["summary"]
-            cells = [f"{100 * summary[m]['mean']:.1f} ± {100 * summary[m]['std']:.1f}" for m in METRICS]
-        lines.append(f"| {name} | " + " | ".join(cells) + " |  |")
-    lines += [
-        "",
-        ": Banking77 test, in-scope queries, percent, mean ± standard deviation over five seeds. "
-        "Filled in by `scripts/build_summary.py` from `results/`.",
-        "<!-- RESULTS:END -->",
-    ]
+            cells = [mean_std(systems[tags[0]]["summary"], m) for m in METRICS]
+        elif e1 and prefix == "s4_":
+            cells = ["-"] * len(METRICS)  # S4 ran on format-controlled test only; see the caption
+        router_tags = [t for t in routers if t.startswith(prefix)]
+        coverage = mean_std(routers[router_tags[0]]["summary"], "coverage_at_matched_risk") if len(router_tags) == 1 else ""
+        lines.append(f"| {name} | " + " | ".join(cells) + f" | {coverage} |")
+    caption = (": Banking77 test, percent, mean ± standard deviation over seeds (five for S0, S1 and S3; "
+               "S2 has no training, so one run). Classification columns: in-scope queries, raw text (E1).")
+    if e6:
+        s4 = e6["s4"]
+        caption += (f" Coverage at matched risk: format-controlled test with out-of-scope queries mixed in (E6), "
+                    f"at few-shot S4's error rate of {100 * s4['error_rate']:.1f}%. S4 ran on that text only: "
+                    f"in-scope accuracy {100 * s4['in_scope_accuracy']:.1f}%.")
+    lines += ["", caption + " Filled in by `scripts/build_summary.py` from `results/`.", "<!-- RESULTS:END -->"]
     return "\n".join(lines)
 
 

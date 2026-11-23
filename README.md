@@ -4,7 +4,30 @@ A cost-aware intent router for a personal finance assistant. Individual universi
 
 This README is the single source of truth for the project. It is written so that Claude Code (or any new collaborator) can pick the work up cold. Read all of it before writing code.
 
-Last updated: 23 Nov 2026. Status: **M4b (E2, label noise) done on validation, audit included. Every core-path item in section 0 works on validation (M4).** S0 to S3 run on Banking77 validation (five seeds for S0, S1 and S3; S2 has no training, so one run). S4 (Claude Sonnet 4.6 on Bedrock, zero-shot and few-shot) is cached in `results/s4_cache/`. E1 is in `results/e1_val.md`, E3 in `results/e3_val_fmt.md`, and E6 (policy v1, risk-coverage and cost, the headline) in `results/e6_val_fmt.md`, with thresholds and temperatures frozen in `results/policy_v1.json`. E2 is in `results/e2_val.md`: cleanlab flagged 192 train and validation rows, every system was retrained without them, and the system ranking did not change; the blind audit (owner items 1 to 11, a Claude judge items 12 to 100) finds 61 of 100 flagged items are real label errors (95% Wilson interval 51 to 70%). The notebook runs end to end with all of it and never calls the API. The two-page summary skeleton builds to 2 pages. The demo router server (`demo/app.py`) answers typed queries offline; its Jeff screen front end builds and passes `flutter analyze` but has not yet been clicked through in a browser. The Jeff set is built (section 6.1: 320 queries written by a Claude agent at the owner's request) and the thresholds are drafted in `results/preregistration_draft.md`. Next: the owner confirms the draft and the M5 S4 spend, then M5 (the single test run).
+Last updated: 23 Nov 2026.
+
+**Status: M5 (the single test run) is done.** Every choice was frozen, and the thresholds were pre-registered in `results/preregistration.md` (commit `6b8a777`), before any test prediction existed. Each test split was then run once per system.
+
+**Verdicts** (`results/verdicts.md`):
+
+| ID | Verdict | Result |
+| --- | --- | --- |
+| RQ1 | Met | The best router, S2, handles 77.47% of Banking77 test queries at S4's error rate of 10.27% (95% CI 76.44 to 78.43%) |
+| RQ2 | Met | S3 beats S1 on out-of-scope AUROC by 3.08 points (2.60 to 3.61) |
+| RQ4 | Met | The system ranking is unchanged by cleaned labels |
+| R4 | Met | S2's p95 latency is 6.4 ms on CPU |
+| RQ6 | **Not met** | On the Jeff set, S2's coverage at matched risk falls to 1.67%, a drop of 75.8 points against a limit of 20 |
+| RQ3 and RQ5 | Not tested | E4 and E5 were not run |
+
+**Where the results are:**
+- **Test results:** E1 `results/e1_test.md`, E3 `results/e3_test_fmt.md`, E6 `results/e6_test_fmt.md`, E2 `results/e2_test.md`, E7 `results/e7_jeff.md`.
+- **Validation results:** E1, E3, E6 and E2 on validation (M4, M4b) are in the matching `_val` files. The E2 audit is described in section 8.1.
+- **S4 replies:** cached in `results/s4_cache/`.
+- **The notebook:** section 6 has the test results. It runs end to end in fast mode and never calls the API.
+
+**Not finished:** the demo router server (`demo/app.py`) answers typed queries offline, but its Jeff screen front end has not been clicked through in a browser yet.
+
+**Next:** M6, which covers error analysis, the summary prose, the demo and the clean-run check.
 
 ---
 
@@ -100,7 +123,7 @@ This table is the evidence for rubric category 1. Each user or product need beco
 | R1 | A user asks a banking question and is routed to the right action | Correct intent on in-scope queries | E1 |
 | R2 | A user is never given a confident answer to something the assistant cannot do | Out-of-scope and uncertain queries are not handled directly | E3, and the confident wrong HANDLE rate in E6 |
 | R3 | The per-user inference budget is hard | Fewer LLM calls at an error rate no higher than LLM-only | E6 |
-| R4 | Time to first token must stay under 900ms | The router adds little latency. Report p50 and p95 on CPU against a limit of [L] ms set by the owner. | E6 latency |
+| R4 | Time to first token must stay under 900ms | The router adds little latency. Report p50 and p95 on CPU against a p95 limit of L = 100 ms (pre-registered 23 Nov 2026). | E6 latency |
 | R5 | The assistant's tool belt changes over time | A new intent can be added from about 10 examples with no retraining | E4 |
 | R6 | Users phrase the same request in many ways | Decisions are stable under rewording | E5 |
 | R7 | Real users are Australian and do not write like Banking77 | The router still works on queries written for the assistant's own intents (the Jeff set, section 6.1) | E7 |
@@ -129,6 +152,11 @@ The owner must fill in the bracketed thresholds **before** any test-set run. Rec
 | RQ6 | Does it survive domain shift? | Coverage at matched risk on the Jeff set drops by no more than [D] points versus Banking77 |
 
 A hypothesis that fails is a result, not a problem. Report it plainly.
+
+**Pre-registered on 23 Nov 2026**, before any test run (`results/preregistration.md`, machine-readable copy `configs/preregistration.yaml`):
+- **Thresholds:** N = 60, M = 1, K = 5, F = 10, D = 20, and L = 100 ms (p95) for R4.
+- **Judging rule:** a hypothesis is met when the point estimate reaches its threshold. When the 95% bootstrap interval crosses the threshold, the verdict is also labelled "not clear-cut".
+- **Verdicts at M5:** in `results/verdicts.md` and in the decision log (section 18).
 
 ---
 
@@ -174,7 +202,7 @@ Planned as owner-written. **Changed 23 Nov 2026 at the owner's request:** writte
 - File: `data/jeff/jeff_queries.csv` with columns `id, text, intent, split, notes`. Use `oos` as the out-of-scope label; its `notes` say `unrelated` or `finance-adjacent`. The writer's file is `data/jeff/jeff_written.csv`; `scripts/make_jeff_set.py` checks it and assigns the splits at random (seed 0), so no one picks which examples go to support.
 - **Never train or tune thresholds on the Jeff test split.** It is run once, at the end.
 
-Status: **built 23 Nov 2026.** 14 intents × 20 queries plus 40 out-of-scope (15 unrelated, 25 finance-adjacent): 320 queries, 140 support and 180 test. No support-test pair within an intent is a near-duplicate. A second Claude agent labelled every query blind and agreed with the writer on 320 of 320, marking 6 as unsure (`results/jeff_label_check.md`). Limitation: the set is model-written, so it is probably cleaner than real traffic, and S4 is a Claude model too, which may make it easier for S4 than real users' messages would be.
+Status: **built 23 Nov 2026.** 14 intents × 20 queries plus 40 out-of-scope (15 unrelated, 25 finance-adjacent): 320 queries, 140 support and 180 test. No support-test pair within an intent is a near-duplicate. A second Claude agent labelled every query blind and agreed with the writer on 320 of 320, marking 6 as unsure (`results/jeff_label_check.md`). It was run once, at M5 (E7, section 8.1; results in `results/e7_jeff.md`). Limitation: the set is model-written, so it is probably cleaner than real traffic, and S4 is a Claude model too, which may make it easier for S4 than real users' messages would be.
 
 ### 6.2 Preprocessing pipeline
 
@@ -283,6 +311,27 @@ E6 as implemented (`scripts/evaluate_router.py`, fixed 22 Nov 2026 before E6 was
 - **Calibration:** S0 and S1 are temperature-scaled before routing (one temperature per seed, grid search minimising NLL on validation in-scope rows); ECE with 15 bins is reported before and after. S2 (cosine) and S3 (one sigmoid) are not rescaled, because a monotone rescaling cannot change their routing.
 - **Prices:** `llm_cost` is S4's measured mean cost per call (token usage, including prompt-cache reads and writes, times the Bedrock prices in `configs/s4_llm.yaml`: AWS Price List API, ap-southeast-2, regional `au.` profile, checked 22 Nov 2026). `router_cost` is taken as US$0 (a local model on hardware the assistant already runs); its time cost is reported as latency.
 - **Frozen for test:** per-seed temperatures and thresholds, and the best router (highest mean coverage at matched risk), are written to `results/policy_v1.json` and applied unchanged at M5.
+- **On test (M5):**
+  - **Matched risk:** few-shot S4's error rate on `test_fmt`. Few-shot was the variant frozen on validation, so zero-shot S4 was not run on test.
+  - **The RQ1 number:** coverage at matched risk recomputed on test, for the best router frozen in policy v1. Its 95% interval comes from `bootstrap_ci`: a stratified bootstrap in which the matched risk is recomputed in every resample.
+  - **Policy v1 as deployed:** its frozen thresholds and temperatures are also applied unchanged, and reported next to the RQ1 number.
+  - **Calibration:** ECE on test after the frozen temperatures, the out-of-sample calibration number.
+
+E7 as implemented (`scripts/predict_jeff.py`, `scripts/evaluate_jeff.py`; fixed in `results/preregistration.md` before the run):
+
+- **Queries:** the 180 Jeff test queries (14 intents × 10, plus 40 out of scope), format-controlled like E6 (split `jeff_test_fmt`).
+- **S2 and S3:** the frozen Banking77 models, with the 140 Jeff support queries as their support set and the 14 Jeff intents as their labels. No retraining and no setting changes.
+- **S0 and S1:** not applicable. Their softmax heads can only output Banking77 intents.
+- **S4:**
+  - **Model:** the same model and settings as on Banking77.
+  - **Prompts:** `prompts/s4_jeff_v1.txt` (zero-shot) and `prompts/s4_jeff_fewshot_v1.txt` list each intent with its description and "not this" note from `configs/jeff.yaml`.
+  - **Few-shot examples:** 2 support queries per intent (seed 0).
+- **Matched risk:** few-shot S4's error rate on the 180 queries.
+- **RQ6 number:** the RQ1 coverage minus the best router's coverage at matched risk on the Jeff set (each with its own bootstrap interval). RQ6 is met when the drop is at most D points.
+- **Also reported:**
+  - in-scope accuracy, macro-F1 and OOS AUROC
+  - coverage and selective risk at the frozen Banking77 thresholds
+  - coverage at fixed risks of 1%, 2% and 5%
 
 E2 as implemented (`scripts/find_label_issues.py`, `scripts/evaluate_label_noise.py`, `configs/e2_label_noise.yaml`, fixed 22 Nov 2026 before the cleaner ran):
 
@@ -377,7 +426,7 @@ No deadline has been supplied yet, so these are ordered phases. Convert to dates
 | M3 | Out-of-scope evaluation (E3) on validation, with the format control (section 8.1). Reordered 22 Nov 2026: E2 moved to M4b | OOS metrics on validation with bootstrap comparisons, notebook section, tests |
 | M4 | Metrics module with tests, calibration, router policy, S4 baseline | Risk-coverage code unit-tested on toy data, LLM responses cached |
 | M4b | Label cleaning (E2), started only once every core-path item in section 0 works (needs cleanlab, approved 22 Nov 2026) | Flagged list saved, 100 items audited (changed 23 Nov 2026: the owner judged 11, a blind Claude judge the other 89), E1 on original vs cleaned labels. **Done 23 Nov 2026** (`results/e2_val.md`) |
-| M5 | Freeze everything, run E1 to E7 on test | `results/` complete, preregistration file predates the test runs |
+| M5 | Freeze everything, run E1 to E7 on test | `results/` complete, preregistration file predates the test runs. **Done 23 Nov 2026** (`results/verdicts.md`). E4 and E5 were not built, so RQ3 and RQ5 are reported as not tested |
 | M6 | Error analysis, figures, two-page summary, appendix, demo polish and script, clean-run check | Summary fits two pages and is reviewed by the owner, clean run recorded, demo rehearsed against a timer |
 
 Cut order if time runs short: policy v2 (REJECT), then E5, then CLINC150 as a second full benchmark, then E4, then E2. Never cut the submission notebook, the demo, the two-page summary, E1 with precision, recall and F1, E6, the seeds or the confidence intervals. Those are where the 100 points are.
@@ -483,13 +532,13 @@ Worth 20 points. The rubric asks for a clear, engaging demonstration that explai
 - [ ] Where model checkpoints and the S4 response cache are hosted for the submission notebook (dataset licences checked 22 Nov 2026: both CC-BY, so committing processed data and cached outputs is allowed with attribution; hosting for checkpoints still open)
 - [ ] A GitHub repository for the code (the Colab clean-run check clones it, and the summary footer links it)
 - [x] Approval for Gradio as a demo dependency (22 Nov 2026: not needed; the demo uses the real Jeff UI from the Velm app with a standard-library router server, section 12.2)
-- [ ] Latency limit L in requirement R4 (section 2.5)
+- [x] Latency limit L in requirement R4 (section 2.5) (23 Nov 2026: L = 100 ms p95, pre-registered)
 - [ ] Written lecturer confirmation that this topic framing is accepted
 - [x] The unit's policy on AI assistance (22 Nov 2026: allowed with disclosure, see section 13)
 - [ ] Available compute (local GPU, Colab, other). Measured 22 Nov 2026: the owner's Apple M3 Pro (18 GB, MPS) trains one S1 DistilRoBERTa seed in about 5.5 minutes. It cannot train DeBERTa-v3-small in float32 (memory), so larger models need Colab or another GPU
 - [x] The assistant's intent list (8 to 15 intents) and the Jeff set (23 Nov 2026: 14 intents from Jeff's tool belt in `configs/jeff.yaml`; the set was written by a Claude agent at the owner's request, section 6.1)
-- [x] Exact LLM model for S4, its per-token price and a spend cap for the baseline runs (22 Nov 2026: `au.anthropic.claude-sonnet-4-6` on Bedrock, profile `unibucks`; US$3.30 / US$16.50 per million input / output tokens from the AWS Price List API; spend cap US$10 for M4, validation only. Test and Jeff-set runs at M5 need a fresh approval)
-- [ ] Threshold values N, M, K, F, D in section 4 (drafted 23 Nov 2026 by Claude at the owner's request, with L, in `results/preregistration_draft.md`; waiting for the owner's confirmation)
+- [x] Exact LLM model for S4, its per-token price and a spend cap for the baseline runs (22 Nov 2026: `au.anthropic.claude-sonnet-4-6` on Bedrock, profile `unibucks`; US$3.30 / US$16.50 per million input / output tokens from the AWS Price List API; spend cap US$10 for M4, validation only. Test and Jeff-set runs at M5 need a fresh approval. Given 23 Nov 2026: at most US$10 new for M5. M5 used about US$6.70, for US$9.89 in total across all S4 caches)
+- [x] Threshold values N, M, K, F, D in section 4 (drafted 23 Nov 2026 by Claude at the owner's request, and confirmed by the owner the same day. In force in `results/preregistration.md`)
 
 ---
 
@@ -577,6 +626,15 @@ Read the first four before M1. Confirm every figure quoted in this README agains
 | 23 Nov 2026 | Jeff intents: 14, in `configs/jeff.yaml`. 12 map to one Jeff tool each; `safe_to_spend` and `upcoming_bills` are answered from Jeff's state block; `month_spending` covers this month (state block) and past months (`get_month`) | Section 6.1 asks for 8 to 15 intents that map to the real tools. Read from `JEFF_TOOL_SPECS` in the Velm backend (read only; nothing in Velm changed). The descriptions are the only definition of each intent, shared by the writer, the checker and S4's Jeff prompt |
 | 23 Nov 2026 | Jeff set written by a separate Claude agent at the owner's request, not by the owner: 320 queries (20 per intent, 40 OOS: 15 unrelated, 25 finance-adjacent), split at random (seed 0) into 140 support and 180 test. No support-test pair within an intent is a near-duplicate (highest difflib ratio 0.68). A second agent labelled all 320 blind and agreed on 320 of 320, marking 6 unsure (`results/jeff_label_check.md`) | Owner's request. The writer saw only the intent definitions and a style brief, never the project's code, data, models or results. Wording that called the set owner-written was changed (sections 0, 2.5 R7, 3, 4 RQ6, 6, 10, 12.1); the hypotheses' substance is unchanged. Limitation: model-written and probably cleaner than real traffic, and S4 is a Claude model too |
 | 23 Nov 2026 | Thresholds drafted by Claude at the owner's request: N = 60, M = 1.0, K = 5, F = 10, D = 20, L = 100 ms (p95). E2 on test: training effect only. S4 at M5: few-shot on Banking77 test plus both variants on the Jeff test split, proposed cap US$10 | The owner asked Claude to choose. Reasons per value in `results/preregistration_draft.md`. Not in force until the owner confirms it and it is saved as `results/preregistration.md`, so every test-split path still refuses |
+| 23 Nov 2026 | **Pre-registration in force.** The owner confirmed the drafted thresholds and the M5 plan ("go ahead"), with at most US$10 of new S4 spend (cap US$13.20 cumulative over the four S4 caches). Committed as `results/preregistration.md` (`6b8a777`) before any test prediction | Rigour rule: the thresholds are fixed before test. Every test-split path refuses to run without this file |
+| 23 Nov 2026 | **M5 runs.** Test predictions for every frozen system; S2 and S3 on the Jeff set; few-shot S4 on Banking77 test; both S4 variants on the Jeff set. The Banking77 S4 run stopped at 2,568 of 4,073 calls when the laptop slept and lost its network. With the owner's approval it was resumed from the cache: the 1,505 missing calls only, none repeated. 0 invalid replies on every split. S4 spend: US$9.89 in total, about US$6.70 new | No test number had been seen when it was resumed. The interruption and the run order are both in the pre-registration's Deviations section |
+| 23 Nov 2026 | **RQ1 met.** Few-shot S4's error rate on Banking77 `test_fmt` is 10.27% (validation: 12.22%). At that matched risk, recomputed on test, coverage is: S2 77.47% (95% CI 76.44 to 78.43), S3 75.71 ± 0.20%, S1 75.07 ± 0.20%, S0 70.65%. S3 minus S2: -1.76 points (-2.69 to -0.84) | Against N = 60. S2 was the router frozen on validation, and it is also the best on test. S4 costs US$1.58 per 1,000 queries. At policy v1's frozen thresholds, S2 brings that to US$0.346 per 1,000, 78.1% less |
+| 23 Nov 2026 | **Policy v1 on test** (thresholds frozen on validation). Coverage: S0 72.32%, S1 75.37 ± 0.80%, S2 78.11%, S3 77.52 ± 0.43%. Selective risk: 11.36%, 10.50%, 10.99% and 12.02%. OOS handled (of 1,000): S0 162, S1 172.4, S2 109, S3 98.2. ECE on test after the frozen temperatures: S0 2.07%, S1 1.64% | Every router's selective risk on test is 0.2 to 1.8 points above S4's test error rate. The thresholds were matched to S4's higher validation error (12.22%), and all four routers stay under that. So when the LLM's error rate changes, a deployed router's threshold needs re-matching. One sentence for the limitations |
+| 23 Nov 2026 | **RQ2 met.** OOS AUROC on `test_fmt`: S3 99.49%, S1 96.40 ± 0.20%. S3 minus S1: +3.08 points (2.60 to 3.61). S2 is highest at 99.70%; S3 minus S2: -0.21 points (-0.31 to -0.13) | Against M = 1. The pairwise matcher beats the softmax encoder, as hypothesised, but plain embedding similarity (S2) does slightly better still. The E3 caveat stands: the OOS queries come from CLINC150, a different dataset |
+| 23 Nov 2026 | **RQ4 met.** On raw Banking77 test, the order by mean macro-F1 is S1 > S2 > S3 > S0, for both original and cleaned training labels. Training effect (cleaned minus original macro-F1): S0 -0.01 [-0.38, +0.37], S1 -0.26 [-0.50, -0.02], S2 +0.28 [-0.04, +0.61], S3 +0.30 [-0.11, +0.74] points. E1 macro-F1 on test: S1 93.13 ± 0.17%, S2 91.96%, S3 90.89 ± 0.22%, S0 89.11% | Cleaning moves no system by more than 0.3 points. S1 and S2 swap places between validation (S2 first) and test (S1 first, 1.2 points ahead). RQ4 compares labels within one split, so it is unaffected, but the validation order of classifiers did not fully hold |
+| 23 Nov 2026 | **RQ6 not met.** On the 180 Jeff test queries, few-shot S4 gets 1 wrong (0.56%; zero-shot 1.11%). S2 with the Jeff support set: in-scope accuracy 56.43%, OOS AUROC 90.93%, coverage at matched risk 1.67% (0.00 to 6.67), a drop of 75.80 points against D = 20. S3: accuracy 48.00 ± 2.44%, coverage 0.00%. Even at a fixed 5% risk, S2 covers only 1.67%. At the frozen Banking77 thresholds, S2 would handle 61.67% of queries with a selective risk of 45.95% (S3: 59.44% and 53.98%) | The failure does not hinge on S4's very low error, the limitation named before the run: even at a 5% risk bar the router covers almost nothing. Most of S2's errors are neighbouring intents, where the matched support example shares words but not intent (for example, a "what bills come out while I'm away" query matched to a safe-to-spend example). With 10 examples per intent and no intent descriptions, the frozen routers do not transfer to Jeff's 14 overlapping intents; S4 has the descriptions. Banking77 thresholds must not be reused on a new intent set |
+| 23 Nov 2026 | **R4 met:** S2 p95 6.4 ms (Apple M3 Pro, CPU, batch 1, `results/latency.json`, measured at M4). **RQ3 and RQ5 not tested:** E4 and E5 were not built (cut order, section 11) | Against L = 100 ms. S3 (p95 159.7 ms) would not meet R4, but it is not the best router |
+| 23 Nov 2026 | Notebook section 6 (the test results, read from `results/`): FAST mode measured at 1.8 min with saved checkpoints (M3 Pro, MPS) and 8.7 min on CPU only without checkpoints, both with no errors | Section 6 only reads result files, so it adds seconds. Still under 10 min without a GPU |
 
 ---
 

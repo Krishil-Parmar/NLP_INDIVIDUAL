@@ -56,12 +56,12 @@ Layout follows README section 12.1; the rubric category for each part is in brac
 | S1 Fine-tuned encoder |  |  |  |  |  |
 | S2 Embedding k-NN |  |  |  |  |  |
 | S3 Pairwise matcher |  |  |  |  |  |
-| S4 LLM zero-shot |  |  |  |  |  |
+| S4 LLM few-shot |  |  |  |  |  |
 
 : Banking77 test, in-scope queries, percent, mean ± standard deviation over five seeds. Filled in by `scripts/build_summary.py` from `results/`.
 <!-- RESULTS:END -->
 
-![Risk-coverage curves with LLM calls and cost saved (headline figure, added in M4).](HEADLINE_FIGURE){width=75%}
+![Risk-coverage curves on Banking77 test (format-controlled, seed 0). The dotted line is few-shot S4's error rate, the matched risk; dots mark policy v1's frozen thresholds.](HEADLINE_FIGURE){width=75%}
 
 | Requirement | Check | Met? | Evidence |
 | ---------------------------------------------- | ---------- | ------ | ------------------------------ |
@@ -71,13 +71,13 @@ Layout follows README section 12.1; the rubric category for each part is in brac
 | R4 Router latency within limit | E6 |  |  |
 | R5 New intent from about 10 examples | E4 |  |  |
 | R6 Stable under rewording | E5 |  |  |
-| R7 Works on owner-written queries | E7 |  |  |
+| R7 Works on the Jeff set (own intents) | E7 |  |  |
 
 : Requirements from README section 2.5. (Rubric 1)
 
 ## 5. What it does, why it works, limitations
 
-[TODO 150 words: the same three headings the demo uses. Limitations must be specific: out-of-scope data from a different source, small owner-written set, label noise, single domain. (Rubric 5)]
+[TODO 150 words: the same three headings the demo uses. Limitations must be specific: out-of-scope data from a different source, small model-written Jeff set, label noise, single domain. (Rubric 5)]
 
 ## 6. Code, how to run, AI use, references
 
