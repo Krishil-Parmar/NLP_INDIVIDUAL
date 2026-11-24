@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "timestamp_utc": "2026-11-24T05:41:25+00:00",
-    "git_commit": "46506259d1f5c5ae8333a841795e9d53e8a7837a",
+    "timestamp_utc": "2026-11-24T08:18:08+00:00",
+    "git_commit": "8d812f1bacce3b68925040d0b1339d69af923e87",
     "git_dirty": false,
     "seed": 0,
     "dataset_revisions": {},
@@ -725,5 +725,95 @@
         "oos_auroc_mean": 0.9314285714285713
       }
     ]
-  }
+  },
+  "h": [
+    {
+      "system": "s0_tfidf",
+      "threshold": "frozen on validation",
+      "handled": 2575.0,
+      "router_wrong": 155.0,
+      "llm_wrong": 81.0,
+      "router_wrong_llm_right": 105.0,
+      "router_right_llm_wrong": 31.0,
+      "both_wrong_same_answer": 38.0,
+      "pair_minus_llm": 0.018141701397401323
+    },
+    {
+      "system": "s0_tfidf",
+      "threshold": "recomputed on test (in-sample)",
+      "handled": 2525.0,
+      "router_wrong": 139.0,
+      "llm_wrong": 69.0,
+      "router_wrong_llm_right": 97.0,
+      "router_right_llm_wrong": 27.0,
+      "both_wrong_same_answer": 34.0,
+      "pair_minus_llm": 0.017161068889433684
+    },
+    {
+      "system": "s1_distilroberta-base",
+      "threshold": "frozen on validation",
+      "handled": 2827.8,
+      "router_wrong": 180.8,
+      "llm_wrong": 109.4,
+      "router_wrong_llm_right": 106.2,
+      "router_right_llm_wrong": 34.8,
+      "both_wrong_same_answer": 66.6,
+      "pair_minus_llm": 0.017504290267222354
+    },
+    {
+      "system": "s1_distilroberta-base",
+      "threshold": "recomputed on test (in-sample)",
+      "handled": 2759.4,
+      "router_wrong": 151.8,
+      "llm_wrong": 98.4,
+      "router_wrong_llm_right": 84.2,
+      "router_right_llm_wrong": 30.8,
+      "both_wrong_same_answer": 61.2,
+      "pair_minus_llm": 0.013091443981367985
+    },
+    {
+      "system": "s2_all-MiniLM-L6-v2",
+      "threshold": "frozen on validation",
+      "handled": 2722.0,
+      "router_wrong": 149.0,
+      "llm_wrong": 129.0,
+      "router_wrong_llm_right": 60.0,
+      "router_right_llm_wrong": 40.0,
+      "both_wrong_same_answer": 68.0,
+      "pair_minus_llm": 0.004903162539838196
+    },
+    {
+      "system": "s2_all-MiniLM-L6-v2",
+      "threshold": "recomputed on test (in-sample)",
+      "handled": 2740.0,
+      "router_wrong": 151.0,
+      "llm_wrong": 131.0,
+      "router_wrong_llm_right": 60.0,
+      "router_right_llm_wrong": 40.0,
+      "both_wrong_same_answer": 70.0,
+      "pair_minus_llm": 0.004903162539838196
+    },
+    {
+      "system": "s3_quora-distilroberta-base",
+      "threshold": "frozen on validation",
+      "handled": 2853.2,
+      "router_wrong": 197.2,
+      "llm_wrong": 140.4,
+      "router_wrong_llm_right": 103.4,
+      "router_right_llm_wrong": 46.6,
+      "both_wrong_same_answer": 69.2,
+      "pair_minus_llm": 0.013924981613140475
+    },
+    {
+      "system": "s3_quora-distilroberta-base",
+      "threshold": "recomputed on test (in-sample)",
+      "handled": 2665.6,
+      "router_wrong": 146.6,
+      "llm_wrong": 109.4,
+      "router_wrong_llm_right": 73.8,
+      "router_right_llm_wrong": 36.6,
+      "both_wrong_same_answer": 56.4,
+      "pair_minus_llm": 0.009119882324099044
+    }
+  ]
 }

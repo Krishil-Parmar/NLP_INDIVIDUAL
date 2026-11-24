@@ -4,8 +4,8 @@ Written by `scripts/reanalyse_headline.py`. Do not edit by hand. Reads saved pre
 
 ## Provenance
 
-- Generated (UTC): 2026-11-24T05:41:25+00:00
-- Git commit: `46506259d1f5c5ae8333a841795e9d53e8a7837a`
+- Generated (UTC): 2026-11-24T08:18:08+00:00
+- Git commit: `8d812f1bacce3b68925040d0b1339d69af923e87`
 - Seed: 0
 - Python 3.12.4 on macOS-27.0-arm64-arm-64bit
 - Packages: torch 2.15.0, transformers 5.24.0, datasets 5.2.0, sentence-transformers 6.3.0, scikit-learn 1.9.1, pandas 3.1.1, numpy 2.5.5, cleanlab 2.9.0
@@ -137,3 +137,18 @@ When S4 makes 0 or 1 errors, coverage at matched risk is the number of queries a
 | frozen/examples/nearest on Jeff test v2 (E8) | 5 | 2.8 | 6, 1 (16.67%) | 69.29 ± 0.00 | 27.06 ± 0.00 | 94.37 |
 | frozen/descriptions/head on Jeff test v2 (E8) | 31 | 17.2 | 38, 1 (2.63%) | 82.14 ± 0.00 | 12.38 ± 0.00 | 78.46 |
 | tuned/examples/nearest on Jeff test v2 (E8) | 59, 20, 47, 50, 48 | 32.8, 11.1, 26.1, 27.8, 26.7 | 149, 3 (2.01%) | 82.43 ± 0.81 | 10.69 ± 0.49 | 93.14 |
+
+## H. Against the stronger LLM bar: who is right on the queries the router handles
+
+The bar is the retrieval S4 (`results/llm_bar_test.md`). On the queries a router handles, the pair's error minus the LLM's alone is (router wrong where the LLM is right) minus (router right where the LLM is wrong), over all 4,079 queries. A router can have a selective risk at or below the LLM's overall error rate and still add errors, because the queries it handles are the easy ones, where the LLM is wrong even less often. The second row per router uses the threshold recomputed on test at the LLM's test error (the RQ1-style view): in-sample on test, for explanation only. "Both wrong, same answer" counts queries where the router and the LLM agree on an intent other than the gold label; read by eye, many look like doubtful gold labels. Both systems are scored against the same labels, so this does not change the comparison. Means over seeds.
+
+| system | threshold | handled | router wrong | LLM wrong on the same queries | router wrong, LLM right | router right, LLM wrong | both wrong, same answer | pair minus LLM alone (points) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| s0_tfidf | frozen on validation | 2575.0 | 155.0 | 81.0 | 105.0 | 31.0 | 38.0 | 1.81 |
+| s0_tfidf | recomputed on test (in-sample) | 2525.0 | 139.0 | 69.0 | 97.0 | 27.0 | 34.0 | 1.72 |
+| s1_distilroberta-base | frozen on validation | 2827.8 | 180.8 | 109.4 | 106.2 | 34.8 | 66.6 | 1.75 |
+| s1_distilroberta-base | recomputed on test (in-sample) | 2759.4 | 151.8 | 98.4 | 84.2 | 30.8 | 61.2 | 1.31 |
+| s2_all-MiniLM-L6-v2 | frozen on validation | 2722.0 | 149.0 | 129.0 | 60.0 | 40.0 | 68.0 | 0.49 |
+| s2_all-MiniLM-L6-v2 | recomputed on test (in-sample) | 2740.0 | 151.0 | 131.0 | 60.0 | 40.0 | 70.0 | 0.49 |
+| s3_quora-distilroberta-base | frozen on validation | 2853.2 | 197.2 | 140.4 | 103.4 | 46.6 | 69.2 | 1.39 |
+| s3_quora-distilroberta-base | recomputed on test (in-sample) | 2665.6 | 146.6 | 109.4 | 73.8 | 36.6 | 56.4 | 0.91 |
