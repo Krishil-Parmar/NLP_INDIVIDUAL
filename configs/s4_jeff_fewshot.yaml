@@ -48,3 +48,4 @@ budget_cache_files:          # every S4 variant's spend counts toward the one ca
   - results/s4_cache/claude-sonnet-4-6_fewshot_v1.jsonl
   - results/s4_cache/claude-sonnet-4-6_jeff_v1.jsonl
   - results/s4_cache/claude-sonnet-4-6_jeff_fewshot_v1.jsonl
+  - results/s4_cache/claude-sonnet-4-6_retrieval_v1.jsonl

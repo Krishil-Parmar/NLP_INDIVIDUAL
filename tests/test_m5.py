@@ -113,3 +113,16 @@ def test_every_new_test_path_refuses_without_preregistration(tmp_path, monkeypat
     monkeypatch.setattr(data, "RESULTS_DIR", tmp_path)  # an empty results folder: no preregistration.md
     with pytest.raises(SystemExit, match="preregistration"):
         call(module)
+
+
+def test_retrieval_variant_is_validation_only():
+    module = load_script("run_s4")
+    with pytest.raises(SystemExit, match="validation-only"):
+        module.main("test", None, "s4_llm_retrieval")
+
+
+def test_retrieval_message_lists_examples_then_query():
+    from router.systems.s4_llm import retrieval_message
+    message = retrieval_message("where is my card", [("where's my card", "card_arrival"), ("card not here", "card_delivery_estimate")])
+    assert message.splitlines()[1] == '1. "where\'s my card" -> card_arrival'
+    assert message.splitlines()[-1] == 'Customer message: "where is my card"'

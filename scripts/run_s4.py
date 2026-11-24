@@ -6,6 +6,10 @@ Run from the project root (the llm dependency group holds the Anthropic SDK):
     uv run --group llm python scripts/run_s4.py --split val --config s4_llm_fewshot   # few-shot variant
     uv run --group llm python scripts/run_s4.py --split test --config s4_jeff          # the Jeff set (E7)
     uv run --group llm python scripts/run_s4.py --split test_v2 --config s4_jeff_fewshot   # Jeff test v2 (E8)
+    uv run --group llm python scripts/run_s4.py --split val --config s4_llm_retrieval      # retrieval variant, validation only
+
+A config with "retrieval_k" (the retrieval variant) sends each query with its k most similar
+train queries and their labels, found with S2's encoder. It is a validation-only experiment.
 
 A config with "dataset: jeff" runs S4 on the Jeff set instead of Banking77: the
 14 Jeff intents with their definitions from configs/jeff.yaml, few-shot examples
@@ -38,6 +42,21 @@ from router.systems import s4_llm
 from router.systems.base import PREDICTIONS_DIR, label_names_in_id_order, save_predictions
 
 
+def retrieval_messages(queries: list[str], cfg: dict) -> list[str]:
+    """For each (format-controlled) query: a message with its cfg["retrieval_k"] most similar train
+    queries and their labels, by cosine with S2's encoder. Train split only, so validation stays unseen."""
+    from router.seed import pick_device
+    from router.systems import registry, s2_embedding
+
+    encoder = s2_embedding.load_encoder(cfg["retrieval_encoder"], pick_device())
+    train = data.load_train()
+    support = registry.s2_support_set(encoder, cfg["retrieval_encoder"])  # cached embeddings of the same train rows, same order
+    similarities = s2_embedding.embed(encoder, queries) @ support.embeddings.T
+    nearest = np.argsort(-similarities, axis=1, kind="stable")[:, : cfg["retrieval_k"]]
+    texts, labels = train["text"].map(format_control).tolist(), train["label"].tolist()
+    return [s4_llm.retrieval_message(q, [(texts[j], labels[j]) for j in row]) for q, row in zip(queries, nearest)]
+
+
 def dataset_inputs(cfg: dict, split: str) -> dict:
     """What S4 is given and asked about for this config's dataset (Banking77 unless "dataset: jeff")."""
     if cfg.get("dataset", "banking77") == "jeff":
@@ -58,6 +77,8 @@ def main(split: str, limit: int | None, config: str, show_prompt: bool = False) 
     if split == "test_v2" and not show_prompt and not (data.RESULTS_DIR / "preregistration_e8.md").exists():
         sys.exit("Refusing to run S4 on Jeff test v2: results/preregistration_e8.md does not exist yet.")
     cfg = data.load_config(config)
+    if cfg.get("retrieval_k") and split != "val":  # checked before any query is read
+        sys.exit("The retrieval variant is a validation-only experiment: use --split val.")
     inputs = dataset_inputs(cfg, split)
     label_names = inputs["label_names"]
     template = (data.PROJECT_ROOT / cfg["prompt_file"]).read_text(encoding="utf-8")
@@ -74,13 +95,16 @@ def main(split: str, limit: int | None, config: str, show_prompt: bool = False) 
     eval_df = inputs["eval_df"]
     controlled = eval_df.assign(text=eval_df["text"].map(format_control))
     texts = controlled["text"].tolist()
+    if cfg.get("retrieval_k"):  # retrieval variant: each API input is the query plus its nearest labelled train queries
+        texts = retrieval_messages(texts, cfg)
     to_run = texts[:limit] if limit else texts
 
     cache = s4_llm.ResponseCache(data.PROJECT_ROOT / cfg["cache_file"])
     # Spend so far counts every S4 variant's cache, so all of them share the one cap.
     spent = sum(s4_llm.ResponseCache(data.PROJECT_ROOT / path).total_cost() for path in cfg["budget_cache_files"])
     tracker = s4_llm.SpendTracker(
-        cfg["spend_cap_usd"], spent, s4_llm.upper_bound_call_cost(system_prompt, cfg["max_tokens"], prices)
+        # The bound includes the longest query, which matters when queries carry retrieved examples.
+        cfg["spend_cap_usd"], spent, s4_llm.upper_bound_call_cost(system_prompt + max(to_run, key=len), cfg["max_tokens"], prices)
     )
     meta = run_metadata({**data.load_config("data"), "s4_llm": cfg})  # recorded before any call
     print(f"{cfg['model_id']} | {len(to_run)} of {len(texts)} queries requested | "
@@ -123,6 +147,7 @@ def main(split: str, limit: int | None, config: str, show_prompt: bool = False) 
             "model_id": cfg["model_id"],
             "prompt_version": cfg["prompt_version"],
             "examples_per_intent": cfg.get("examples_per_intent", 0),
+            "retrieval_k": cfg.get("retrieval_k", 0),
             "n_queries": len(texts),
             "spend_usd_this_split": float(sum(r["cost_usd"] for r in all_records)),
             "mean_cost_per_call_usd": float(np.mean([r["cost_usd"] for r in all_records])),
@@ -140,7 +165,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--split", choices=["val", "test", "test_v2"], default="val")  # test_v2: Jeff configs only (E8)
     parser.add_argument("--limit", type=int, default=None, help="only the first N queries (smoke test)")
-    parser.add_argument("--config", choices=["s4_llm", "s4_llm_fewshot", "s4_jeff", "s4_jeff_fewshot"], default="s4_llm",
+    parser.add_argument("--config", choices=["s4_llm", "s4_llm_fewshot", "s4_llm_retrieval", "s4_jeff", "s4_jeff_fewshot"], default="s4_llm",
                         help="which S4 variant (and dataset)")
     parser.add_argument("--show-prompt", action="store_true", help="print the system prompt and stop (no API call)")
     args = parser.parse_args()

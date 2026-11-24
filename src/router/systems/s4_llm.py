@@ -74,6 +74,15 @@ def pick_examples(train_df: pd.DataFrame, label_names: list[str], per_intent: in
     return examples
 
 
+def retrieval_message(query: str, examples: list[tuple[str, str]]) -> str:
+    """The user message for the retrieval variant: the most similar labelled train queries
+    (text, intent), most similar first, then the query itself."""
+    lines = ["Similar messages from past customers, most similar first:"]
+    lines += [f'{i}. "{text}" -> {label}' for i, (text, label) in enumerate(examples, 1)]
+    lines += ["", f'Customer message: "{query}"']
+    return "\n".join(lines)
+
+
 def output_schema(label_names: list[str], oos_answer: str) -> dict:
     """JSON schema for the structured answer: {"intent": <one of the 77 names or out_of_scope>}."""
     return {
