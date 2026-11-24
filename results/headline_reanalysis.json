@@ -1,0 +1,640 @@
+{
+  "metadata": {
+    "timestamp_utc": "2026-11-24T02:47:40+00:00",
+    "git_commit": "460cf1997a776aef06b4f5fb71be103b6d8b46d9",
+    "git_dirty": true,
+    "seed": 0,
+    "dataset_revisions": {},
+    "python": "3.12.4",
+    "platform": "macOS-27.0-arm64-arm-64bit",
+    "packages": {
+      "torch": "2.15.0",
+      "transformers": "5.24.0",
+      "datasets": "5.2.0",
+      "sentence-transformers": "6.3.0",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "numpy": "2.5.5",
+      "cleanlab": "2.9.0"
+    },
+    "config": {
+      "e6_router": {
+        "llm_systems": [
+          "s4_claude-sonnet-4-6",
+          "s4_claude-sonnet-4-6-fewshot"
+        ],
+        "routers": [
+          "s0_tfidf",
+          "s1_distilroberta-base",
+          "s2_all-MiniLM-L6-v2",
+          "s3_quora-distilroberta-base"
+        ],
+        "calibrate": [
+          "s0_tfidf",
+          "s1_distilroberta-base"
+        ],
+        "ece_systems": [
+          "s0_tfidf",
+          "s1_distilroberta-base",
+          "s3_quora-distilroberta-base"
+        ],
+        "ece_bins": 15,
+        "fixed_risks": [
+          0.01,
+          0.02,
+          0.05
+        ],
+        "router_cost_usd": 0.0,
+        "bootstrap": {
+          "resamples": 1000,
+          "seed": 0,
+          "ci": 0.95
+        },
+        "comparisons": [
+          [
+            "s3_quora-distilroberta-base",
+            "s1_distilroberta-base"
+          ],
+          [
+            "s3_quora-distilroberta-base",
+            "s2_all-MiniLM-L6-v2"
+          ]
+        ],
+        "figure": [
+          {
+            "tag": "s3_quora-distilroberta-base",
+            "name": "S3 pairwise",
+            "color": "#2a78d6",
+            "style": "solid"
+          },
+          {
+            "tag": "s1_distilroberta-base",
+            "name": "S1 encoder",
+            "color": "#eb6834",
+            "style": "solid"
+          },
+          {
+            "tag": "s2_all-MiniLM-L6-v2",
+            "name": "S2 embedding",
+            "color": "#1baf7a",
+            "style": "solid"
+          },
+          {
+            "tag": "s0_tfidf",
+            "name": "S0 TF-IDF",
+            "color": "#898781",
+            "style": "dashed"
+          }
+        ]
+      }
+    }
+  },
+  "n_in_scope": 3079,
+  "n_oos": 1000,
+  "in_scope_share": 0.7548418730080902,
+  "s4": {
+    "error_rate": 0.1027212552096102,
+    "in_scope_accuracy": 0.8717115946735954
+  },
+  "a": [
+    {
+      "system": "s0_tfidf",
+      "bar": "1% risk",
+      "coverage": 0.298847756803138,
+      "in_scope_handled": 0.3936342968496265,
+      "oos_handled": 7.0
+    },
+    {
+      "system": "s0_tfidf",
+      "bar": "2% risk",
+      "coverage": 0.4613875949987742,
+      "in_scope_handled": 0.6050665800584606,
+      "oos_handled": 19.0
+    },
+    {
+      "system": "s0_tfidf",
+      "bar": "5% risk",
+      "coverage": 0.6048050992890415,
+      "in_scope_handled": 0.7823968821045794,
+      "oos_handled": 58.0
+    },
+    {
+      "system": "s0_tfidf",
+      "bar": "10% risk",
+      "coverage": 0.7013974013238539,
+      "in_scope_handled": 0.884702825592725,
+      "oos_handled": 137.0
+    },
+    {
+      "system": "s0_tfidf",
+      "bar": "matched risk (10.27%)",
+      "coverage": 0.706545721990684,
+      "in_scope_handled": 0.8895745371873985,
+      "oos_handled": 143.0
+    },
+    {
+      "system": "s0_tfidf",
+      "bar": "frozen policy v1",
+      "coverage": 0.7232164746261338,
+      "in_scope_handled": 0.9054887950633322,
+      "oos_handled": 162.0
+    },
+    {
+      "system": "s1_distilroberta-base",
+      "bar": "1% risk",
+      "coverage": 0.34199558715371414,
+      "in_scope_handled": 0.4510555375121793,
+      "oos_handled": 6.2
+    },
+    {
+      "system": "s1_distilroberta-base",
+      "bar": "2% risk",
+      "coverage": 0.5053689629811229,
+      "in_scope_handled": 0.6628126014939916,
+      "oos_handled": 20.6
+    },
+    {
+      "system": "s1_distilroberta-base",
+      "bar": "5% risk",
+      "coverage": 0.6654081882814415,
+      "in_scope_handled": 0.8615134784020786,
+      "oos_handled": 61.6
+    },
+    {
+      "system": "s1_distilroberta-base",
+      "bar": "10% risk",
+      "coverage": 0.7473400343221377,
+      "in_scope_handled": 0.9377070477427736,
+      "oos_handled": 161.2
+    },
+    {
+      "system": "s1_distilroberta-base",
+      "bar": "matched risk (10.27%)",
+      "coverage": 0.7507232164746263,
+      "in_scope_handled": 0.9402403377720038,
+      "oos_handled": 167.2
+    },
+    {
+      "system": "s1_distilroberta-base",
+      "bar": "frozen policy v1",
+      "coverage": 0.7537141456239274,
+      "in_scope_handled": 0.9425138031828515,
+      "oos_handled": 172.4
+    },
+    {
+      "system": "s2_all-MiniLM-L6-v2",
+      "bar": "1% risk",
+      "coverage": 0.03088992400098063,
+      "in_scope_handled": 0.04059759662227996,
+      "oos_handled": 1.0
+    },
+    {
+      "system": "s2_all-MiniLM-L6-v2",
+      "bar": "2% risk",
+      "coverage": 0.04363814660455994,
+      "in_scope_handled": 0.05748619681714842,
+      "oos_handled": 1.0
+    },
+    {
+      "system": "s2_all-MiniLM-L6-v2",
+      "bar": "5% risk",
+      "coverage": 0.6428046089727875,
+      "in_scope_handled": 0.8506008444300097,
+      "oos_handled": 3.0
+    },
+    {
+      "system": "s2_all-MiniLM-L6-v2",
+      "bar": "10% risk",
+      "coverage": 0.7724932581515077,
+      "in_scope_handled": 0.9990256576810653,
+      "oos_handled": 75.0
+    },
+    {
+      "system": "s2_all-MiniLM-L6-v2",
+      "bar": "matched risk (10.27%)",
+      "coverage": 0.7746996812944349,
+      "in_scope_handled": 0.9990256576810653,
+      "oos_handled": 84.0
+    },
+    {
+      "system": "s2_all-MiniLM-L6-v2",
+      "bar": "frozen policy v1",
+      "coverage": 0.7810737925962246,
+      "in_scope_handled": 0.9993504384540435,
+      "oos_handled": 109.0
+    },
+    {
+      "system": "s3_quora-distilroberta-base",
+      "bar": "1% risk",
+      "coverage": 0.29007109585682767,
+      "in_scope_handled": 0.38369600519649244,
+      "oos_handled": 1.8
+    },
+    {
+      "system": "s3_quora-distilroberta-base",
+      "bar": "2% risk",
+      "coverage": 0.42603579308654077,
+      "in_scope_handled": 0.5637544657356284,
+      "oos_handled": 2.0
+    },
+    {
+      "system": "s3_quora-distilroberta-base",
+      "bar": "5% risk",
+      "coverage": 0.629517038489826,
+      "in_scope_handled": 0.8321532965248457,
+      "oos_handled": 5.6
+    },
+    {
+      "system": "s3_quora-distilroberta-base",
+      "bar": "10% risk",
+      "coverage": 0.7538612405001226,
+      "in_scope_handled": 0.9835660928873011,
+      "oos_handled": 46.6
+    },
+    {
+      "system": "s3_quora-distilroberta-base",
+      "bar": "matched risk (10.27%)",
+      "coverage": 0.7570973277764158,
+      "in_scope_handled": 0.9862942513803183,
+      "oos_handled": 51.4
+    },
+    {
+      "system": "s3_quora-distilroberta-base",
+      "bar": "frozen policy v1",
+      "coverage": 0.7751899975484188,
+      "in_scope_handled": 0.9950633322507307,
+      "oos_handled": 98.2
+    }
+  ],
+  "b": [
+    {
+      "system": "S4 alone",
+      "llm_calls": 4079,
+      "wrong": 419,
+      "error_rate": 0.1027212552096102,
+      "in_scope_wrong": 395,
+      "oos_answered": 24,
+      "diff_vs_s4": null
+    },
+    {
+      "system": "s0_tfidf + S4",
+      "llm_calls": 1129.0,
+      "wrong": 444.0,
+      "error_rate": 0.10885020838440793,
+      "in_scope_wrong": 269.0,
+      "oos_answered": 175.0,
+      "diff_vs_s4": {
+        "diff": 0.006128953174797724,
+        "ci_low": -0.004167688158862454,
+        "ci_high": 0.016437852414807556,
+        "n_resamples": 1000
+      }
+    },
+    {
+      "system": "s1_distilroberta-base + S4",
+      "llm_calls": 1004.6,
+      "wrong": 409.2,
+      "error_rate": 0.10031870556508948,
+      "in_scope_wrong": 224.8,
+      "oos_answered": 184.4,
+      "diff_vs_s4": {
+        "diff": -0.0024025496445207184,
+        "ci_low": -0.01074037754351557,
+        "ci_high": 0.006669526844814912,
+        "n_resamples": 1000
+      }
+    },
+    {
+      "system": "s2_all-MiniLM-L6-v2 + S4",
+      "llm_calls": 893.0,
+      "wrong": 353.0,
+      "error_rate": 0.08654081882814416,
+      "in_scope_wrong": 242.0,
+      "oos_answered": 111.0,
+      "diff_vs_s4": {
+        "diff": -0.016180436381466046,
+        "ci_low": -0.02697352292228487,
+        "ci_high": -0.006367982348614859,
+        "n_resamples": 1000
+      }
+    },
+    {
+      "system": "s3_quora-distilroberta-base + S4",
+      "llm_calls": 917.0,
+      "wrong": 394.6,
+      "error_rate": 0.0967393969110076,
+      "in_scope_wrong": 287.8,
+      "oos_answered": 106.8,
+      "diff_vs_s4": {
+        "diff": -0.0059818582986026075,
+        "ci_low": -0.016478303505761197,
+        "ci_high": 0.004020593282667309,
+        "n_resamples": 1000
+      }
+    }
+  ],
+  "c": [
+    {
+      "data": "Banking77 test",
+      "band": "0.0 to 0.7",
+      "n": 72,
+      "accuracy": 0.5833333333333334,
+      "ci_low": 0.4680769784187672,
+      "ci_high": 0.6901478260220589
+    },
+    {
+      "data": "Banking77 test",
+      "band": "0.7 to 0.8",
+      "n": 292,
+      "accuracy": 0.7636986301369864,
+      "ci_low": 0.7117460861245833,
+      "ci_high": 0.8088029964223334
+    },
+    {
+      "data": "Banking77 test",
+      "band": "0.8 to 0.9",
+      "n": 978,
+      "accuracy": 0.9100204498977505,
+      "ci_low": 0.8904456569734094,
+      "ci_high": 0.9263868293159696
+    },
+    {
+      "data": "Banking77 test",
+      "band": "0.9 to 1.0",
+      "n": 1737,
+      "accuracy": 0.9683362118595279,
+      "ci_low": 0.9590125676872946,
+      "ci_high": 0.9755929311072636
+    },
+    {
+      "data": "Jeff test (E7)",
+      "band": "0.0 to 0.7",
+      "n": 124,
+      "accuracy": 0.5483870967741935,
+      "ci_low": 0.46065500676649185,
+      "ci_high": 0.6332112562205592
+    },
+    {
+      "data": "Jeff test (E7)",
+      "band": "0.7 to 0.8",
+      "n": 14,
+      "accuracy": 0.6428571428571429,
+      "ci_low": 0.38764422924295516,
+      "ci_high": 0.8365526834990504
+    },
+    {
+      "data": "Jeff test (E7)",
+      "band": "0.8 to 0.9",
+      "n": 2,
+      "accuracy": 1.0,
+      "ci_low": 0.3423802239546494,
+      "ci_high": 1.0
+    },
+    {
+      "data": "Jeff test (E7)",
+      "band": "0.9 to 1.0",
+      "n": 0,
+      "accuracy": NaN,
+      "ci_low": NaN,
+      "ci_high": NaN
+    },
+    {
+      "data": "Jeff test v2 (E8 control)",
+      "band": "0.0 to 0.7",
+      "n": 121,
+      "accuracy": 0.6776859504132231,
+      "ci_low": 0.5900535541587101,
+      "ci_high": 0.754383305081184
+    },
+    {
+      "data": "Jeff test v2 (E8 control)",
+      "band": "0.7 to 0.8",
+      "n": 16,
+      "accuracy": 0.75,
+      "ci_low": 0.5050168327029684,
+      "ci_high": 0.8981793257983292
+    },
+    {
+      "data": "Jeff test v2 (E8 control)",
+      "band": "0.8 to 0.9",
+      "n": 3,
+      "accuracy": 1.0,
+      "ci_low": 0.43850296436068037,
+      "ci_high": 1.0
+    },
+    {
+      "data": "Jeff test v2 (E8 control)",
+      "band": "0.9 to 1.0",
+      "n": 0,
+      "accuracy": NaN,
+      "ci_low": NaN,
+      "ci_high": NaN
+    }
+  ],
+  "d": [
+    {
+      "bar": 0.01,
+      "banking77": 0.03088992400098063,
+      "jeff": 0.016666666666666666,
+      "drop": 0.014223257334313965
+    },
+    {
+      "bar": 0.02,
+      "banking77": 0.04363814660455994,
+      "jeff": 0.016666666666666666,
+      "drop": 0.026971479937893273
+    },
+    {
+      "bar": 0.05,
+      "banking77": 0.6428046089727875,
+      "jeff": 0.016666666666666666,
+      "drop": 0.6261379423061207
+    },
+    {
+      "bar": 0.1,
+      "banking77": 0.7724932581515077,
+      "jeff": 0.016666666666666666,
+      "drop": 0.755826591484841
+    },
+    {
+      "bar": 0.15,
+      "banking77": 0.8180926697720029,
+      "jeff": 0.016666666666666666,
+      "drop": 0.8014260031053362
+    }
+  ],
+  "e": {
+    "found": {
+      "oos_val": [],
+      "oos_test": [
+        "can i deposit a check",
+        "i need to update my address"
+      ]
+    },
+    "s2_confidence_rank_of_test_duplicates": [
+      621,
+      15
+    ],
+    "sensitivity": [
+      {
+        "system": "s0_tfidf",
+        "bar": 0.01,
+        "with": 0.298847756803138,
+        "without": 0.35197449104733874
+      },
+      {
+        "system": "s0_tfidf",
+        "bar": 0.02,
+        "with": 0.4613875949987742,
+        "without": 0.4638214373313711
+      },
+      {
+        "system": "s0_tfidf",
+        "bar": 0.05,
+        "with": 0.6048050992890415,
+        "without": 0.6068187392690704
+      },
+      {
+        "system": "s1_distilroberta-base",
+        "bar": 0.01,
+        "with": 0.34199558715371414,
+        "without": 0.38621535442727495
+      },
+      {
+        "system": "s1_distilroberta-base",
+        "bar": 0.02,
+        "with": 0.5053689629811229,
+        "without": 0.5135638950208486
+      },
+      {
+        "system": "s1_distilroberta-base",
+        "bar": 0.05,
+        "with": 0.6654081882814415,
+        "without": 0.6668138337012509
+      },
+      {
+        "system": "s2_all-MiniLM-L6-v2",
+        "bar": 0.01,
+        "with": 0.03088992400098063,
+        "without": 0.03948982094677459
+      },
+      {
+        "system": "s2_all-MiniLM-L6-v2",
+        "bar": 0.02,
+        "with": 0.04363814660455994,
+        "without": 0.04954623497669855
+      },
+      {
+        "system": "s2_all-MiniLM-L6-v2",
+        "bar": 0.05,
+        "with": 0.6428046089727875,
+        "without": 0.6458180034338975
+      },
+      {
+        "system": "s3_quora-distilroberta-base",
+        "bar": 0.01,
+        "with": 0.29007109585682767,
+        "without": 0.3157714005396125
+      },
+      {
+        "system": "s3_quora-distilroberta-base",
+        "bar": 0.02,
+        "with": 0.42603579308654077,
+        "without": 0.4364974245768948
+      },
+      {
+        "system": "s3_quora-distilroberta-base",
+        "bar": 0.05,
+        "with": 0.629517038489826,
+        "without": 0.6328182487122884
+      }
+    ]
+  },
+  "f": {
+    "n_top": 300,
+    "errors": 10,
+    "oos_errors": 1,
+    "shown": [
+      {
+        "rank": 15,
+        "cosine": 0.994,
+        "query": "can i deposit a check",
+        "true": "oos",
+        "predicted": "top_up_by_cash_or_cheque",
+        "nearest train example": "Can I deposit a check?"
+      },
+      {
+        "rank": 127,
+        "cosine": 0.985,
+        "query": "how many transactions can i make with a disposable card",
+        "true": "get_disposable_virtual_card",
+        "predicted": "disposable_card_limits",
+        "nearest train example": "How many transactions can I make on my disposable card?"
+      },
+      {
+        "rank": 163,
+        "cosine": 0.982,
+        "query": "when will my transfer go through",
+        "true": "pending_transfer",
+        "predicted": "balance_not_updated_after_bank_transfer",
+        "nearest train example": "When will my transfer come through?"
+      },
+      {
+        "rank": 179,
+        "cosine": 0.981,
+        "query": "why was my payment declined",
+        "true": "declined_card_payment",
+        "predicted": "declined_transfer",
+        "nearest train example": "Why did my payment get declined?"
+      },
+      {
+        "rank": 196,
+        "cosine": 0.981,
+        "query": "how do i top up my card",
+        "true": "transfer_into_account",
+        "predicted": "topping_up_by_card",
+        "nearest train example": "How do I top up on my card?"
+      },
+      {
+        "rank": 204,
+        "cosine": 0.98,
+        "query": "why did my top up not work",
+        "true": "top_up_failed",
+        "predicted": "top_up_reverted",
+        "nearest train example": "Why didn't my top up work?"
+      },
+      {
+        "rank": 238,
+        "cosine": 0.978,
+        "query": "how can i top up",
+        "true": "topping_up_by_card",
+        "predicted": "transfer_into_account",
+        "nearest train example": "How do I top up?"
+      },
+      {
+        "rank": 279,
+        "cosine": 0.976,
+        "query": "why hasn't my transfer gone through yet",
+        "true": "pending_transfer",
+        "predicted": "failed_transfer",
+        "nearest train example": "Why hasn't my transfer gone through"
+      },
+      {
+        "rank": 285,
+        "cosine": 0.976,
+        "query": "why didn't the atm give me my money",
+        "true": "declined_cash_withdrawal",
+        "predicted": "wrong_amount_of_cash_received",
+        "nearest train example": "Why didn't the ATM give me all my money"
+      },
+      {
+        "rank": 295,
+        "cosine": 0.975,
+        "query": "im not sure what this charge is for",
+        "true": "card_payment_fee_charged",
+        "predicted": "direct_debit_payment_not_recognised",
+        "nearest train example": "i do not know what this charge is for"
+      }
+    ]
+  }
+}

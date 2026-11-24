@@ -4,8 +4,8 @@ Written by `scripts/diagnose_jeff.py`. Do not edit by hand. Reads saved predicti
 
 ## Provenance
 
-- Generated (UTC): 2026-11-24T01:05:02+00:00
-- Git commit: `70adcfb1cf99f6b074a36643e61a7192cde0675a`
+- Generated (UTC): 2026-11-24T02:47:20+00:00
+- Git commit: `460cf1997a776aef06b4f5fb71be103b6d8b46d9`
 - Seed: None
 - Python 3.12.4 on macOS-27.0-arm64-arm-64bit
 - Packages: torch 2.15.0, transformers 5.24.0, datasets 5.2.0, sentence-transformers 6.3.0, scikit-learn 1.9.1, pandas 3.1.1, numpy 2.5.5, cleanlab 2.9.0
@@ -34,7 +34,7 @@ S2 re-run on Banking77 validation (format-controlled, with the OOS pool) with it
 | 5 random draws | 20 | 84.0 | 76.6 | 99.8 | 65.1 | 30.3 | 8.3 |
 | 5 random draws | 50 | 88.4 | 79.1 | 99.9 | 74.1 | 49.1 | 18.3 |
 
-For comparison, on the Jeff test split (10 support examples per intent) S2 covers 1.7% at 5% risk and 1.7% at 1% risk (`results/e7_jeff.json`). Cutting Banking77 to 10 examples per intent costs about half the coverage at 5% risk; the rest of the Jeff gap comes from the Jeff intents themselves.
+For comparison, on the Jeff test split (10 support examples per intent) S2 covers 1.7% at 5% risk and 1.7% at 1% risk (`results/e7_jeff.json`). Cutting Banking77 to 10 examples per intent halves the coverage at 5% risk. **Correction (24 Nov 2026):** the first version of this report said the rest of the Jeff gap comes from the Jeff intents themselves. That is not supported. At the same cosine distance from the nearest labelled example, S2 is about as accurate on Jeff as on Banking77 (`results/headline_reanalysis.md`, section C). Banking77 looks easy because most of its test queries have a close paraphrase in train, and Jeff's do not.
 
 ## 4. Where the Jeff errors are
 
