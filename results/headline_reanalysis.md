@@ -4,8 +4,8 @@ Written by `scripts/reanalyse_headline.py`. Do not edit by hand. Reads saved pre
 
 ## Provenance
 
-- Generated (UTC): 2026-11-24T02:47:40+00:00
-- Git commit: `460cf1997a776aef06b4f5fb71be103b6d8b46d9` (uncommitted changes present)
+- Generated (UTC): 2026-11-24T02:49:53+00:00
+- Git commit: `ad6d5e6eb400038d916cff7975cfaeeb396e1c42`
 - Seed: 0
 - Python 3.12.4 on macOS-27.0-arm64-arm-64bit
 - Packages: torch 2.15.0, transformers 5.24.0, datasets 5.2.0, sentence-transformers 6.3.0, scikit-learn 1.9.1, pandas 3.1.1, numpy 2.5.5, cleanlab 2.9.0
