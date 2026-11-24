@@ -6,10 +6,12 @@ Run from the project root (the llm dependency group holds the Anthropic SDK):
     uv run --group llm python scripts/run_s4.py --split val --config s4_llm_fewshot   # few-shot variant
     uv run --group llm python scripts/run_s4.py --split test --config s4_jeff          # the Jeff set (E7)
     uv run --group llm python scripts/run_s4.py --split test_v2 --config s4_jeff_fewshot   # Jeff test v2 (E8)
-    uv run --group llm python scripts/run_s4.py --split val --config s4_llm_retrieval      # retrieval variant, validation only
+    uv run --group llm python scripts/run_s4.py --split val --config s4_llm_retrieval      # retrieval variant
+    uv run --group llm python scripts/run_s4.py --split test --config s4_llm_retrieval     # its one test run
 
 A config with "retrieval_k" (the retrieval variant) sends each query with its k most similar
-train queries and their labels, found with S2's encoder. It is a validation-only experiment.
+train queries and their labels, found with S2's encoder (train split only). Its test run is
+refused until results/plan_llm_bar_test.md exists.
 
 A config with "dataset: jeff" runs S4 on the Jeff set instead of Banking77: the
 14 Jeff intents with their definitions from configs/jeff.yaml, few-shot examples
@@ -77,8 +79,11 @@ def main(split: str, limit: int | None, config: str, show_prompt: bool = False) 
     if split == "test_v2" and not show_prompt and not (data.RESULTS_DIR / "preregistration_e8.md").exists():
         sys.exit("Refusing to run S4 on Jeff test v2: results/preregistration_e8.md does not exist yet.")
     cfg = data.load_config(config)
-    if cfg.get("retrieval_k") and split != "val":  # checked before any query is read
-        sys.exit("The retrieval variant is a validation-only experiment: use --split val.")
+    if cfg.get("retrieval_k"):  # checked before any query is read
+        if split not in ("val", "test"):
+            sys.exit("The retrieval variant runs on Banking77 val or test only.")
+        if split == "test" and not show_prompt and not (data.RESULTS_DIR / "plan_llm_bar_test.md").exists():
+            sys.exit("Refusing to run the retrieval variant on test: results/plan_llm_bar_test.md does not exist (write the plan first).")
     inputs = dataset_inputs(cfg, split)
     label_names = inputs["label_names"]
     template = (data.PROJECT_ROOT / cfg["prompt_file"]).read_text(encoding="utf-8")

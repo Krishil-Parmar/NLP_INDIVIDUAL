@@ -13,7 +13,9 @@ out-of-scope pool) and asks what each router covers at each variant's error rate
 
 Everything is on validation, where the routers' thresholds were also chosen, so the
 coverage numbers are in-sample. Nothing here touches a test split or changes a verdict.
-Writes results/llm_bar_val.json and results/llm_bar_val.md.
+Writes results/llm_bar_val.json and results/llm_bar_val.md, and freezes the routers'
+thresholds at the retrieval variant's validation error in results/policy_llm_bar.json:
+the thresholds the one test run of this bar applies unchanged (results/plan_llm_bar_test.md).
 """
 
 import json
@@ -77,13 +79,17 @@ def main() -> None:
     s4, wrong, reference = s4_rows(names)
     is_oos = reference["is_oos"].to_numpy(dtype=bool)
     runs = router_runs(policy, reference)
-    coverage_rows, pair_rows = [], []
+    coverage_rows, frozen = [], {}
+    retrieval = list(S4_VARIANTS)[-1]
     for variant, w in wrong.items():
         bar = float(w.mean())
         for tag, seeds in runs.items():
             per_seed = []
-            for correct, confidence in seeds:
+            for seed, (correct, confidence) in zip(sorted(policy["systems"][tag]["thresholds"], key=int), seeds):
                 threshold = coverage_at_risk(correct, confidence, bar)["threshold"]
+                if variant == retrieval:
+                    frozen.setdefault(tag, {"temperatures": policy["systems"][tag]["temperatures"], "thresholds": {}})
+                    frozen[tag]["thresholds"][seed] = float(threshold)
                 handled = confidence >= threshold
                 combined = np.where(handled, ~correct, w)  # router answers what it handles, this S4 variant the rest
                 per_seed.append({"coverage": handled.mean(), "in_scope_handled": (handled & ~is_oos).sum() / (~is_oos).sum(),
@@ -100,7 +106,14 @@ def main() -> None:
            "s2_on_s4_in_scope_errors": in_scope_errors}
     (data.RESULTS_DIR / "llm_bar_val.json").write_text(json.dumps(out, indent=2, default=float))
     (data.RESULTS_DIR / "llm_bar_val.md").write_text(report(out))
-    print("Wrote results/llm_bar_val.json and results/llm_bar_val.md")
+    retrieval_row = next(r for r in s4 if r["variant"] == retrieval)
+    policy_bar = {"metadata": out["metadata"], "fitted_on": SPLIT, "llm_system": retrieval_row["system_tag"],
+                  "matched_risk": retrieval_row["error_rate"], "llm_cost_per_call_usd": retrieval_row["cost_per_call_usd"],
+                  "rule": "per seed: the highest-coverage threshold whose selective risk <= the retrieval S4's validation error; "
+                          "temperatures as frozen in policy v1",
+                  "systems": frozen}
+    (data.RESULTS_DIR / "policy_llm_bar.json").write_text(json.dumps(policy_bar, indent=2))
+    print("Wrote results/llm_bar_val.json, results/llm_bar_val.md and results/policy_llm_bar.json")
 
 
 def pct(x: float) -> str:

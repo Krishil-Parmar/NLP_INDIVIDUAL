@@ -115,10 +115,14 @@ def test_every_new_test_path_refuses_without_preregistration(tmp_path, monkeypat
         call(module)
 
 
-def test_retrieval_variant_is_validation_only():
+def test_retrieval_variant_on_test_needs_its_own_plan(tmp_path, monkeypatch):
     module = load_script("run_s4")
-    with pytest.raises(SystemExit, match="validation-only"):
+    monkeypatch.setattr(data, "RESULTS_DIR", tmp_path)
+    (tmp_path / "preregistration.md").write_text("present")  # the main plan exists, the retrieval plan does not
+    with pytest.raises(SystemExit, match="plan_llm_bar_test"):
         module.main("test", None, "s4_llm_retrieval")
+    with pytest.raises(SystemExit, match="val or test only"):
+        module.main("test_v2", None, "s4_llm_retrieval")
 
 
 def test_retrieval_message_lists_examples_then_query():

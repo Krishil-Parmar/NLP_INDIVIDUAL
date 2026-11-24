@@ -1,8 +1,9 @@
-# S4 retrieval variant (post-hoc, VALIDATION ONLY; owner approval 24 Nov 2026, about US$2).
+# S4 retrieval variant (post-hoc; owner approval 24 Nov 2026: about US$2 on validation, then one test run
+# allowed up to US$6 above the old US$13.20 cap; plan in results/plan_llm_bar_test.md).
 # Asked by the second independent review: is few-shot S4 a weak bar? Same model and settings as
 # configs/s4_llm_fewshot.yaml, but instead of 2 fixed examples per intent, each query's user message
 # carries its retrieval_k most similar TRAIN queries (S2's encoder, cosine) with their labels, so the
-# LLM sees the same kind of evidence as the routers. scripts/run_s4.py refuses any split but val for it.
+# LLM sees the same kind of evidence as the routers. scripts/run_s4.py runs it on val, and on test only once its plan exists.
 # Fixed before any call: k = 10, the prompt in prompts/s4_intent_retrieval_v1.txt.
 
 aws_profile: unibucks
@@ -31,10 +32,10 @@ prices_usd_per_million_tokens:
   cache_read: 0.33
 price_checked: "2026-11-22"
 
-spend_cap_usd: 12.55         # hard stop, counted over every call in all the budget cache files below.
-                             # Lower than the other S4 configs' 13.20 on purpose: US$10.05 was spent before this
-                             # experiment, and the owner approved about US$2 for it (24 Nov 2026), so it may add
-                             # at most US$2.50. If it stops early, the owner is asked before any more is spent.
+spend_cap_usd: 19.20         # hard stop, counted over every call in all the budget cache files below.
+                             # Validation run: cap 12.55 (US$10.05 spent before + at most US$2.50; it used US$2.20).
+                             # Test run (owner, 24 Nov 2026: "as long as it 5-6 dollars above cap"): the old
+                             # US$13.20 cap + US$6.00. US$12.24 spent before the test run; about US$6.65 expected.
 requests_per_minute: 45      # account quota is 50 per minute for this model and profile
 max_workers: 4               # calls in flight at once (the rate limit still applies)
 sdk_max_retries: 4           # the SDK retries throttling (429) and server errors with backoff
