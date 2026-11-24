@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "timestamp_utc": "2026-11-24T02:49:53+00:00",
-    "git_commit": "ad6d5e6eb400038d916cff7975cfaeeb396e1c42",
+    "timestamp_utc": "2026-11-24T05:41:25+00:00",
+    "git_commit": "46506259d1f5c5ae8333a841795e9d53e8a7837a",
     "git_dirty": false,
     "seed": 0,
     "dataset_revisions": {},
@@ -94,7 +94,25 @@
   "in_scope_share": 0.7548418730080902,
   "s4": {
     "error_rate": 0.1027212552096102,
-    "in_scope_accuracy": 0.8717115946735954
+    "in_scope_accuracy": 0.8717115946735954,
+    "classification": {
+      "accuracy": 0.8717115946735953,
+      "macro_precision": 0.8866963350011338,
+      "macro_recall": 0.8717449217449217,
+      "macro_f1": 0.8717297403214269,
+      "weighted_precision": 0.8866757751878831,
+      "weighted_recall": 0.8717115946735953,
+      "weighted_f1": 0.871700414054414
+    },
+    "in_scope_wrong": 395,
+    "s2_right_on_s4_errors": 271
+  },
+  "break_even": {
+    "in_scope_error_pair": 0.078596947060734,
+    "in_scope_error_s4": 0.12828840532640468,
+    "oos_error_pair": 0.111,
+    "oos_error_s4": 0.024,
+    "break_even_oos_share": 0.3635300910250836
   },
   "a": [
     {
@@ -329,6 +347,20 @@
         "diff": -0.0059818582986026075,
         "ci_low": -0.016478303505761197,
         "ci_high": 0.004020593282667309,
+        "n_resamples": 1000
+      }
+    },
+    {
+      "system": "s2_all-MiniLM-L6-v2 + S4, post-hoc: validation threshold for a 5% bar (0.8457)",
+      "llm_calls": 1692,
+      "wrong": 295,
+      "error_rate": 0.07232164746261338,
+      "in_scope_wrong": 271,
+      "oos_answered": 24,
+      "diff_vs_s4": {
+        "diff": -0.03039960774699682,
+        "ci_low": -0.037999509683746005,
+        "ci_high": -0.02353518019122333,
         "n_resamples": 1000
       }
     }
@@ -634,6 +666,63 @@
         "true": "card_payment_fee_charged",
         "predicted": "direct_debit_payment_not_recognised",
         "nearest train example": "i do not know what this charge is for"
+      }
+    ]
+  },
+  "g": {
+    "rows": [
+      {
+        "system": "S2 on the Jeff test split (E7)",
+        "answered_before_first_error": [
+          3
+        ],
+        "n": 180
+      },
+      {
+        "system": "frozen/examples/nearest on Jeff test v2 (E8)",
+        "answered_before_first_error": [
+          5
+        ],
+        "n": 180,
+        "dev_threshold_handled": 6,
+        "dev_threshold_wrong": 1,
+        "in_scope_accuracy_mean": 0.6928571428571428,
+        "in_scope_accuracy_sd": 0.0,
+        "aurc_mean": 0.2705679617869613,
+        "aurc_sd": 0.0,
+        "oos_auroc_mean": 0.9437499999999999
+      },
+      {
+        "system": "frozen/descriptions/head on Jeff test v2 (E8)",
+        "answered_before_first_error": [
+          31
+        ],
+        "n": 180,
+        "dev_threshold_handled": 38,
+        "dev_threshold_wrong": 1,
+        "in_scope_accuracy_mean": 0.8214285714285714,
+        "in_scope_accuracy_sd": 0.0,
+        "aurc_mean": 0.12378854401413547,
+        "aurc_sd": 0.0,
+        "oos_auroc_mean": 0.7846428571428571
+      },
+      {
+        "system": "tuned/examples/nearest on Jeff test v2 (E8)",
+        "answered_before_first_error": [
+          59,
+          20,
+          47,
+          50,
+          48
+        ],
+        "n": 180,
+        "dev_threshold_handled": 149,
+        "dev_threshold_wrong": 3,
+        "in_scope_accuracy_mean": 0.8242857142857144,
+        "in_scope_accuracy_sd": 0.008144110179279582,
+        "aurc_mean": 0.10691783611747922,
+        "aurc_sd": 0.00487076023406807,
+        "oos_auroc_mean": 0.9314285714285713
       }
     ]
   }

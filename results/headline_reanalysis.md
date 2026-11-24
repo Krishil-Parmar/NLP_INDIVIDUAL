@@ -4,8 +4,8 @@ Written by `scripts/reanalyse_headline.py`. Do not edit by hand. Reads saved pre
 
 ## Provenance
 
-- Generated (UTC): 2026-11-24T02:49:53+00:00
-- Git commit: `ad6d5e6eb400038d916cff7975cfaeeb396e1c42`
+- Generated (UTC): 2026-11-24T05:41:25+00:00
+- Git commit: `46506259d1f5c5ae8333a841795e9d53e8a7837a`
 - Seed: 0
 - Python 3.12.4 on macOS-27.0-arm64-arm-64bit
 - Packages: torch 2.15.0, transformers 5.24.0, datasets 5.2.0, sentence-transformers 6.3.0, scikit-learn 1.9.1, pandas 3.1.1, numpy 2.5.5, cleanlab 2.9.0
@@ -43,6 +43,8 @@ Written by `scripts/reanalyse_headline.py`. Do not edit by hand. Reads saved pre
 
 Check: the coverage column reproduces `results/e6_test_fmt.json` exactly.
 
+S4 on the in-scope test_fmt queries (format-controlled text, so not directly comparable with E1's raw-text table): accuracy 87.17%, macro precision 88.67%, macro recall 87.17%, macro F1 87.17%. Of S4's 395 in-scope errors, S2 gets 271 right. S4 sees the 77 intent names and 2 examples per intent; the routers learn from about 9,000 labelled queries, so this is a weakly prompted LLM bar.
+
 ## B. Router plus LLM end to end, at the frozen policy v1 thresholds
 
 The router answers what it handles and S4 answers the rest. Paired bootstrap of the error difference, 1,000 resamples stratified by in-scope and out-of-scope. Negative = fewer errors than S4 alone. Means over seeds.
@@ -54,6 +56,9 @@ The router answers what it handles and S4 answers the rest. Paired bootstrap of 
 | s1_distilroberta-base + S4 | 1005 | 409.2 | 10.03 | 224.8 | 184.4 | -0.24 [-1.07, 0.67] |
 | s2_all-MiniLM-L6-v2 + S4 | 893 | 353.0 | 8.65 | 242.0 | 111.0 | -1.62 [-2.70, -0.64] |
 | s3_quora-distilroberta-base + S4 | 917 | 394.6 | 9.67 | 287.8 | 106.8 | -0.60 [-1.65, 0.40] |
+| s2_all-MiniLM-L6-v2 + S4, post-hoc: validation threshold for a 5% bar (0.8457) | 1692 | 295.0 | 7.23 | 271.0 | 24.0 | -3.04 [-3.80, -2.35] |
+
+Split by query type, S2 plus S4 at the frozen threshold: in-scope error 7.86% (S4 alone 12.83%), out-of-scope error 11.10% (S4 alone 2.40%). The pair makes more errors than S4 alone whenever out-of-scope queries are more than 36.35% of traffic; this test mix has 24.52%. The out-of-scope leak comes from the low threshold the matched-risk rule allows: the last row, a threshold chosen on validation for a 5% bar, handles fewer queries but answers no more out-of-scope queries than S4 alone. That row is post-hoc.
 
 ## C. S2's in-scope accuracy by distance to its nearest labelled example
 
@@ -121,3 +126,14 @@ Errors among S2's 300 most confident test queries: 10 (1 out of scope). The firs
 | 279 | 0.976 | why hasn't my transfer gone through yet | pending_transfer | failed_transfer | Why hasn't my transfer gone through |
 | 285 | 0.976 | why didn't the atm give me my money | declined_cash_withdrawal | wrong_amount_of_cash_received | Why didn't the ATM give me all my money |
 | 295 | 0.975 | im not sure what this charge is for | card_payment_fee_charged | direct_debit_payment_not_recognised | i do not know what this charge is for |
+
+## G. E7 and E8 at 0% or near-0% risk
+
+When S4 makes 0 or 1 errors, coverage at matched risk is the number of queries answered before the router's first error. A percentile bootstrap is not a valid interval for that statistic, so the intervals given for it in `results/e7_jeff.md` and `results/e8_test_v2.md` should not be quoted. The per-seed counts are below instead. The development-threshold risk is pooled over seeds (`results/e8_test_v2.md` averaged per seed and counted a seed that handles nothing as 0%). Standard deviations here are sample standard deviations (ddof = 1), as elsewhere in the project; `e8_test_v2.md` used ddof = 0.
+
+| system | answered before first error (per seed) | as % of queries | dev threshold: handled, wrong (pooled) | in-scope accuracy (%) | AURC (%) | OOS AUROC (%) |
+| --- | --- | --- | --- | --- | --- | --- |
+| S2 on the Jeff test split (E7) | 3 | 1.7 |  |  |  |  |
+| frozen/examples/nearest on Jeff test v2 (E8) | 5 | 2.8 | 6, 1 (16.67%) | 69.29 ± 0.00 | 27.06 ± 0.00 | 94.37 |
+| frozen/descriptions/head on Jeff test v2 (E8) | 31 | 17.2 | 38, 1 (2.63%) | 82.14 ± 0.00 | 12.38 ± 0.00 | 78.46 |
+| tuned/examples/nearest on Jeff test v2 (E8) | 59, 20, 47, 50, 48 | 32.8, 11.1, 26.1, 27.8, 26.7 | 149, 3 (2.01%) | 82.43 ± 0.81 | 10.69 ± 0.49 | 93.14 |
