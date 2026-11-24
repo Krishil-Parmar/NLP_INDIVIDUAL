@@ -50,7 +50,7 @@ REQUIREMENTS_BLOCK = re.compile(r"<!-- REQUIREMENTS:START -->.*?<!-- REQUIREMENT
 REQUIREMENT_VERDICTS = {
     "R1": "Yes (no preset bar)",
     "R2": "No",
-    "R3": "Yes (frozen bar)",
+    "R3": "Frozen bar only",
     "R4": "Yes",
     "R5": "Not tested",
     "R6": "Not tested",
@@ -127,6 +127,7 @@ def requirements_block() -> str:
     """The requirements table: evidence read from the result files, verdicts from REQUIREMENT_VERDICTS."""
     e1, e6, e7 = load_result("e1_test.json"), load_result("e6_test_fmt.json"), load_result("e7_jeff.json")
     re_an, e8, latency = load_result("headline_reanalysis.json"), load_result("e8_test_v2.json"), load_result("latency.json")
+    llm_bar = load_result("llm_bar_test.json")  # the stronger (retrieval-prompted) LLM bar, post-hoc
     evidence = {k: "" for k in REQUIREMENT_VERDICTS}
     if e1:
         acc = {t: 100 * r["summary"]["accuracy"]["mean"] for t, r in e1["systems"].items()}
@@ -138,6 +139,9 @@ def requirements_block() -> str:
         evidence["R2"] = f"S2 plus LLM answers {pair['oos_answered']:.0f} of {re_an['n_oos']} OOS queries; LLM alone {s4['oos_answered']:.0f}"
         evidence["R3"] = (f"{pair['llm_calls']:.0f} of {s4['llm_calls']:.0f} LLM calls; {100 * pair['error_rate']:.1f}% wrong "
                           f"against {100 * s4['error_rate']:.1f}%")
+        if llm_bar:
+            s2_bar = llm_bar["routers"]["s2_all-MiniLM-L6-v2"]["frozen"]
+            evidence["R3"] += f". Stronger LLM: {100 * s2_bar['pair_error']:.1f}% against {100 * llm_bar['s4']['error_rate']:.1f}%"
     if latency:
         evidence["R4"] = f"S2 p95 {latency['systems']['s2_all-MiniLM-L6-v2']['p95_ms']:.1f} ms against 100 ms"
     evidence["R5"] = "E4 not built" + (f"; Jeff needed a fine-tune (E8, post-hoc)" if e8 else "")
