@@ -27,7 +27,8 @@ Move the threshold from 0.485 to 0.85. That is about the threshold chosen on val
 
 The trade-off, on Banking77 test:
 - **At 0.485:** about 78% of queries are handled.
-- **At 0.85:** about 59% are handled, with fewer errors overall and no more out-of-scope answers than the LLM alone.
+- **At 0.85:** about 59% are handled, with fewer errors overall and no more out-of-scope answers than the frozen few-shot LLM alone.
+- **Against a well-prompted LLM** (given the 10 most similar labelled queries; `results/llm_bar_test.md`) the router still takes about two thirds of the calls, but the pair is about half a point less accurate than that LLM alone (6.01% against 5.52% wrong). Say this if asked whether the router beats a good LLM.
 
 Then show the session counters: LLM calls saved and US$ saved.
 
@@ -35,7 +36,7 @@ Then show the session counters: LLM calls saved and US$ saved.
 
 1. **It works where a close labelled example exists:** on the assistant's own intents (the Jeff set) it handles almost nothing until it is fine-tuned on their examples (E7, E8).
 2. **At the frozen threshold it answers some out-of-scope queries,** so a stricter threshold or a reject rule is needed before real use.
-3. **The LLM baseline was weakly prompted** and the Jeff set was written by a Claude model, so both bars are optimistic or circular in places.
+3. **Against a well-prompted LLM the router trades accuracy for cost** (about half a point more errors for two thirds fewer calls), and the Jeff set was written by a Claude model, so its bar is circular.
 
 ## Known mismatch to decide before the day
 
