@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "timestamp_utc": "2026-11-24T02:47:20+00:00",
-    "git_commit": "460cf1997a776aef06b4f5fb71be103b6d8b46d9",
+    "timestamp_utc": "2026-11-24T05:41:52+00:00",
+    "git_commit": "7328d65c12dc18fb0d8923451904e9d3cf50a6f5",
     "git_dirty": false,
     "seed": null,
     "dataset_revisions": {},
@@ -223,6 +223,188 @@
       "coverage_at_matched_risk_std": 0.011762627105943252,
       "coverage_at_0.01_std": 0.07369175410295863,
       "coverage_at_0.05_std": 0.05065150303737421
+    }
+  ],
+  "distance_bands": [
+    {
+      "data": "Banking77 validation, 10 examples per intent",
+      "note": "5 draws pooled",
+      "band": "0.0 to 0.5",
+      "n": 24,
+      "mean_cosine": 0.4452681578695774,
+      "accuracy": 0.20833333333333334,
+      "ci_low": 0.0924482529436571,
+      "ci_high": 0.40470453421128416
+    },
+    {
+      "data": "Banking77 validation, 10 examples per intent",
+      "note": "5 draws pooled",
+      "band": "0.5 to 0.6",
+      "n": 152,
+      "mean_cosine": 0.5668825499321285,
+      "accuracy": 0.4473684210526316,
+      "ci_low": 0.3705898658292936,
+      "ci_high": 0.5267416907740932
+    },
+    {
+      "data": "Banking77 validation, 10 examples per intent",
+      "note": "5 draws pooled",
+      "band": "0.6 to 0.7",
+      "n": 656,
+      "mean_cosine": 0.6633503285304803,
+      "accuracy": 0.5823170731707317,
+      "ci_low": 0.5442050315130531,
+      "ci_high": 0.6194706492832167
+    },
+    {
+      "data": "Banking77 validation, 10 examples per intent",
+      "note": "5 draws pooled",
+      "band": "0.7 to 0.8",
+      "n": 1525,
+      "mean_cosine": 0.7536629357885142,
+      "accuracy": 0.7226229508196721,
+      "ci_low": 0.6996147882614334,
+      "ci_high": 0.7445123617812182
+    },
+    {
+      "data": "Banking77 validation, 10 examples per intent",
+      "note": "5 draws pooled",
+      "band": "0.8 to 0.9",
+      "n": 1806,
+      "mean_cosine": 0.8474648688916748,
+      "accuracy": 0.8970099667774086,
+      "ci_low": 0.8821388699518621,
+      "ci_high": 0.910195725414512
+    },
+    {
+      "data": "Banking77 validation, 10 examples per intent",
+      "note": "5 draws pooled",
+      "band": "0.9 to 1.0",
+      "n": 837,
+      "mean_cosine": 0.9335417820846166,
+      "accuracy": 0.980884109916368,
+      "ci_low": 0.9691745332974301,
+      "ci_high": 0.9881997630069154
+    },
+    {
+      "data": "Banking77 test, full support",
+      "note": "E6 predictions",
+      "band": "0.0 to 0.5",
+      "n": 3,
+      "mean_cosine": 0.46313076217969257,
+      "accuracy": 0.3333333333333333,
+      "ci_low": 0.06149194402093078,
+      "ci_high": 0.7923404011921757
+    },
+    {
+      "data": "Banking77 test, full support",
+      "note": "E6 predictions",
+      "band": "0.5 to 0.6",
+      "n": 10,
+      "mean_cosine": 0.5627781450748444,
+      "accuracy": 0.7,
+      "ci_low": 0.3967781453459709,
+      "ci_high": 0.892208733443606
+    },
+    {
+      "data": "Banking77 test, full support",
+      "note": "E6 predictions",
+      "band": "0.6 to 0.7",
+      "n": 59,
+      "mean_cosine": 0.6615707116611933,
+      "accuracy": 0.576271186440678,
+      "ci_low": 0.4493448270245204,
+      "ci_high": 0.6938727264858222
+    },
+    {
+      "data": "Banking77 test, full support",
+      "note": "E6 predictions",
+      "band": "0.7 to 0.8",
+      "n": 292,
+      "mean_cosine": 0.7606590390205383,
+      "accuracy": 0.7636986301369864,
+      "ci_low": 0.7117460861245833,
+      "ci_high": 0.8088029964223334
+    },
+    {
+      "data": "Banking77 test, full support",
+      "note": "E6 predictions",
+      "band": "0.8 to 0.9",
+      "n": 978,
+      "mean_cosine": 0.8582435205792113,
+      "accuracy": 0.9100204498977505,
+      "ci_low": 0.8904456569734094,
+      "ci_high": 0.9263868293159696
+    },
+    {
+      "data": "Banking77 test, full support",
+      "note": "E6 predictions",
+      "band": "0.9 to 1.0",
+      "n": 1737,
+      "mean_cosine": 0.9468298640893531,
+      "accuracy": 0.9683362118595279,
+      "ci_low": 0.9590125676872946,
+      "ci_high": 0.9755929311072636
+    },
+    {
+      "data": "Jeff test",
+      "note": "E7 predictions",
+      "band": "0.0 to 0.5",
+      "n": 43,
+      "mean_cosine": 0.4370119259801022,
+      "accuracy": 0.5581395348837209,
+      "ci_low": 0.4110761434276745,
+      "ci_high": 0.6956669025707608
+    },
+    {
+      "data": "Jeff test",
+      "note": "E7 predictions",
+      "band": "0.5 to 0.6",
+      "n": 49,
+      "mean_cosine": 0.5501179609979902,
+      "accuracy": 0.5102040816326531,
+      "ci_low": 0.3746756364079098,
+      "ci_high": 0.6442488978720089
+    },
+    {
+      "data": "Jeff test",
+      "note": "E7 predictions",
+      "band": "0.6 to 0.7",
+      "n": 32,
+      "mean_cosine": 0.6457471158355474,
+      "accuracy": 0.59375,
+      "ci_low": 0.42260024747333746,
+      "ci_high": 0.7448036525707851
+    },
+    {
+      "data": "Jeff test",
+      "note": "E7 predictions",
+      "band": "0.7 to 0.8",
+      "n": 14,
+      "mean_cosine": 0.7392128791127887,
+      "accuracy": 0.6428571428571429,
+      "ci_low": 0.38764422924295516,
+      "ci_high": 0.8365526834990504
+    },
+    {
+      "data": "Jeff test",
+      "note": "E7 predictions",
+      "band": "0.8 to 0.9",
+      "n": 2,
+      "mean_cosine": 0.8284159004688263,
+      "accuracy": 1.0,
+      "ci_low": 0.3423802239546494,
+      "ci_high": 1.0
+    },
+    {
+      "data": "Jeff test",
+      "note": "E7 predictions",
+      "band": "0.9 to 1.0",
+      "n": 0,
+      "mean_cosine": NaN,
+      "accuracy": NaN,
+      "ci_low": NaN,
+      "ci_high": NaN
     }
   ],
   "jeff_s2_e7": {

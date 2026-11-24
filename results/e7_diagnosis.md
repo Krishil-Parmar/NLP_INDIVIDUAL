@@ -4,8 +4,8 @@ Written by `scripts/diagnose_jeff.py`. Do not edit by hand. Reads saved predicti
 
 ## Provenance
 
-- Generated (UTC): 2026-11-24T02:47:20+00:00
-- Git commit: `460cf1997a776aef06b4f5fb71be103b6d8b46d9`
+- Generated (UTC): 2026-11-24T05:41:52+00:00
+- Git commit: `7328d65c12dc18fb0d8923451904e9d3cf50a6f5`
 - Seed: None
 - Python 3.12.4 on macOS-27.0-arm64-arm-64bit
 - Packages: torch 2.15.0, transformers 5.24.0, datasets 5.2.0, sentence-transformers 6.3.0, scikit-learn 1.9.1, pandas 3.1.1, numpy 2.5.5, cleanlab 2.9.0
@@ -34,7 +34,34 @@ S2 re-run on Banking77 validation (format-controlled, with the OOS pool) with it
 | 5 random draws | 20 | 84.0 | 76.6 | 99.8 | 65.1 | 30.3 | 8.3 |
 | 5 random draws | 50 | 88.4 | 79.1 | 99.9 | 74.1 | 49.1 | 18.3 |
 
-For comparison, on the Jeff test split (10 support examples per intent) S2 covers 1.7% at 5% risk and 1.7% at 1% risk (`results/e7_jeff.json`). Cutting Banking77 to 10 examples per intent halves the coverage at 5% risk. **Correction (24 Nov 2026):** the first version of this report said the rest of the Jeff gap comes from the Jeff intents themselves. That is not supported. At the same cosine distance from the nearest labelled example, S2 is about as accurate on Jeff as on Banking77 (`results/headline_reanalysis.md`, section C). Banking77 looks easy because most of its test queries have a close paraphrase in train, and Jeff's do not.
+For comparison, on the Jeff test split (10 support examples per intent) S2 covers 1.7% at 5% risk and 1.7% at 1% risk (`results/e7_jeff.json`). Cutting Banking77 to 10 examples per intent halves the coverage at 5% risk. **Correction (24 Nov 2026):** the first version of this report said the rest of the Jeff gap comes from the Jeff intents themselves. That was not shown, and neither is the opposite: see section 5.
+
+## 5. Accuracy at the same distance from the nearest labelled example (added 24 Nov 2026)
+
+S2's in-scope accuracy by the cosine between a query and its nearest labelled example (S2's confidence), in narrow bands. The first block gives Banking77 the same support size as Jeff (10 per intent), so sparse support is held fixed. If Jeff were as hard as Banking77 at equal distance, its accuracy would match the first block band by band.
+
+Share of in-scope queries with a labelled example at cosine 0.7 or more: Banking77 validation, 10 examples per intent 83.4%, Banking77 test, full support 97.7%, Jeff test 11.4%. So S2 is no less accurate on Jeff than on Banking77 at the same distance and the same support size (Jeff has 14 intents to choose from against 77, which favours it), but far fewer Jeff queries have a close labelled example. Why they are far (more varied wording, or intents that 10 examples cannot cover) cannot be separated with this data.
+
+| data | cosine band | queries | mean cosine | accuracy (%) | 95% Wilson CI |
+| --- | --- | --- | --- | --- | --- |
+| Banking77 validation, 10 examples per intent | 0.0 to 0.5 | 24 | 0.445 | 20.8 | [9.2, 40.5] |
+| Banking77 validation, 10 examples per intent | 0.5 to 0.6 | 152 | 0.567 | 44.7 | [37.1, 52.7] |
+| Banking77 validation, 10 examples per intent | 0.6 to 0.7 | 656 | 0.663 | 58.2 | [54.4, 61.9] |
+| Banking77 validation, 10 examples per intent | 0.7 to 0.8 | 1525 | 0.754 | 72.3 | [70.0, 74.5] |
+| Banking77 validation, 10 examples per intent | 0.8 to 0.9 | 1806 | 0.847 | 89.7 | [88.2, 91.0] |
+| Banking77 validation, 10 examples per intent | 0.9 to 1.0 | 837 | 0.934 | 98.1 | [96.9, 98.8] |
+| Banking77 test, full support | 0.0 to 0.5 | 3 | 0.463 | 33.3 | [6.1, 79.2] |
+| Banking77 test, full support | 0.5 to 0.6 | 10 | 0.563 | 70.0 | [39.7, 89.2] |
+| Banking77 test, full support | 0.6 to 0.7 | 59 | 0.662 | 57.6 | [44.9, 69.4] |
+| Banking77 test, full support | 0.7 to 0.8 | 292 | 0.761 | 76.4 | [71.2, 80.9] |
+| Banking77 test, full support | 0.8 to 0.9 | 978 | 0.858 | 91.0 | [89.0, 92.6] |
+| Banking77 test, full support | 0.9 to 1.0 | 1737 | 0.947 | 96.8 | [95.9, 97.6] |
+| Jeff test | 0.0 to 0.5 | 43 | 0.437 | 55.8 | [41.1, 69.6] |
+| Jeff test | 0.5 to 0.6 | 49 | 0.550 | 51.0 | [37.5, 64.4] |
+| Jeff test | 0.6 to 0.7 | 32 | 0.646 | 59.4 | [42.3, 74.5] |
+| Jeff test | 0.7 to 0.8 | 14 | 0.739 | 64.3 | [38.8, 83.7] |
+| Jeff test | 0.8 to 0.9 | 2 | 0.828 | 100.0 | [34.2, 100.0] |
+| Jeff test | 0.9 to 1.0 | 0 |  | n/a |  |
 
 ## 4. Where the Jeff errors are
 
