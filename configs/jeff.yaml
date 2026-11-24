@@ -80,3 +80,18 @@ oos:
   label: oos
   unrelated: Clearly not about the user's money (weather, sport, cooking, travel plans, homework, coding).
   finance_adjacent: About money or banking but outside what the assistant can do. It only reads and explains the user's own data, so it cannot move money, pay bills, make transfers, change card or account settings, open accounts or apply for credit, dispute charges, give investment, crypto, tax or legal advice, quote insurance, or handle bank support problems (a card that has not arrived, a failed transfer, a forgotten PIN).
+
+# Jeff test v2 (E8, added 24 Nov 2026). The old test split was read during the E7 diagnosis, so it
+# became E8's development data. This fresh test split was written by a new Claude agent from the
+# same brief (10 per intent, the same 15 + 25 out-of-scope mix) and labelled blind by another.
+# Test only: the 140 support examples above stay the support set. Built by make_jeff_set.py --v2.
+v2:
+  file: data/jeff/jeff_v2_queries.csv
+  written_file: data/jeff/jeff_v2_written.csv
+  check_file: data/jeff/jeff_v2_label_check.csv
+  queries_per_intent: 10
+  split: test_v2
+  # No v2 query may be closer to any v1 query (difflib ratio, lower-cased) than this. The closest any v1
+  # test query came to a v1 support example was just above this (make_jeff_set.py --v2 reports it), so v2
+  # is held to the same distance from v1.
+  max_ratio_to_v1: 0.70

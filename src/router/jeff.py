@@ -37,10 +37,11 @@ def oos_description(cfg: dict) -> str:
 
 
 def load_jeff(split: str) -> pd.DataFrame:
-    """One split of the Jeff set ("support" or "test") with columns id, text, label, is_oos,
-    the layout router.systems.base.save_predictions expects. Raw text."""
+    """One split of the Jeff set ("support", "test", or "test_v2", the fresh E8 test) with
+    columns id, text, label, is_oos, the layout router.systems.base.save_predictions expects. Raw text."""
     cfg = data.load_config("jeff")
-    df = pd.read_csv(data.PROJECT_ROOT / cfg["file"], keep_default_na=False)
+    file = cfg["v2"]["file"] if split == cfg["v2"]["split"] else cfg["file"]  # test_v2 has its own file
+    df = pd.read_csv(data.PROJECT_ROOT / file, keep_default_na=False)
     part = df[df["split"] == split]
     if part.empty:
         raise ValueError(f"no Jeff rows with split {split!r}")

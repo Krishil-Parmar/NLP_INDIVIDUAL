@@ -1,0 +1,44 @@
+# E8: fixing S2 for a small new intent set (README section 8). Post-hoc: NOT part of the
+# pre-registration (results/preregistration.md). The pre-registered RQ6 verdict stays "not met".
+#
+# Design (owner's choice, 24 Nov 2026):
+#   - Development data: the old Jeff test split (180 queries), read during the diagnosis and
+#     so no longer a clean test. Every choice below is made on it, plus a Banking77
+#     validation check with 10 support examples per intent.
+#   - Final test: a fresh Jeff test v2 (180 queries), written by a new agent from the same
+#     brief after this file was fixed. Each chosen variant runs on it once.
+# Everything in this file is fixed before scripts/develop_few_shot.py runs.
+
+encoder_model: sentence-transformers/all-MiniLM-L6-v2   # S2's encoder
+supports: [examples, descriptions]
+seeds: [0, 1, 2, 3, 4]   # fine-tuned variants train once per seed (rigour rule 2); the others are deterministic
+
+fine_tune:               # SetFit defaults (Tunstall et al., 2022)
+  pair_iterations: 20    # per support example: 20 positive and 20 negative pairs
+  epochs: 1
+  batch_size: 16
+  learning_rate: 2.0e-5
+  warmup_fraction: 0.1
+  max_grad_norm: 1.0
+
+head:                    # logistic regression on the support embeddings
+  C: 1.0
+  max_iter: 2000
+
+fixed_risks: [0.01, 0.02, 0.05]
+
+# Selection, per tier (no training / head only / encoder fine-tune), on the Jeff development data:
+# the lowest mean AURC (threshold-free, so it uses every query; lower is better). A simpler
+# variant of the same tier within `simpler_within` of the best is taken instead.
+selection:
+  metric: aurc
+  simpler_within: 0.005    # 0.5 AURC points
+
+# The deployable threshold of each chosen run: the highest-coverage threshold on the development
+# data whose selective risk is at most few-shot S4's error on that data (as policy v1 was set).
+# It is then applied unchanged to the fresh test.
+
+banking77_check:         # report only, not used for selection: does each fix also help in-domain?
+  split: val             # validation only; Banking77 test is not touched by E8
+  per_intent: 10
+  draws: [0, 1, 2, 3, 4] # draw d samples the support with seed d and fine-tunes with seed d
