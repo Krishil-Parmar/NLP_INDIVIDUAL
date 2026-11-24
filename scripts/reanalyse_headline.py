@@ -258,6 +258,8 @@ def section_h() -> list[dict]:
                 per_seed.append({"handled": h.sum(), "router_wrong": (wrong & h).sum(), "llm_wrong": (llm_wrong & h).sum(),
                                  "router_wrong_llm_right": (wrong & ~llm_wrong & h).sum(),
                                  "router_right_llm_wrong": (~wrong & llm_wrong & h).sum(),
+                                 # both wrong with the same answer: often a doubtful gold label (see results/error_analysis.md)
+                                 "both_wrong_same_answer": (wrong & llm_wrong & h & (df["pred_label"] == llm["pred_label"]).to_numpy()).sum(),
                                  "pair_minus_llm": ((wrong & ~llm_wrong & h).sum() - (~wrong & llm_wrong & h).sum()) / len(h)})
             rows.append({"system": tag, "threshold": view, **{k: float(np.mean([p[k] for p in per_seed])) for k in per_seed[0]}})
     return rows
@@ -350,11 +352,15 @@ def report(out: dict) -> str:
         "alone is (router wrong where the LLM is right) minus (router right where the LLM is wrong), over all 4,079 queries. A "
         "router can have a selective risk at or below the LLM's overall error rate and still add errors, because the queries it "
         "handles are the easy ones, where the LLM is wrong even less often. The second row per router uses the threshold "
-        "recomputed on test at the LLM's test error (the RQ1-style view): in-sample on test, for explanation only. Means over seeds.",
+        "recomputed on test at the LLM's test error (the RQ1-style view): in-sample on test, for explanation only. \"Both wrong, same "
+        "answer\" counts queries where the router and the LLM agree on an intent other than the gold label; read by eye, many look "
+        "like doubtful gold labels. Both systems are scored against the same labels, so this does not change the comparison. "
+        "Means over seeds.",
         md_table([{"system": r["system"], "threshold": r["threshold"], "handled": f"{r['handled']:.1f}",
                    "router wrong": f"{r['router_wrong']:.1f}", "LLM wrong on the same queries": f"{r['llm_wrong']:.1f}",
                    "router wrong, LLM right": f"{r['router_wrong_llm_right']:.1f}",
                    "router right, LLM wrong": f"{r['router_right_llm_wrong']:.1f}",
+                   "both wrong, same answer": f"{r['both_wrong_same_answer']:.1f}",
                    "pair minus LLM alone (points)": pct(r["pair_minus_llm"])} for r in out["h"]]),
     ]) + "\n"
 
