@@ -137,11 +137,11 @@ def requirements_block() -> str:
         pair = next(r for r in re_an["b"] if r["system"].startswith("s2_") and "post-hoc" not in r["system"])
         s4 = re_an["b"][0]
         evidence["R2"] = f"S2 plus LLM answers {pair['oos_answered']:.0f} of {re_an['n_oos']} OOS queries; LLM alone {s4['oos_answered']:.0f}"
-        evidence["R3"] = (f"{pair['llm_calls']:.0f} of {s4['llm_calls']:.0f} LLM calls; {100 * pair['error_rate']:.1f}% wrong "
-                          f"against {100 * s4['error_rate']:.1f}%")
+        evidence["R3"] = (f"{pair['llm_calls']:.0f} of {s4['llm_calls']:.0f} calls; wrong {100 * pair['error_rate']:.1f}% "
+                          f"vs {100 * s4['error_rate']:.1f}%")
         if llm_bar:
             s2_bar = llm_bar["routers"]["s2_all-MiniLM-L6-v2"]["frozen"]
-            evidence["R3"] += f". Stronger LLM: {100 * s2_bar['pair_error']:.1f}% against {100 * llm_bar['s4']['error_rate']:.1f}%"
+            evidence["R3"] += f"; stronger LLM {100 * s2_bar['pair_error']:.1f}% vs {100 * llm_bar['s4']['error_rate']:.1f}%"
     if latency:
         evidence["R4"] = f"S2 p95 {latency['systems']['s2_all-MiniLM-L6-v2']['p95_ms']:.1f} ms against 100 ms"
     evidence["R5"] = "E4 not built" + (f"; Jeff needed a fine-tune (E8, post-hoc)" if e8 else "")
@@ -155,7 +155,7 @@ def requirements_block() -> str:
     checks = {"R1": "E1", "R2": "E3, E6", "R3": "E6", "R4": "E6", "R5": "E4", "R6": "E5", "R7": "E7"}
     lines = ["<!-- REQUIREMENTS:START -->",
              "| Requirement | Check | Met? | Evidence |",
-             "| ---------------------------------------------- | ---------- | ---------- | ------------------------------ |"]
+             "| ---------------------------------------- | ---------- | ---------- | ------------------------------------ |"]
     lines += [f"| {r} {names[r]} | {checks[r]} | {REQUIREMENT_VERDICTS[r]} | {evidence[r]} |" for r in REQUIREMENT_VERDICTS]
     lines += ["", ": Requirements from README section 2.5. Only R4 had a preset bar. (Rubric 1)", "<!-- REQUIREMENTS:END -->"]
     return "\n".join(lines)
