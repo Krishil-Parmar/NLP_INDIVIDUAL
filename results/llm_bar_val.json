@@ -1,0 +1,251 @@
+{
+  "metadata": {
+    "timestamp_utc": "2026-11-24T06:33:00+00:00",
+    "git_commit": "3c858ee77af5304dc2e8055d1c0bae310d6dc3b7",
+    "git_dirty": false,
+    "seed": null,
+    "dataset_revisions": {},
+    "python": "3.12.4",
+    "platform": "macOS-27.0-arm64-arm-64bit",
+    "packages": {
+      "torch": "2.15.0",
+      "transformers": "5.24.0",
+      "datasets": "5.2.0",
+      "sentence-transformers": "6.3.0",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "numpy": "2.5.5",
+      "cleanlab": "2.9.0"
+    },
+    "config": {
+      "s4_llm_retrieval": {
+        "aws_profile": "unibucks",
+        "aws_region": "ap-southeast-2",
+        "model_id": "au.anthropic.claude-sonnet-4-6",
+        "system_tag": "s4_claude-sonnet-4-6-retrieval",
+        "prompt_file": "prompts/s4_intent_retrieval_v1.txt",
+        "prompt_version": "retrieval_v1",
+        "retrieval_k": 10,
+        "retrieval_encoder": "sentence-transformers/all-MiniLM-L6-v2",
+        "oos_answer": "out_of_scope",
+        "structured_output": true,
+        "temperature": 0,
+        "max_tokens": 64,
+        "prices_usd_per_million_tokens": {
+          "input": 3.3,
+          "output": 16.5,
+          "cache_write": 4.125,
+          "cache_read": 0.33
+        },
+        "price_checked": "2026-11-22",
+        "spend_cap_usd": 12.55,
+        "requests_per_minute": 45,
+        "max_workers": 4,
+        "sdk_max_retries": 4,
+        "cache_file": "results/s4_cache/claude-sonnet-4-6_retrieval_v1.jsonl",
+        "budget_cache_files": [
+          "results/s4_cache/claude-sonnet-4-6_v1.jsonl",
+          "results/s4_cache/claude-sonnet-4-6_fewshot_v1.jsonl",
+          "results/s4_cache/claude-sonnet-4-6_jeff_v1.jsonl",
+          "results/s4_cache/claude-sonnet-4-6_jeff_fewshot_v1.jsonl",
+          "results/s4_cache/claude-sonnet-4-6_retrieval_v1.jsonl"
+        ]
+      }
+    }
+  },
+  "split": "val_fmt",
+  "n_queries": 1350,
+  "n_oos": 350,
+  "s4": [
+    {
+      "variant": "zero-shot",
+      "system_tag": "s4_claude-sonnet-4-6",
+      "error_rate": 0.18,
+      "in_scope_accuracy": 0.763,
+      "macro_f1": 0.7605720567094417,
+      "oos_recall": 0.9828571428571429,
+      "invalid": 0,
+      "cost_per_call_usd": 0.0007914558666666668
+    },
+    {
+      "variant": "few-shot (frozen bar)",
+      "system_tag": "s4_claude-sonnet-4-6-fewshot",
+      "error_rate": 0.12222222222222222,
+      "in_scope_accuracy": 0.843,
+      "macro_f1": 0.8491011550050317,
+      "oos_recall": 0.9771428571428571,
+      "invalid": 0,
+      "cost_per_call_usd": 0.0015714655000000001
+    },
+    {
+      "variant": "retrieval (10 nearest train queries)",
+      "system_tag": "s4_claude-sonnet-4-6-retrieval",
+      "error_rate": 0.06962962962962962,
+      "in_scope_accuracy": 0.919,
+      "macro_f1": 0.9211302964072018,
+      "oos_recall": 0.9628571428571429,
+      "invalid": 0,
+      "cost_per_call_usd": 0.0016285649111111111
+    }
+  ],
+  "coverage": [
+    {
+      "bar": "zero-shot",
+      "bar_risk": 0.18,
+      "system": "s0_tfidf",
+      "coverage": 0.7844444444444445,
+      "in_scope_handled": 0.9549999999999998,
+      "oos_handled": 104.0,
+      "pair_error": 0.16074074074074074,
+      "pair_oos_answered": 105.0,
+      "s4_error": 0.18,
+      "s4_oos_answered": 6
+    },
+    {
+      "bar": "zero-shot",
+      "bar_risk": 0.18,
+      "system": "s1_distilroberta-base",
+      "coverage": 0.8026666666666668,
+      "in_scope_handled": 0.9818,
+      "oos_handled": 101.8,
+      "pair_error": 0.1522962962962963,
+      "pair_oos_answered": 104.4,
+      "s4_error": 0.18,
+      "s4_oos_answered": 6
+    },
+    {
+      "bar": "zero-shot",
+      "bar_risk": 0.18,
+      "system": "s2_all-MiniLM-L6-v2",
+      "coverage": 0.82,
+      "in_scope_handled": 1.0,
+      "oos_handled": 107.0,
+      "pair_error": 0.1474074074074074,
+      "pair_oos_answered": 107.0,
+      "s4_error": 0.18,
+      "s4_oos_answered": 6
+    },
+    {
+      "bar": "zero-shot",
+      "bar_risk": 0.18,
+      "system": "s3_quora-distilroberta-base",
+      "coverage": 0.8160000000000001,
+      "in_scope_handled": 0.999,
+      "oos_handled": 102.6,
+      "pair_error": 0.14814814814814814,
+      "pair_oos_answered": 103.8,
+      "s4_error": 0.18,
+      "s4_oos_answered": 6
+    },
+    {
+      "bar": "few-shot (frozen bar)",
+      "bar_risk": 0.12222222222222222,
+      "system": "s0_tfidf",
+      "coverage": 0.7074074074074074,
+      "in_scope_handled": 0.8939999999999999,
+      "oos_handled": 61.0,
+      "pair_error": 0.12,
+      "pair_oos_answered": 64.0,
+      "s4_error": 0.12222222222222222,
+      "s4_oos_answered": 8
+    },
+    {
+      "bar": "few-shot (frozen bar)",
+      "bar_risk": 0.12222222222222222,
+      "system": "s1_distilroberta-base",
+      "coverage": 0.7337777777777779,
+      "in_scope_handled": 0.9362,
+      "oos_handled": 54.4,
+      "pair_error": 0.11392592592592592,
+      "pair_oos_answered": 59.6,
+      "s4_error": 0.12222222222222222,
+      "s4_oos_answered": 8
+    },
+    {
+      "bar": "few-shot (frozen bar)",
+      "bar_risk": 0.12222222222222222,
+      "system": "s2_all-MiniLM-L6-v2",
+      "coverage": 0.7659259259259259,
+      "in_scope_handled": 1.0,
+      "oos_handled": 34.0,
+      "pair_error": 0.09333333333333334,
+      "pair_oos_answered": 34.0,
+      "s4_error": 0.12222222222222222,
+      "s4_oos_answered": 8
+    },
+    {
+      "bar": "few-shot (frozen bar)",
+      "bar_risk": 0.12222222222222222,
+      "system": "s3_quora-distilroberta-base",
+      "coverage": 0.7617777777777779,
+      "in_scope_handled": 0.9968,
+      "oos_handled": 31.6,
+      "pair_error": 0.0951111111111111,
+      "pair_oos_answered": 34.4,
+      "s4_error": 0.12222222222222222,
+      "s4_oos_answered": 8
+    },
+    {
+      "bar": "retrieval (10 nearest train queries)",
+      "bar_risk": 0.06962962962962962,
+      "system": "s0_tfidf",
+      "coverage": 0.6207407407407407,
+      "in_scope_handled": 0.813,
+      "oos_handled": 25.0,
+      "pair_error": 0.08592592592592592,
+      "pair_oos_answered": 35.0,
+      "s4_error": 0.06962962962962962,
+      "s4_oos_answered": 13
+    },
+    {
+      "bar": "retrieval (10 nearest train queries)",
+      "bar_risk": 0.06962962962962962,
+      "system": "s1_distilroberta-base",
+      "coverage": 0.6668148148148149,
+      "in_scope_handled": 0.8738000000000001,
+      "oos_handled": 26.4,
+      "pair_error": 0.08533333333333334,
+      "pair_oos_answered": 36.6,
+      "s4_error": 0.06962962962962962,
+      "s4_oos_answered": 13
+    },
+    {
+      "bar": "retrieval (10 nearest train queries)",
+      "bar_risk": 0.06962962962962962,
+      "system": "s2_all-MiniLM-L6-v2",
+      "coverage": 0.6518518518518519,
+      "in_scope_handled": 0.879,
+      "oos_handled": 1.0,
+      "pair_error": 0.07185185185185185,
+      "pair_oos_answered": 13.0,
+      "s4_error": 0.06962962962962962,
+      "s4_oos_answered": 13
+    },
+    {
+      "bar": "retrieval (10 nearest train queries)",
+      "bar_risk": 0.06962962962962962,
+      "system": "s3_quora-distilroberta-base",
+      "coverage": 0.6819259259259259,
+      "in_scope_handled": 0.9179999999999999,
+      "oos_handled": 2.6,
+      "pair_error": 0.07170370370370369,
+      "pair_oos_answered": 13.6,
+      "s4_error": 0.06962962962962962,
+      "s4_oos_answered": 13
+    }
+  ],
+  "s2_on_s4_in_scope_errors": {
+    "zero-shot": {
+      "s4_in_scope_wrong": 237,
+      "s2_right": 180
+    },
+    "few-shot (frozen bar)": {
+      "s4_in_scope_wrong": 157,
+      "s2_right": 102
+    },
+    "retrieval (10 nearest train queries)": {
+      "s4_in_scope_wrong": 81,
+      "s2_right": 20
+    }
+  }
+}

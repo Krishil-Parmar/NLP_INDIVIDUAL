@@ -50,7 +50,7 @@ REQUIREMENTS_BLOCK = re.compile(r"<!-- REQUIREMENTS:START -->.*?<!-- REQUIREMENT
 REQUIREMENT_VERDICTS = {
     "R1": "Yes (no preset bar)",
     "R2": "No",
-    "R3": "Yes, end to end",
+    "R3": "Yes vs the frozen LLM",
     "R4": "Yes",
     "R5": "Not tested",
     "R6": "Not tested",
