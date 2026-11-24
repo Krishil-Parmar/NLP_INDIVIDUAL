@@ -121,6 +121,7 @@ def test_retrieval_variant_on_test_needs_its_own_plan(tmp_path, monkeypatch):
     (tmp_path / "preregistration.md").write_text("present")  # the main plan exists, the retrieval plan does not
     with pytest.raises(SystemExit, match="plan_llm_bar_test"):
         module.main("test", None, "s4_llm_retrieval")
+    (tmp_path / "preregistration_e8.md").write_text("present")  # so the test_v2 call reaches the retrieval check
     with pytest.raises(SystemExit, match="val or test only"):
         module.main("test_v2", None, "s4_llm_retrieval")
 

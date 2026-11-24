@@ -1,0 +1,111 @@
+{
+  "metadata": {
+    "timestamp_utc": "2026-11-24T06:44:34+00:00",
+    "git_commit": "0099f96e0a2eecb9c5a9dc3dd1b65ec868ceb626",
+    "git_dirty": false,
+    "seed": null,
+    "dataset_revisions": {},
+    "python": "3.12.4",
+    "platform": "macOS-27.0-arm64-arm-64bit",
+    "packages": {
+      "torch": "2.15.0",
+      "transformers": "5.24.0",
+      "datasets": "5.2.0",
+      "sentence-transformers": "6.3.0",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "numpy": "2.5.5",
+      "cleanlab": "2.9.0"
+    },
+    "config": {
+      "s4_llm_retrieval": {
+        "aws_profile": "unibucks",
+        "aws_region": "ap-southeast-2",
+        "model_id": "au.anthropic.claude-sonnet-4-6",
+        "system_tag": "s4_claude-sonnet-4-6-retrieval",
+        "prompt_file": "prompts/s4_intent_retrieval_v1.txt",
+        "prompt_version": "retrieval_v1",
+        "retrieval_k": 10,
+        "retrieval_encoder": "sentence-transformers/all-MiniLM-L6-v2",
+        "oos_answer": "out_of_scope",
+        "structured_output": true,
+        "temperature": 0,
+        "max_tokens": 64,
+        "prices_usd_per_million_tokens": {
+          "input": 3.3,
+          "output": 16.5,
+          "cache_write": 4.125,
+          "cache_read": 0.33
+        },
+        "price_checked": "2026-11-22",
+        "spend_cap_usd": 19.2,
+        "requests_per_minute": 45,
+        "max_workers": 4,
+        "sdk_max_retries": 4,
+        "cache_file": "results/s4_cache/claude-sonnet-4-6_retrieval_v1.jsonl",
+        "budget_cache_files": [
+          "results/s4_cache/claude-sonnet-4-6_v1.jsonl",
+          "results/s4_cache/claude-sonnet-4-6_fewshot_v1.jsonl",
+          "results/s4_cache/claude-sonnet-4-6_jeff_v1.jsonl",
+          "results/s4_cache/claude-sonnet-4-6_jeff_fewshot_v1.jsonl",
+          "results/s4_cache/claude-sonnet-4-6_retrieval_v1.jsonl"
+        ]
+      }
+    }
+  },
+  "fitted_on": "val_fmt",
+  "llm_system": "s4_claude-sonnet-4-6-retrieval",
+  "matched_risk": 0.06962962962962962,
+  "llm_cost_per_call_usd": 0.0016285649111111111,
+  "rule": "per seed: the highest-coverage threshold whose selective risk <= the retrieval S4's validation error; temperatures as frozen in policy v1",
+  "systems": {
+    "s0_tfidf": {
+      "temperatures": {
+        "0": 0.8347807160665565,
+        "1": 0.8347807160665565,
+        "2": 0.8347807160665565,
+        "3": 0.8347807160665565,
+        "4": 0.8347807160665565
+      },
+      "thresholds": {
+        "0": 0.7823026571942819,
+        "1": 0.7823026571942819,
+        "2": 0.7823026571942819,
+        "3": 0.7823026571942819,
+        "4": 0.7823026571942819
+      }
+    },
+    "s1_distilroberta-base": {
+      "temperatures": {
+        "0": 0.9533279648066687,
+        "1": 0.9920722690429014,
+        "2": 0.9533279648066687,
+        "3": 0.9660716223677309,
+        "4": 0.9789856313860343
+      },
+      "thresholds": {
+        "0": 0.7946062614462037,
+        "1": 0.7834050351387839,
+        "2": 0.7579863207218648,
+        "3": 0.792214092755214,
+        "4": 0.8430942377087783
+      }
+    },
+    "s2_all-MiniLM-L6-v2": {
+      "temperatures": {},
+      "thresholds": {
+        "0": 0.7991300225257874
+      }
+    },
+    "s3_quora-distilroberta-base": {
+      "temperatures": {},
+      "thresholds": {
+        "0": 0.8154752,
+        "1": 0.70252514,
+        "2": 0.7761741,
+        "3": 0.7823749,
+        "4": 0.78278756
+      }
+    }
+  }
+}

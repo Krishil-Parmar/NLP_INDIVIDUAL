@@ -4,8 +4,8 @@ Written by `scripts/evaluate_llm_bar.py`. Do not edit by hand. Validation only: 
 
 ## Provenance
 
-- Generated (UTC): 2026-11-24T06:33:00+00:00
-- Git commit: `3c858ee77af5304dc2e8055d1c0bae310d6dc3b7`
+- Generated (UTC): 2026-11-24T06:44:34+00:00
+- Git commit: `0099f96e0a2eecb9c5a9dc3dd1b65ec868ceb626`
 - Seed: None
 - Python 3.12.4 on macOS-27.0-arm64-arm-64bit
 - Packages: torch 2.15.0, transformers 5.24.0, datasets 5.2.0, sentence-transformers 6.3.0, scikit-learn 1.9.1, pandas 3.1.1, numpy 2.5.5, cleanlab 2.9.0

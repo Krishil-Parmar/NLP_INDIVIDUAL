@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "timestamp_utc": "2026-11-24T06:33:00+00:00",
-    "git_commit": "3c858ee77af5304dc2e8055d1c0bae310d6dc3b7",
+    "timestamp_utc": "2026-11-24T06:44:34+00:00",
+    "git_commit": "0099f96e0a2eecb9c5a9dc3dd1b65ec868ceb626",
     "git_dirty": false,
     "seed": null,
     "dataset_revisions": {},
@@ -38,7 +38,7 @@
           "cache_read": 0.33
         },
         "price_checked": "2026-11-22",
-        "spend_cap_usd": 12.55,
+        "spend_cap_usd": 19.2,
         "requests_per_minute": 45,
         "max_workers": 4,
         "sdk_max_retries": 4,
