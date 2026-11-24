@@ -23,6 +23,9 @@ pre-registered verdict. It asks five questions the pre-registered tables do not 
   G. (added after a second review) The E7 and E8 numbers at 0% or near-0% risk, stated in a
      form that suits them: queries answered before the first error per seed, pooled
      selective risk at the development thresholds, sample standard deviations.
+  H. (added after the stronger LLM bar's one test run, results/llm_bar_test.md) Why a router
+     whose selective risk is at or below the LLM's error rate can still make the pair worse
+     than the LLM alone: on the queries the router handles, who is right and who is wrong.
 
 Checks: section A must reproduce the saved E6 coverage numbers exactly, or the script stops.
 Writes results/headline_reanalysis.json and results/headline_reanalysis.md.
@@ -232,6 +235,34 @@ def section_g() -> dict:
     return {"rows": rows}
 
 
+def section_h() -> list[dict]:
+    """On the queries each router handles, against the retrieval S4 (the stronger LLM bar):
+    pair error minus LLM error = (router wrong and LLM right - router right and LLM wrong) / n.
+    So matched selective risk does not imply no extra errors: the handled queries are the
+    easy ones, where the LLM is wrong even less often than on average."""
+    bar = json.loads((data.RESULTS_DIR / "policy_llm_bar.json").read_text())
+    llm, _ = load_predictions(bar["llm_system"], 0, SPLIT)
+    llm_wrong = (llm["pred_label"] != llm["label"]).to_numpy()
+    r_star = float(llm_wrong.mean())
+    rows = []
+    for tag, frozen in bar["systems"].items():
+        for view in ["frozen on validation", "recomputed on test (in-sample)"]:
+            per_seed = []
+            for seed in sorted(frozen["thresholds"], key=int):
+                df, logits = load_predictions(tag, int(seed), SPLIT)
+                temperature = frozen["temperatures"].get(seed)
+                conf = calibrated_confidence(logits, temperature) if temperature else df["confidence"].to_numpy(dtype=float)
+                wrong = (df["pred_label"] != df["label"]).to_numpy()
+                threshold = frozen["thresholds"][seed] if view.startswith("frozen") else coverage_at_risk(~wrong, conf, r_star)["threshold"]
+                h = conf >= threshold
+                per_seed.append({"handled": h.sum(), "router_wrong": (wrong & h).sum(), "llm_wrong": (llm_wrong & h).sum(),
+                                 "router_wrong_llm_right": (wrong & ~llm_wrong & h).sum(),
+                                 "router_right_llm_wrong": (~wrong & llm_wrong & h).sum(),
+                                 "pair_minus_llm": ((wrong & ~llm_wrong & h).sum() - (~wrong & llm_wrong & h).sum()) / len(h)})
+            rows.append({"system": tag, "threshold": view, **{k: float(np.mean([p[k] for p in per_seed])) for k in per_seed[0]}})
+    return rows
+
+
 def pct(x) -> str:
     return "n/a" if x is None or x != x else f"{100 * x:.2f}"
 
@@ -314,6 +345,17 @@ def report(out: dict) -> str:
                    "in-scope accuracy (%)": "" if "in_scope_accuracy_mean" not in r else f"{pct(r['in_scope_accuracy_mean'])} ± {pct(r['in_scope_accuracy_sd'])}",
                    "AURC (%)": "" if "aurc_mean" not in r else f"{pct(r['aurc_mean'])} ± {pct(r['aurc_sd'])}",
                    "OOS AUROC (%)": "" if "oos_auroc_mean" not in r else pct(r["oos_auroc_mean"])} for r in out["g"]["rows"]]),
+        "## H. Against the stronger LLM bar: who is right on the queries the router handles",
+        "The bar is the retrieval S4 (`results/llm_bar_test.md`). On the queries a router handles, the pair's error minus the LLM's "
+        "alone is (router wrong where the LLM is right) minus (router right where the LLM is wrong), over all 4,079 queries. A "
+        "router can have a selective risk at or below the LLM's overall error rate and still add errors, because the queries it "
+        "handles are the easy ones, where the LLM is wrong even less often. The second row per router uses the threshold "
+        "recomputed on test at the LLM's test error (the RQ1-style view): in-sample on test, for explanation only. Means over seeds.",
+        md_table([{"system": r["system"], "threshold": r["threshold"], "handled": f"{r['handled']:.1f}",
+                   "router wrong": f"{r['router_wrong']:.1f}", "LLM wrong on the same queries": f"{r['llm_wrong']:.1f}",
+                   "router wrong, LLM right": f"{r['router_wrong_llm_right']:.1f}",
+                   "router right, LLM wrong": f"{r['router_right_llm_wrong']:.1f}",
+                   "pair minus LLM alone (points)": pct(r["pair_minus_llm"])} for r in out["h"]]),
     ]) + "\n"
 
 
@@ -336,7 +378,8 @@ def main() -> None:
                   "in_scope_wrong": int(s4_wrong[~is_oos].sum()),
                   "s2_right_on_s4_errors": int((s4_wrong & ~is_oos & runs[S2][0][0]).sum())},
            "break_even": break_even(runs, policy, s4_wrong),
-           "a": a, "b": section_b(runs, policy, s4_wrong, boot), "c": section_c(), "d": section_d(runs), "e": section_e(runs), "f": section_f(), "g": section_g()}
+           "a": a, "b": section_b(runs, policy, s4_wrong, boot), "c": section_c(), "d": section_d(runs), "e": section_e(runs), "f": section_f(), "g": section_g(),
+           "h": section_h()}
     (data.RESULTS_DIR / "headline_reanalysis.json").write_text(json.dumps(out, indent=2, default=float))
     (data.RESULTS_DIR / "headline_reanalysis.md").write_text(report(out))
     print("Wrote results/headline_reanalysis.json and results/headline_reanalysis.md")
