@@ -10,10 +10,17 @@ Every message Jeff receives is sent here first. This server runs the router
 
 It runs offline on a laptop CPU, uses only the Python standard library for the
 web part, listens on 127.0.0.1 only, and never calls an LLM. Session counters
-(queries, handled, escalated, LLM calls saved) live in memory.
+(queries, handled, escalated, LLM calls saved, US$ saved at S4's measured cost
+per call) live in memory.
+
+By default it runs S2, the best router frozen in results/policy_v1.json, at its
+frozen threshold, so the demo shows the system the results report. S3's frozen
+threshold is used the same way. S0 and S1 need --threshold: their frozen
+thresholds apply to temperature-scaled confidence, which this server does not compute.
 
 Run from the project root:
-    uv run python demo/app.py                       # S3, default threshold
+    uv run python demo/app.py                       # S2 at its frozen policy v1 threshold
+    uv run python demo/app.py --system s3           # S3 at its frozen threshold (p95 160 ms: slower)
     uv run python demo/app.py --system s2 --threshold 0.9
 
 Endpoints:
@@ -28,6 +35,7 @@ import threading
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
+from router import data
 from router.policy import ESCALATE, HANDLE, decide
 from router.seed import pick_device
 from router.systems.registry import load_predictor
@@ -38,6 +46,18 @@ SYSTEM_NAMES = {
     "s2": "S2 embedding nearest neighbour",
     "s3": "S3 pairwise paraphrase matcher",
 }
+
+
+POLICY = json.loads((data.RESULTS_DIR / "policy_v1.json").read_text())
+LLM_COST_PER_CALL = POLICY["llm_cost_per_call_usd"]  # few-shot S4's measured cost per call on validation
+
+
+def frozen_threshold(system: str) -> float | None:
+    """Policy v1's seed-0 threshold for S2 or S3, frozen on validation. None for S0 and S1 (see the docstring)."""
+    if system not in ("s2", "s3"):
+        return None
+    tag = next(t for t in POLICY["systems"] if t.startswith(system + "_"))
+    return float(POLICY["systems"][tag]["thresholds"]["0"])
 
 
 class RouterState:
@@ -80,6 +100,7 @@ class RouterState:
                     "handled": self.handled,
                     "escalated": self.escalated,
                     "llm_calls_saved": self.handled,  # every HANDLE is one LLM call not made
+                    "usd_saved": round(self.handled * LLM_COST_PER_CALL, 5),
                 },
             }
 
@@ -136,11 +157,14 @@ def make_handler(state: RouterState):
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--system", choices=list(SYSTEM_NAMES), default="s3")
-    # Thin-demo default. M4 replaces it with the t_high chosen on validation.
-    parser.add_argument("--threshold", type=float, default=0.5)
+    parser.add_argument("--system", choices=list(SYSTEM_NAMES), default="s2")
+    parser.add_argument("--threshold", type=float, default=None, help="default: the frozen policy v1 threshold (S2, S3)")
     parser.add_argument("--port", type=int, default=8765)
     args = parser.parse_args()
+    if args.threshold is None:
+        args.threshold = frozen_threshold(args.system)
+        if args.threshold is None:
+            parser.error(f"--threshold is required for {args.system}: its frozen threshold is on temperature-scaled confidence")
 
     print(f"Loading {SYSTEM_NAMES[args.system]} ...")
     state = RouterState(args.system, args.threshold)

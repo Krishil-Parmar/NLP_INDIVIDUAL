@@ -1,11 +1,15 @@
 """E8: fixing S2 for a small new intent set (README section 8, E8). Post-hoc, not pre-registered.
 
-The diagnosis of the Jeff failure (scripts/diagnose_jeff.py, results/e7_diagnosis.md) found:
+The diagnosis of the Jeff failure (scripts/diagnose_jeff.py, results/e7_diagnosis.md;
+wording revised after two reviews on 24 Nov 2026) found:
   1. S2's confidence (the cosine to the single closest support example) no longer
      separates its right answers from its wrong ones, so no threshold can keep one and drop the other.
-  2. A general-purpose encoder measures topic. Jeff's intents share topics and differ
-     by the operation or the time window, which the encoder does not separate well.
-  3. Only 10 support examples per intent (Banking77 has about 120).
+  2. Jeff queries sit far from every labelled example: few have a support example at
+     cosine 0.7 or more, while most Banking77 queries do, even with 10 examples per intent.
+     At equal distance S2 is no less accurate on Jeff. Why Jeff queries are far (more varied
+     wording, or intents 10 examples cannot cover) is not known.
+  3. Only 10 support examples per intent (Banking77 has about 120), and a nearest-example
+     rule that uses them in the simplest way.
 
 Each candidate fix targets one cause. A variant is three choices:
   encoder: "frozen" (MiniLM as S2 uses it) or "tuned" (fine-tuned on the support set,

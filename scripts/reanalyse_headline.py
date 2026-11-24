@@ -20,6 +20,9 @@ pre-registered verdict. It asks five questions the pre-registered tables do not 
      format control is applied (make_splits.py compared raw text). A sensitivity check
      without them, labelled as such.
   F. Why S2 covers so little at strict risk on Banking77: its most confident errors.
+  G. (added after a second review) The E7 and E8 numbers at 0% or near-0% risk, stated in a
+     form that suits them: queries answered before the first error per seed, pooled
+     selective risk at the development thresholds, sample standard deviations.
 
 Checks: section A must reproduce the saved E6 coverage numbers exactly, or the script stops.
 Writes results/headline_reanalysis.json and results/headline_reanalysis.md.
@@ -34,7 +37,7 @@ import pandas as pd
 from router import data
 from router.calibration import calibrated_confidence
 from router.label_noise import wilson_interval
-from router.metrics import coverage_at_risk, paired_bootstrap_diff
+from router.metrics import classification_metrics, coverage_at_risk, paired_bootstrap_diff
 from router.preprocess import format_control
 from router.provenance import metadata_markdown, run_metadata
 from router.systems.base import load_predictions
@@ -109,7 +112,29 @@ def section_b(runs: dict, policy: dict, s4_wrong: np.ndarray, boot: dict) -> lis
                      "error_rate": float(np.mean([w.mean() for w in wrong_runs])),
                      "in_scope_wrong": float(np.mean([w[~is_oos].sum() for w in wrong_runs])),
                      "oos_answered": float(np.mean([w[is_oos].sum() for w in wrong_runs])), "diff_vs_s4": diff})
+    # Post-hoc operating point: S2 with the threshold chosen on VALIDATION for a 5% risk bar (not part of policy v1).
+    val, _ = load_predictions(S2, 0, "val_fmt")
+    val_correct = ((val["pred_label"] == val["label"]) & ~val["is_oos"]).to_numpy()
+    t5 = coverage_at_risk(val_correct, val["confidence"].to_numpy(dtype=float), 0.05)["threshold"]
+    c, conf, _ = runs[S2][0]
+    wrong5 = np.where(conf >= t5, ~(c & ~is_oos), s4_wrong)
+    diff5 = paired_bootstrap_diff(lambda r: float(wrong5[r].mean()), lambda r: float(s4_wrong[r].mean()), is_oos,
+                                  boot["resamples"], boot["seed"], boot["ci"])
+    rows.append({"system": f"{S2} + S4, post-hoc: validation threshold for a 5% bar ({t5:.4f})", "llm_calls": int((conf < t5).sum()),
+                 "wrong": int(wrong5.sum()), "error_rate": float(wrong5.mean()), "in_scope_wrong": int(wrong5[~is_oos].sum()),
+                 "oos_answered": int(wrong5[is_oos].sum()), "diff_vs_s4": diff5})
     return rows
+
+
+def break_even(runs: dict, policy: dict, s4_wrong: np.ndarray) -> dict:
+    """S2 plus S4 at the frozen threshold: error rates on in-scope and out-of-scope queries separately, and the
+    out-of-scope share of traffic above which the pair makes more errors than S4 alone."""
+    c, conf, is_oos = runs[S2][0]
+    wrong = np.where(conf >= policy["systems"][S2]["thresholds"]["0"], ~(c & ~is_oos), s4_wrong)
+    in_pair, oos_pair = wrong[~is_oos].mean(), wrong[is_oos].mean()
+    in_s4, oos_s4 = s4_wrong[~is_oos].mean(), s4_wrong[is_oos].mean()
+    return {"in_scope_error_pair": float(in_pair), "in_scope_error_s4": float(in_s4), "oos_error_pair": float(oos_pair),
+            "oos_error_s4": float(oos_s4), "break_even_oos_share": float((in_s4 - in_pair) / ((in_s4 - in_pair) + (oos_pair - oos_s4)))}
 
 
 def section_c() -> list[dict]:
@@ -175,6 +200,38 @@ def section_f(n_top: int = 300, n_show: int = 10) -> dict:
     return {"n_top": n_top, "errors": int(len(wrong)), "oos_errors": int(wrong["is_oos"].sum()), "shown": shown}
 
 
+def section_g() -> dict:
+    """E7 and E8 at 0% or near-0% risk, in a form that suits a first-error statistic."""
+    def first_error(df: pd.DataFrame) -> int:
+        correct = ((df["pred_label"] == df["label"]) & ~df["is_oos"].to_numpy(dtype=bool)).to_numpy()
+        order = np.argsort(-df["confidence"].to_numpy(dtype=float), kind="stable")
+        return int(np.argmax(~correct[order]))  # how many queries are answered before the first wrong one
+
+    e7, _ = load_predictions(S2, 0, "jeff_test_fmt")
+    rows = [{"system": "S2 on the Jeff test split (E7)", "answered_before_first_error": [first_error(e7)], "n": len(e7)}]
+    e8 = json.loads((data.RESULTS_DIR / "e8_test_v2.json").read_text())
+    dev = json.loads((data.RESULTS_DIR / "e8_dev.json").read_text())
+    thresholds = {(r["variant"], r["seed"]): r["dev_threshold"] for r in dev["jeff"]["per_run"]}
+    for name, result in e8["systems"].items():
+        firsts, handled, wrong = [], 0, 0
+        for seed in result["seeds"]:
+            df = pd.read_csv(data.RESULTS_DIR / "e8_predictions" / name.replace("/", "_") / f"seed{seed}_jeff_test_v2_fmt.csv",
+                             keep_default_na=False)
+            firsts.append(first_error(df))
+            correct = ((df["pred_label"] == df["label"]) & ~df["is_oos"].to_numpy(dtype=bool)).to_numpy()
+            h = df["confidence"].to_numpy(dtype=float) >= thresholds[(name, seed)]
+            handled += int(h.sum()); wrong += int((~correct[h]).sum())
+        per_seed = pd.DataFrame(result["per_seed"])
+        rows.append({"system": f"{name} on Jeff test v2 (E8)", "answered_before_first_error": firsts, "n": e8["n_queries"],
+                     "dev_threshold_handled": handled, "dev_threshold_wrong": wrong,
+                     "in_scope_accuracy_mean": float(per_seed["in_scope_accuracy"].mean()),
+                     "in_scope_accuracy_sd": float(per_seed["in_scope_accuracy"].std(ddof=1)) if len(per_seed) > 1 else 0.0,
+                     "aurc_mean": float(per_seed["aurc"].mean()),
+                     "aurc_sd": float(per_seed["aurc"].std(ddof=1)) if len(per_seed) > 1 else 0.0,
+                     "oos_auroc_mean": float(per_seed["oos_auroc"].mean())})
+    return {"rows": rows}
+
+
 def pct(x) -> str:
     return "n/a" if x is None or x != x else f"{100 * x:.2f}"
 
@@ -208,10 +265,21 @@ def report(out: dict) -> str:
         "out-of-scope queries, which are always errors under policy v1 (it has no REJECT). Means over seeds.",
         md_table(a_rows),
         "Check: the coverage column reproduces `results/e6_test_fmt.json` exactly.",
+        f"S4 on the in-scope test_fmt queries (format-controlled text, so not directly comparable with E1's raw-text table): "
+        f"accuracy {pct(s4['classification']['accuracy'])}%, macro precision {pct(s4['classification']['macro_precision'])}%, "
+        f"macro recall {pct(s4['classification']['macro_recall'])}%, macro F1 {pct(s4['classification']['macro_f1'])}%. "
+        f"Of S4's {s4['in_scope_wrong']} in-scope errors, S2 gets {s4['s2_right_on_s4_errors']} right. S4 sees the 77 intent names "
+        "and 2 examples per intent; the routers learn from about 9,000 labelled queries, so this is a weakly prompted LLM bar.",
         "## B. Router plus LLM end to end, at the frozen policy v1 thresholds",
         "The router answers what it handles and S4 answers the rest. Paired bootstrap of the error difference, 1,000 resamples "
         "stratified by in-scope and out-of-scope. Negative = fewer errors than S4 alone. Means over seeds.",
         md_table(b_rows),
+        f"Split by query type, S2 plus S4 at the frozen threshold: in-scope error {pct(out['break_even']['in_scope_error_pair'])}% "
+        f"(S4 alone {pct(out['break_even']['in_scope_error_s4'])}%), out-of-scope error {pct(out['break_even']['oos_error_pair'])}% "
+        f"(S4 alone {pct(out['break_even']['oos_error_s4'])}%). The pair makes more errors than S4 alone whenever out-of-scope "
+        f"queries are more than {pct(out['break_even']['break_even_oos_share'])}% of traffic; this test mix has {pct(1 - out['in_scope_share'])}%. "
+        "The out-of-scope leak comes from the low threshold the matched-risk rule allows: the last row, a threshold chosen on "
+        "validation for a 5% bar, handles fewer queries but answers no more out-of-scope queries than S4 alone. That row is post-hoc.",
         "## C. S2's in-scope accuracy by distance to its nearest labelled example",
         "S2's confidence is the cosine to the nearest support example. Banking77's support is its train split; the Jeff sets' "
         "support is the 140 Jeff support examples.",
@@ -233,6 +301,19 @@ def report(out: dict) -> str:
         f"({out['f']['oos_errors']} out of scope). The first {len(out['f']['shown'])}, by confidence rank. The predicted "
         "intent is always the label of the nearest train example, so a near-copy with a different label is a confident error.",
         md_table(out["f"]["shown"]),
+        "## G. E7 and E8 at 0% or near-0% risk",
+        "When S4 makes 0 or 1 errors, coverage at matched risk is the number of queries answered before the router's first error. "
+        "A percentile bootstrap is not a valid interval for that statistic, so the intervals given for it in `results/e7_jeff.md` and "
+        "`results/e8_test_v2.md` should not be quoted. The per-seed counts are below instead. The development-threshold risk is "
+        "pooled over seeds (`results/e8_test_v2.md` averaged per seed and counted a seed that handles nothing as 0%). Standard "
+        "deviations here are sample standard deviations (ddof = 1), as elsewhere in the project; `e8_test_v2.md` used ddof = 0.",
+        md_table([{"system": r["system"], "answered before first error (per seed)": ", ".join(str(x) for x in r["answered_before_first_error"]),
+                   "as % of queries": ", ".join(f"{100 * x / r['n']:.1f}" for x in r["answered_before_first_error"]),
+                   "dev threshold: handled, wrong (pooled)": "" if "dev_threshold_handled" not in r else
+                       f"{r['dev_threshold_handled']}, {r['dev_threshold_wrong']} ({pct(r['dev_threshold_wrong'] / r['dev_threshold_handled']) if r['dev_threshold_handled'] else 'n/a'}%)",
+                   "in-scope accuracy (%)": "" if "in_scope_accuracy_mean" not in r else f"{pct(r['in_scope_accuracy_mean'])} ± {pct(r['in_scope_accuracy_sd'])}",
+                   "AURC (%)": "" if "aurc_mean" not in r else f"{pct(r['aurc_mean'])} ± {pct(r['aurc_sd'])}",
+                   "OOS AUROC (%)": "" if "oos_auroc_mean" not in r else pct(r["oos_auroc_mean"])} for r in out["g"]["rows"]]),
     ]) + "\n"
 
 
@@ -249,8 +330,13 @@ def main() -> None:
     is_oos = runs[S2][0][2]
     out = {"metadata": run_metadata({"e6_router": data.load_config("e6_router")}, seed=boot["seed"]),
            "n_in_scope": int((~is_oos).sum()), "n_oos": int(is_oos.sum()), "in_scope_share": float((~is_oos).mean()),
-           "s4": {"error_rate": r_star, "in_scope_accuracy": float(1 - s4_wrong[~is_oos].mean())},
-           "a": a, "b": section_b(runs, policy, s4_wrong, boot), "c": section_c(), "d": section_d(runs), "e": section_e(runs), "f": section_f()}
+           "s4": {"error_rate": r_star, "in_scope_accuracy": float(1 - s4_wrong[~is_oos].mean()),
+                  "classification": classification_metrics(s4_df["label"][~is_oos].tolist(), s4_df["pred_label"][~is_oos].tolist(),
+                                                           sorted(data.load_label_map(), key=data.load_label_map().get)),
+                  "in_scope_wrong": int(s4_wrong[~is_oos].sum()),
+                  "s2_right_on_s4_errors": int((s4_wrong & ~is_oos & runs[S2][0][0]).sum())},
+           "break_even": break_even(runs, policy, s4_wrong),
+           "a": a, "b": section_b(runs, policy, s4_wrong, boot), "c": section_c(), "d": section_d(runs), "e": section_e(runs), "f": section_f(), "g": section_g()}
     (data.RESULTS_DIR / "headline_reanalysis.json").write_text(json.dumps(out, indent=2, default=float))
     (data.RESULTS_DIR / "headline_reanalysis.md").write_text(report(out))
     print("Wrote results/headline_reanalysis.json and results/headline_reanalysis.md")

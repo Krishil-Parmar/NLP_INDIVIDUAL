@@ -12,6 +12,8 @@ header-includes:
     \makeatother
     \setlength{\LTpre}{6pt}
     \setlength{\LTpost}{2pt}
+    \usepackage{etoolbox}
+    \AtBeginEnvironment{longtable}{\small}
     ```
 ---
 
@@ -61,19 +63,10 @@ Layout follows README section 12.1; the rubric category for each part is in brac
 : Banking77 test, in-scope queries, percent, mean ± standard deviation over five seeds. Filled in by `scripts/build_summary.py` from `results/`.
 <!-- RESULTS:END -->
 
-![Risk-coverage curves on Banking77 test (format-controlled, seed 0). The dotted line is few-shot S4's error rate, the matched risk; dots mark policy v1's frozen thresholds.](HEADLINE_FIGURE){width=75%}
+![Risk-coverage curves on Banking77 test (format-controlled, seed 0). The dotted line is few-shot S4's error rate, the matched risk; dots mark policy v1's frozen thresholds.](HEADLINE_FIGURE){width=62%}
 
-| Requirement | Check | Met? | Evidence |
-| ---------------------------------------------- | ---------- | ------ | ------------------------------ |
-| R1 Correct intent on in-scope queries | E1 |  |  |
-| R2 OOS and uncertain queries not handled | E3, E6 |  |  |
-| R3 Fewer LLM calls, error no higher | E6 |  |  |
-| R4 Router latency within limit | E6 |  |  |
-| R5 New intent from about 10 examples | E4 |  |  |
-| R6 Stable under rewording | E5 |  |  |
-| R7 Works on the Jeff set (own intents) | E7 |  |  |
-
-: Requirements from README section 2.5. (Rubric 1)
+<!-- REQUIREMENTS:START -->
+<!-- REQUIREMENTS:END -->
 
 ## 5. What it does, why it works, limitations
 

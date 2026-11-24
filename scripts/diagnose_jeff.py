@@ -9,6 +9,10 @@ Nothing here is tuned and no test prediction is made. It reads:
   - Banking77 VALIDATION, where S2 is re-run with its support set cut to 10, 20 and
     50 examples per intent (five random draws each). This separates the two
     explanations: "Jeff is a new domain" versus "Jeff has only 10 examples per intent".
+  - Section 5 (added 24 Nov 2026 after a review): S2's in-scope accuracy by the cosine to
+    the nearest labelled example, in narrow bands, for Banking77 validation with 10
+    examples per intent (the same support size as Jeff), Banking77 test with full
+    support, and the Jeff test split. It compares queries at the same distance.
 
 Writes results/e7_diagnosis.json and results/e7_diagnosis.md.
 """
@@ -32,6 +36,7 @@ from router.tables import md_table
 S2_TAG = "s2_all-MiniLM-L6-v2"
 SUPPORT_SIZES = [10, 20, 50]
 DRAWS = [0, 1, 2, 3, 4]
+COSINE_BANDS = [(-1.0, 0.5), (0.5, 0.6), (0.6, 0.7), (0.7, 0.8), (0.8, 0.9), (0.9, 1.01)]
 FIXED_RISKS = [0.01, 0.05]
 
 
@@ -100,7 +105,37 @@ def support_size_check(r_star: float) -> list[dict]:
         mean = {m: float(np.mean([r[m] for r in runs])) for m in runs[0]}
         std = {f"{m}_std": float(np.std([r[m] for r in runs])) for m in runs[0]}
         rows.append({"support": f"{len(DRAWS)} random draws", "per_intent": str(k), **mean, **std})
+
+    # Section 5: per-query (cosine, correct) for the 10-per-intent draws, in-scope queries only, pooled over draws.
+    sparse = []
+    for seed in DRAWS:
+        pred, conf = few_shot.predict_variant("nearest", encoder, few_shot.per_intent_sample(train, 10, seed), texts, len(names), cfg, seed=0)
+        sparse.append(pd.DataFrame({"cosine": conf[~is_oos], "correct": (pred == true_ids)[~is_oos]}))
+    return rows, pd.concat(sparse, ignore_index=True)
+
+
+def distance_bands(name: str, cosine: np.ndarray, correct: np.ndarray, note: str) -> list[dict]:
+    """In-scope accuracy per band of cosine to the nearest labelled example, with a Wilson interval."""
+    from router.label_noise import wilson_interval  # here to keep the import list short
+    rows = []
+    for low, high in COSINE_BANDS:
+        band = (cosine >= low) & (cosine < high)
+        k, n = int(correct[band].sum()), int(band.sum())
+        ci = wilson_interval(k, n) if n else (float("nan"), float("nan"))
+        rows.append({"data": name, "note": note, "band": f"{max(low, 0):.1f} to {min(high, 1.0):.1f}", "n": n,
+                     "mean_cosine": float(cosine[band].mean()) if n else float("nan"),
+                     "accuracy": k / n if n else float("nan"), "ci_low": ci[0], "ci_high": ci[1]})
     return rows
+
+
+def close_shares(bands: list[dict], cut: float = 0.7) -> dict[str, float]:
+    """For each data set in the band table: the share of queries whose nearest labelled example has cosine >= cut."""
+    out = {}
+    for name in dict.fromkeys(r["data"] for r in bands):
+        rows = [r for r in bands if r["data"] == name]
+        total = sum(r["n"] for r in rows)
+        out[name] = sum(r["n"] for r in rows if float(r["band"].split(" to ")[0]) >= cut) / total
+    return out
 
 
 def few_shot_config() -> dict:
@@ -147,9 +182,20 @@ def report(result: dict) -> str:
         f"For comparison, on the Jeff test split (10 support examples per intent) S2 covers {pct(result['jeff_s2_e7']['coverage_at_0.05'])}% "
         f"at 5% risk and {pct(result['jeff_s2_e7']['coverage_at_0.01'])}% at 1% risk (`results/e7_jeff.json`). Cutting Banking77 "
         "to 10 examples per intent halves the coverage at 5% risk. **Correction (24 Nov 2026):** the first version of this report said "
-        "the rest of the Jeff gap comes from the Jeff intents themselves. That is not supported. At the same cosine distance from the "
-        "nearest labelled example, S2 is about as accurate on Jeff as on Banking77 (`results/headline_reanalysis.md`, section C). "
-        "Banking77 looks easy because most of its test queries have a close paraphrase in train, and Jeff's do not.",
+        "the rest of the Jeff gap comes from the Jeff intents themselves. That was not shown, and neither is the opposite: see section 5.",
+        "## 5. Accuracy at the same distance from the nearest labelled example (added 24 Nov 2026)",
+        "S2's in-scope accuracy by the cosine between a query and its nearest labelled example (S2's confidence), in narrow bands. "
+        "The first block gives Banking77 the same support size as Jeff (10 per intent), so sparse support is held fixed. "
+        "If Jeff were as hard as Banking77 at equal distance, its accuracy would match the first block band by band.",
+        "Share of in-scope queries with a labelled example at cosine 0.7 or more: " + ", ".join(
+            f"{name} {pct(share)}%" for name, share in close_shares(result["distance_bands"]).items()) + ". "
+        "So S2 is no less accurate on Jeff than on Banking77 at the same distance and the same support size (Jeff has 14 intents "
+        "to choose from against 77, which favours it), but far fewer Jeff queries have a close labelled example. Why they are far "
+        "(more varied wording, or intents that 10 examples cannot cover) cannot be separated with this data.",
+        md_table([{"data": r["data"], "cosine band": r["band"], "queries": r["n"],
+                   "mean cosine": "" if r["n"] == 0 else f"{r['mean_cosine']:.3f}",
+                   "accuracy (%)": "n/a" if r["n"] == 0 else pct(r["accuracy"]),
+                   "95% Wilson CI": "" if r["n"] == 0 else f"[{pct(r['ci_low'])}, {pct(r['ci_high'])}]"} for r in result["distance_bands"]]),
         "## 4. Where the Jeff errors are",
         "Accuracy per intent (S2, Jeff test split):", md_table(intent_rows),
         "Most frequent confusions:", md_table(pair_rows),
@@ -169,12 +215,20 @@ def main() -> None:
     for name, split in [("Banking77 test_fmt (E6)", "test_fmt"), ("Jeff test (E7)", "jeff_test_fmt")]:
         df, logits = load_predictions(S2_TAG, 0, split)
         quality[name] = confidence_quality(df, logits)
+    size_rows, sparse = support_size_check(policy["matched_risk"])
+    bands = distance_bands("Banking77 validation, 10 examples per intent", sparse["cosine"].to_numpy(),
+                           sparse["correct"].to_numpy(), f"{len(DRAWS)} draws pooled")
+    for name, split, note in [("Banking77 test, full support", "test_fmt", "E6 predictions"), ("Jeff test", "jeff_test_fmt", "E7 predictions")]:
+        df, _ = load_predictions(S2_TAG, 0, split)
+        df = df[~df["is_oos"].to_numpy(dtype=bool)]
+        bands += distance_bands(name, df["confidence"].to_numpy(dtype=float), (df["pred_label"] == df["label"]).to_numpy(), note)
     result = {
         "metadata": run_metadata(few_shot_config()),
         "r_star_val": policy["matched_risk"],
         "confidence_quality": quality,
         "jeff": jeff_error_anatomy(names),
-        "support_size_check": support_size_check(policy["matched_risk"]),
+        "support_size_check": size_rows,
+        "distance_bands": bands,
         "jeff_s2_e7": json.loads((data.RESULTS_DIR / "e7_jeff.json").read_text())["systems"][S2_TAG]["per_seed"][0],
     }
     (data.RESULTS_DIR / "e7_diagnosis.json").write_text(json.dumps(result, indent=2))

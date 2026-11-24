@@ -13,11 +13,23 @@ Last updated: 24 Nov 2026.
 | ID | Verdict | Result |
 | --- | --- | --- |
 | RQ1 | Met | The best router, S2, handles 77.47% of the 4,079 Banking77 test queries (75.48% in scope, the rest CLINC150 out of scope) at S4's error rate of 10.27% (95% CI 76.44 to 78.43%). Read it with the notes below |
-| RQ2 | Met | S3 beats S1 on out-of-scope AUROC by 3.08 points (2.60 to 3.61) |
-| RQ4 | Met | The system ranking is unchanged by cleaned labels |
+| RQ2 | Met | S3 beats S1 on out-of-scope AUROC by 3.08 points (2.60 to 3.61). But S3 loses to its own retriever S2 (-0.21 points, -0.31 to -0.13) and fails R4's latency limit (p95 159.7 ms), so the pairwise matcher adds cost without benefit |
+| RQ4 | Met | The macro-F1 ranking is unchanged after removing 1.8% of train rows. Not tested: router ranking at strict risk bars, where label conflicts dominate (S2's 1%-risk coverage is 1.01% on raw test with original and with cleaned support) |
 | R4 | Met | S2's p95 latency is 6.4 ms on CPU |
-| RQ6 | **Not met** | On the Jeff set, S2's coverage at matched risk falls to 1.67%, a drop of 75.8 points against a limit of 20 |
+| RQ6 | **Not met** | On the Jeff set, S2's coverage at matched risk falls to 1.67%, a drop of 75.8 points against a limit of 20. The two sides use different bars (10.27% and 0.56%); at a common 5% bar the drop is 62.61 points. The Jeff bar is Claude grading a Claude-written set, so it is a near-zero floor |
 | RQ3 and RQ5 | Not tested | E4 and E5 were not run |
+
+**Requirements** (section 2.5; only R4 had a preset bar, so the others are judgements from the evidence, proposed by Claude for the owner to confirm; the summary's table is filled from the same files by `scripts/build_summary.py`):
+
+| Requirement | Met? | Evidence |
+| --- | --- | --- |
+| R1 Correct intent in scope | Yes (no preset bar) | Best E1 accuracy 93.14% (S1) |
+| R2 No confident answer to what the assistant cannot do | **No** | S2 plus LLM answers 111 of 1,000 out-of-scope test queries, the LLM alone 24 |
+| R3 Fewer LLM calls, error no higher | Yes, end to end on Banking77 | 893 of 4,079 LLM calls, 8.65% wrong against 10.27% |
+| R4 Latency | Yes | S2 p95 6.4 ms against 100 ms |
+| R5 New intent from about 10 examples, no retraining | Not tested (E4 not built) | E7 and E8 point against it: on Jeff, 10 examples were not enough without a fine-tune |
+| R6 Stable under rewording | Not tested (E5 not built) | |
+| R7 Works on the Jeff set | **No** | 1.67% coverage at matched risk |
 
 **How to read the headline (post-hoc re-analysis after an independent review, 24 Nov 2026; `results/headline_reanalysis.md`, saved predictions only, no verdict changes):**
 - **The bar is lenient on Banking77.** The LLM was planned as the accuracy ceiling, but its in-scope accuracy (87.17%) is below every router's. So at its error rate S2 may handle 99.90% of in-scope queries. The 77.47% is mostly the in-scope share of the test mix (75.48%) plus 84 out-of-scope queries, and it would move with the mix.
@@ -29,37 +41,45 @@ Last updated: 24 Nov 2026.
   | 1% | 34.20% | 3.09% |
 
   S2's most confident errors are near-copies of a train example that carries a different label.
-- **End to end, the router does not make the assistant worse on Banking77, but it moves the errors.** With policy v1 as frozen, S2 plus the LLM gives 353 wrong answers against 419 for the LLM alone (-1.62 points, 95% CI -2.70 to -0.64), with 893 LLM calls instead of 4,079. But it answers 111 out-of-scope queries against the LLM's 24, because policy v1 has no REJECT.
-- **The cost saving equals the coverage by construction.** It only holds for intents that can be answered from the intent alone; slot filling is out of scope (section 5).
+- **End to end on Banking77, the router does not make the assistant worse at this traffic mix, but it moves the errors.** With policy v1 as frozen, S2 plus the LLM gives 353 wrong answers against 419 for the LLM alone (-1.62 points, 95% CI -2.70 to -0.64), with 893 LLM calls instead of 4,079.
+  - **The errors move to out-of-scope queries:** 7.86% wrong on in-scope queries against the LLM's 12.83%, but 11.10% on out-of-scope ones against 2.40%. Above 36.35% out-of-scope traffic the pair is worse than the LLM alone; this test mix has 24.52%.
+  - **The cause is the threshold, not the missing REJECT:** the matched-risk rule allows a low one. A post-hoc operating point with the threshold chosen on validation for a 5% bar (0.8457) handles 58.52% of queries, gives 295 wrong answers (7.23%) and answers 24 out-of-scope queries, the same as the LLM alone.
+- **The LLM bar is a weakly prompted LLM.** S4 sees the 77 intent names and 2 examples per intent; the routers learn from about 9,000 labelled queries. S2 gets 271 of S4's 395 in-scope errors right. S4's errors have not been read by hand. A better-prompted LLM would set a stricter bar.
+- **The cost saving equals the coverage by construction.** It only holds for intents that can be answered from the intent alone; slot filling is out of scope (section 5). Most Jeff intents need an argument (a month, a merchant, an amount), so the saving would not carry over to Jeff even with perfect routing.
 - **The honest claim:** on a paraphrase-dense benchmark the router matches the LLM while handling about three quarters of the traffic. It relies on close labelled examples, so a new intent set needs adaptation or more examples (E7, E8).
 
 **After the test: fixing the Jeff failure (E8, 24 Nov 2026; post-hoc, so RQ6 stays "not met").** The steps, in order (section 8.1, E8):
 1. **Diagnose:** saved predictions only (`results/e7_diagnosis.md`, `results/headline_reanalysis.md` section C).
    - **Confidence:** on Jeff, S2's confidence no longer separates right from wrong answers (AUROC 54.3%, against 74.8% on Banking77 test).
-   - **Distance to the nearest example:** S2 is accurate when a close paraphrase of the query is among its labelled examples. 124 of 140 Jeff test queries have none (cosine under 0.7), against 72 of 3,079 Banking77 test queries. At that distance S2 is about as accurate on both (54.84% and 58.33%).
-   - **Correction:** an earlier version said half the gap was support size and the rest the Jeff intents themselves. The second half is not supported.
+   - **Distance to the nearest example:** S2 is accurate when a close paraphrase of the query is among its labelled examples. With 10 examples per intent, 83.4% of Banking77 validation queries have one at cosine 0.7 or more, against 11.4% of Jeff test queries.
+   - **Accuracy at the same distance:** with support held at 10 examples per intent, S2 is no less accurate on Jeff than on Banking77 at equal distance (cosine 0.5 to 0.6: 51.0% against 44.7%; 0.6 to 0.7: 59.4% against 58.2%; `results/e7_diagnosis.md`, section 5). Jeff has 14 intents to choose from against 77, which favours it.
+   - **What is not known:** why Jeff queries sit so far from their examples, whether from more varied wording or from intents that 10 examples cannot cover. This data cannot separate the two.
+   - **The rule matters too:** a head or a fine-tuned encoder on the same 140 examples recovers about 13 accuracy points (E8), so S2's nearest-example rule is part of the failure.
+   - **Corrections:** an earlier version said half the gap was support size and the rest the Jeff intents themselves. A later version said distance alone explained it. Neither was shown.
 2. **Fix on development data only:** the old Jeff test split, read during the diagnosis, became development data. 12 candidate fixes were tried and one per tier chosen by a rule fixed beforehand (`results/e8_dev.md`).
 3. **Test once on fresh data:** a new 180-query Jeff test v2 (`results/e8_test_v2.md`, plan in `results/preregistration_e8.md`).
-   - **AURC gain over S2:** fine-tuning the encoder on the 140 support examples, 16.37 points (95% CI 9.25 to 25.69); a logistic-regression head on the frozen embeddings, 14.68 (7.70 to 23.06). Both fixes hold up.
-   - **In-scope accuracy:** 69.29% for S2, 82.43 ± 0.73% fine-tuned.
-   - **Not enough for RQ6:** coverage at matched risk rises from 2.78% to 24.89%, so the drop from Banking77 is still 52.58 points.
+   - **AURC gain over S2:** fine-tuning the encoder on the 140 support examples, 16.37 points (95% CI 9.25 to 25.69); a logistic-regression head on the frozen embeddings, 14.68 (7.70 to 23.06). Both improve on fresh data.
+   - **The head costs out-of-scope detection:** OOS AUROC falls from 94.37% to 78.46%. The fine-tuned encoder keeps it (93.14%).
+   - **In-scope accuracy:** 69.29% for S2, 82.43 ± 0.81% fine-tuned (sample standard deviation over five seeds).
+   - **Not enough for RQ6:** S4 made no errors on v2, so coverage at matched risk is the number of queries answered before the router's first error. For the fine-tuned seeds that is 20 to 59 of 180 (11.1% to 32.8%), against 5 for S2. Percentile bootstrap intervals are not valid for that statistic, so none is quoted (`results/headline_reanalysis.md`, G).
+   - **At the development thresholds, pooled over seeds:** the fine-tuned router handled 149 of 900 query-runs with 3 wrong (2.01%), against S4's 0%.
    - **v2 is easier than the old test:** S2 scores 69.29% on it against 56.43%, so the paired gains are the numbers to quote.
+   - **v2 is a second sample from the same generator** (the same model and brief as v1), so this is not evidence about real users.
 
 **Where the results are:**
 - **Test results:** E1 `results/e1_test.md`, E3 `results/e3_test_fmt.md`, E6 `results/e6_test_fmt.md`, E2 `results/e2_test.md`, E7 `results/e7_jeff.md`.
 - **Validation results:** E1, E3, E6 and E2 on validation (M4, M4b) are in the matching `_val` files. The E2 audit is described in section 8.1.
-- **Error analysis and fixes:** E7 diagnosis `results/e7_diagnosis.md`, E8 `results/e8_dev.md` and `results/e8_test_v2.md`, the 167 router errors read and categorised `results/error_analysis.md`. Every error found in the project and how it was fixed: section 8.2.
+- **Error analysis and fixes:** E7 diagnosis `results/e7_diagnosis.md`, E8 `results/e8_dev.md` and `results/e8_test_v2.md`, re-analysis `results/headline_reanalysis.md`, and the 167 router errors in `results/error_analysis.md` (categorised by a Claude agent, not yet checked by a person). Every error found in the project and how it was fixed: section 8.2.
 - **S4 replies:** cached in `results/s4_cache/`.
 - **The notebook:** section 6 has the test results. It runs end to end in fast mode and never calls the API.
 
-**Not finished:** the demo router server (`demo/app.py`) answers typed queries offline, but its Jeff screen front end has not been clicked through in a browser yet.
+**Not finished:** the demo router server (`demo/app.py`) now runs S2 at its frozen threshold and counts LLM calls and US$ saved. A draft script is in `demo/DEMO_SCRIPT.md`. The Jeff screen front end has not been clicked through in a browser yet.
 
-**Next (M6):**
-- **The owner's blind check of 20 error rows:** `results/error_analysis/owner_check.csv`.
-- **Notebook:** section 7 (E8) is not yet in the notebook.
-- **Owner's prose:** the summary prose, including one sentence on how the Jeff failure was fixed.
-- **Demo:** the demo and its rehearsal.
-- **Clean-run check.**
+**Next (M6), all needing the owner:**
+- **Human labels:** blind-label about 40 Jeff queries and the 20 error rows in `results/error_analysis/owner_check.csv`.
+- **Summary prose:** the tables are now filled by the build script.
+- **Demo:** decide Banking77 or Jeff intents behind the Jeff screen, then rehearse the script and record a backup.
+- **Clean run:** a GitHub repository, hosting for the seed-0 checkpoints, `REPO_URL` in notebook cell 1, then one clean-clone run recorded.
 
 ---
 
@@ -272,7 +292,7 @@ All systems output, per query: a predicted intent, an in-scope confidence score 
 | S0 | TF-IDF plus logistic regression | Classical baseline. Confidence is max predicted probability. |
 | S1 | Fine-tuned encoder with softmax head | A small encoder (for example DistilRoBERTa or DeBERTa-v3-small). Confidence is max softmax probability, temperature-scaled on validation. |
 | S2 | Embedding nearest neighbour | Frozen sentence-embedding model, cosine similarity to labelled examples. No training. |
-| S3 | Pairwise paraphrase matcher | Cross-encoder scoring (query, example) pairs: "do these mean the same thing?". Initialise from an NLI or paraphrase checkpoint. Use S2 to retrieve the top-k candidates so inference stays fast. This is the topic 2 component and the main system. |
+| S3 | Pairwise paraphrase matcher | Cross-encoder scoring (query, example) pairs: "do these mean the same thing?". Initialise from an NLI or paraphrase checkpoint. Use S2 to retrieve the top-k candidates so inference stays fast. This is the topic 2 component and was planned as the main system. **Result:** it lost to its own retriever S2 on accuracy, out-of-scope AUROC, coverage and the Jeff set, and its p95 (159.7 ms) fails R4. |
 | S4 | LLM zero-shot | Given the intent list and descriptions. Use the same model family the assistant runs in production (owner to confirm exact model). Temperature 0. Cache every response to disk. Planned as the accuracy ceiling and the cost reference, not a competitor to beat. **It was not the ceiling on Banking77:** its in-scope test accuracy, 87.17%, is below every router's (`results/headline_reanalysis.md`). **Confirmed 22 Nov 2026:** `au.anthropic.claude-sonnet-4-6` on Amazon Bedrock (exactly Jeff's production model), zero-shot with the 77 intent names (Banking77 has no descriptions) plus `out_of_scope`, temperature 0, structured JSON answer, prompt in `prompts/s4_intent_v1.txt`, every reply cached in `results/s4_cache/` (`src/router/systems/s4_llm.py`, `scripts/run_s4.py`). |
 
 ### 7.1 Router policy
@@ -291,7 +311,7 @@ The rubric marks "appropriateness of chosen model". Each system is in the compar
 | S0 | The cheapest possible baseline. Shows how much of the task is solved by keywords alone. If S0 is close to S1, say so. |
 | S1 | The standard approach for this topic and the reference point a marker expects to see. |
 | S2 | Needs no training and takes a new intent by adding examples. Also serves as the retriever for S3. |
-| S3 | The main system. Fits requirement R5 (new intents without retraining), and because it scores pairs, every decision can be shown next to the example it matched. That is what the demo uses to explain why it works. |
+| S3 | Planned as the main system (it lost to S2; section 7). Fits requirement R5 (new intents without retraining), and because it scores pairs, every decision can be shown next to the example it matched. That is what the demo uses to explain why it works. |
 | S4 | The thing being replaced. Sets the error rate to match and the cost to beat. |
 
 Small encoders are chosen because of the latency requirement (R4) and the compute limits in section 14. The choice between candidate checkpoints is made on validation accuracy and measured CPU latency, and is recorded in the decision log. The "best router" for the headline result is picked by a rule fixed before any test run: highest coverage at matched risk on validation.
@@ -394,8 +414,9 @@ E8 as implemented (post-hoc; design in `configs/e8_few_shot.yaml`, committed `0b
 - **Final test** (`scripts/evaluate_few_shot.py`, run once, refuses a second run):
   - **Queries:** the 180 Jeff test v2 queries, format-controlled.
   - **Systems:** S2 unchanged (the control) and the two chosen fixes.
-  - **Matched risk:** few-shot S4's error on v2. S4 made no errors (0.00%), so coverage at matched risk is the share answered before the first mistake.
+  - **Matched risk:** few-shot S4's error on v2. S4 made no errors (0.00%), so coverage at matched risk is the share answered before the first mistake. A percentile bootstrap is not valid for that statistic, so the intervals printed for it in `results/e7_jeff.md` and `results/e8_test_v2.md` should not be quoted; per-seed counts are in `results/headline_reanalysis.md`, G.
   - **Primary number:** the AURC gain over the control, a paired stratified bootstrap.
+  - **Timing:** v2 was written after the candidate fixes and the selection rule were committed (`0b3e92b`) and before any system ran on it. The development run that applied the rule finished after v2 was written.
 
 E2 as implemented (`scripts/find_label_issues.py`, `scripts/evaluate_label_noise.py`, `configs/e2_label_noise.yaml`, fixed 22 Nov 2026 before the cleaner ran):
 
@@ -420,11 +441,14 @@ Every problem below was found either by checking a result that looked wrong, or 
 | M3 | Out-of-scope AUROCs near 100% | CLINC150 queries are all lowercase and unpunctuated: "starts lowercase" alone scores AUROC 0.971 | Format control: every evaluated query lowercased, punctuation removed | Format-controlled E3 and E6 are the primary numbers |
 | M4 | Zero-shot S4 made a weak bar (18.0% error on validation) | Fine-grained confusions between near-identical intents | Few-shot S4 added under a rule fixed before it ran: the lower-error variant sets the matched risk | Bar of 12.22% on validation |
 | M4b | Possible label noise in Banking77 | 192 rows flagged by confident learning | Retrain on cleaned labels; blind audit of 100 flags (E2) | Ranking stable (RQ4 met) |
-| M5 | RQ6 not met: S2 covers 1.67% of the Jeff set at matched risk | Confidence stops separating right from wrong; the encoder matches topic, not the request; 10 examples per intent (`results/e7_diagnosis.md`) | E8: fixes chosen on development data, then one run on a fresh test set | AURC gain over S2 on fresh data: 16.37 points (9.25 to 25.69) fine-tuned; RQ6 verdict unchanged |
+| M5 | RQ6 not met: S2 covers 1.67% of the Jeff set at matched risk | Confidence stops separating right from wrong. Jeff queries sit far from every labelled example (11.4% have one at cosine 0.7 or more), and S2's nearest-example rule cannot use the 140 examples better (`results/e7_diagnosis.md`) | E8: fixes chosen on development data, then one run on a fresh test set | AURC gain over S2 on fresh data: 16.37 points (9.25 to 25.69) fine-tuned; RQ6 verdict unchanged |
 | M6 | Doubtful "out of scope" labels in the error reading | 3 of the 28 out-of-scope rows in the 100-error sample look in scope for a bank. Two OOS test queries ("can i deposit a check", "i need to update my address") are word for word Banking77 queries after format control: `make_splits.py` checked for conflicts on raw text, where case and punctuation hid them. None in validation | Splits not edited after the test run; reported. Sensitivity check without the two rows: S2 at 1% risk 3.09% → 3.95%, so they are not why S2 does badly at strict risk | `results/error_analysis.md`, `results/headline_reanalysis.md` E |
 | M6 (review) | Every router's coverage at matched risk sits near the in-scope share of the test mix | S4 is less accurate in scope than every router, so its error rate admits almost every in-scope query | Report coverage at fixed bars, split into in-scope and out-of-scope handling, and the end-to-end error | At 1% risk S1 34.20%, S2 3.09%; S2 plus LLM 8.65% wrong against 10.27% (`results/headline_reanalysis.md` A, B) |
 | M6 (review) | S2 covers only 3.09% at 1% risk | Its most confident errors are near-copies of a train example that carries a different label (Banking77 label conflicts) | Not fixed (S2 is frozen). It explains why S1 is the better router at strict bars | `results/headline_reanalysis.md` F |
-| M6 (review) | The diagnosis attributed half the Jeff gap to the Jeff intents themselves | At the same distance from the nearest labelled example, S2 is about as accurate on Jeff as on Banking77 | Claim corrected in `results/e7_diagnosis.md` and here | `results/headline_reanalysis.md` C |
+| M6 (review) | The diagnosis attributed half the Jeff gap to the Jeff intents themselves; the first correction then over-corrected to "distance alone" | With support held at 10 per intent, S2 is no less accurate on Jeff than on Banking77 at equal distance. Why Jeff queries are far cannot be told apart, and a better rule on the same examples gains 13 points | Both claims corrected; a validation-only experiment added (`results/e7_diagnosis.md`, section 5) | Diagnosis states what is and is not known |
+| M6 (review 2) | The router answered 4.6 times as many out-of-scope queries as the LLM, put down to the missing REJECT | The matched-risk rule allows a low threshold (0.485). A threshold chosen on validation for a 5% bar (0.8457) answers 24, the same as the LLM | Reported as a post-hoc operating point; the demo shows both thresholds on its slider | `results/headline_reanalysis.md` B |
+| M6 (review 2) | E8's secondary numbers were reported with intervals and averages that did not fit them | Coverage at 0% risk is a first-error count, so a percentile bootstrap does not apply. One seed handling nothing was averaged in as 0% risk. E8 used ddof = 0 | Per-seed counts, pooled risk (2.01%) and ddof = 1 reported instead; the run-once files are left as written | `results/headline_reanalysis.md` G |
+| M6 (review 2) | The demo ran S3 at an arbitrary threshold of 0.5 | Left over from the thin M2 demo | Defaults to S2 at its frozen threshold, with US$ saved added; draft `demo/DEMO_SCRIPT.md` | Demo shows the reported system |
 
 ---
 
@@ -727,6 +751,7 @@ Read the first four before M1. Confirm every figure quoted in this README agains
 | 24 Nov 2026 | **E8 development** (`results/e8_dev.md`, clean tree `0b3e92b`). Rule-chosen: no training, S2 itself; head only, `frozen/descriptions/head` (development AURC 16.67% against S2's 42.15%); encoder fine-tune, `tuned/examples/nearest` (14.17 ± 1.63%) | The margin score raised confidence AUROC but made OOS detection collapse (91 to 61), so no fix without training helped. On Banking77 validation (10 examples per intent) fine-tuning is worse than S2 (coverage at 5% risk 8.89% against 27.66%), so it targets what the general encoder misses on Jeff |
 | 24 Nov 2026 | **E8 final test on Jeff test v2** (`results/e8_test_v2.md`, run once, clean tree). Few-shot S4: 0 errors on 180 (US$0.15). AURC gain over S2: fine-tuned 16.37 points (9.25 to 25.69), head 14.68 (7.70 to 23.06); both hold up. In-scope accuracy: S2 69.29%, head 82.14%, fine-tuned 82.43 ± 0.73%. Coverage at matched risk (0% here): 2.78% → 17.22% and 24.89%; at 5% risk: 2.78% → 36.67% and 51.00%. Development thresholds applied unchanged: fine-tuned 16.56% coverage at 0.94% selective risk, head 21.11% at 2.63%, S2 3.33% at 16.67% | The fixes work on unseen queries but do not rescue RQ6: the drop from Banking77 is still 52.58 points against D = 20. v2 was easier than the old test for S2 (69.29% against 56.43%), so the paired gains are the numbers to quote. Thresholds set on 180 development queries are unstable: one fine-tuned seed found no safe threshold and handles nothing on v2, another handles 35.56% at 4.69% risk |
 | 24 Nov 2026 | **Independent critical review** (a separate Claude agent, Fable 5.2, read only, given the repository and not Claude's own conclusions), then a **post-hoc re-analysis** at the owner's go-ahead (`scripts/reanalyse_headline.py`, `results/headline_reanalysis.md`; saved predictions only, and it reproduces the E6 coverage numbers exactly). Verified findings:<br>- **A.** S4's in-scope accuracy (87.17%) is below every router's, so S2 handles 99.90% of in-scope queries at matched risk.<br>- **B.** S2 plus S4 is wrong on 8.65% of queries against 10.27% for S4 alone (CI -2.70 to -0.64 points), but answers 111 out-of-scope queries against 24.<br>- **C.** Jeff's failure is explained by distance to the nearest labelled example.<br>- **D.** At a common 5% bar the RQ6 drop is 62.61 points.<br>- **E.** Two OOS test queries duplicate Banking77 queries after format control.<br>- **F.** S2's most confident errors are label conflicts | No verdict changes, and no test prediction or tuning. The headline is reported with its composition, fixed-risk bars and the end-to-end error. One correction: Claude first relayed the review's claim that the duplicated OOS rows are a large part of S2's poor 1%-risk coverage; the sensitivity check shows they are not (3.09% → 3.95%). Review findings not acted on, with reasons: the thresholds were set with validation results in view (true; they are called acceptance thresholds from now on), and E7 lacked a trainable baseline (E8 added one, post-hoc) |
+| 24 Nov 2026 | **Second independent review** (Fable 5.2, read only; it confirmed the re-analysis and E8 arithmetic) and fixes. Verified before acting:<br>- the over-corrected diagnosis;<br>- the out-of-scope leak comes from the low matched-risk threshold (break-even 36.35% out-of-scope traffic; a validation-chosen 5%-bar threshold answers 24 out-of-scope queries, like the LLM);<br>- S2 gets 271 of S4's 395 in-scope errors right (a weakly prompted bar);<br>- E8's first-error intervals are invalid; pooled development-threshold risk is 2.01%;<br>- RQ4 covers macro-F1 only;<br>- the demo ran S3 at 0.5.<br>Fixed: a validation-only distance experiment (`results/e7_diagnosis.md` section 5), re-analysis sections B and G, the summary builder (coverage at 5% and 1%, S4's row, requirements table), the demo default (S2 at its frozen threshold, US$ saved), a draft demo script, and wording in README, notebook and docstrings | Needs the owner: human labels, summary prose, the demo choice and rehearsal, the GitHub repository and checkpoint hosting for the clean run. Not done, for the owner to decide: a better-prompted S4 on validation (about US$2), or reading 50 of S4's errors by hand |
 | 24 Nov 2026 | **M6 error analysis, first pass** (`results/error_analysis.md`): 100 random S2 errors on Banking77 test at the frozen threshold, plus all 67 Jeff errors, categorised by a separate Claude agent. Banking77: same topic 32, ambiguous 25, label error 12, out of scope accepted 28, other 3. Jeff: same topic 35, out of scope accepted 6, other 26 (mostly matches on one shared word), none ambiguous | 37 of the 100 Banking77 errors are ambiguous or mislabelled, so they are not clear router mistakes; the Jeff errors are all genuine misreads. The owner's blind check of 20 rows is pending |
 
 ---

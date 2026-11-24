@@ -82,3 +82,13 @@ are logged under Deviations below, and only the affected step is re-run.
 ## Deviations
 
 None so far.
+
+## Later notes (24 Nov 2026, after two independent reviews; the plan above is unchanged)
+
+- **Diagnosis wording.** Step 1's summary of the diagnosis ("the general encoder matches topic or a salient word rather than the request") was later revised. Jeff queries sit far from every labelled example, and at equal distance S2 is no less accurate on Jeff than on Banking77. Why Jeff queries are far is not known (`results/e7_diagnosis.md`, section 5). The systems and the selection were not affected.
+- **Coverage at matched risk on v2.** S4 made no errors on v2, so this number is a first-error count, and the percentile bootstrap interval in `results/e8_test_v2.md` is not valid for it. Per-seed counts are reported instead (`results/headline_reanalysis.md`, G).
+- **The development threshold, applied unchanged.** `results/e8_test_v2.md` averages selective risk over seeds and counts a seed that handles nothing as 0%. Pooled over seeds the fine-tuned router handled 149 query-runs with 3 wrong (2.01%) (`results/headline_reanalysis.md`, G).
+- **Standard deviations.** `results/e8_test_v2.md` used ddof = 0. The sample standard deviation (ddof = 1) of the fine-tuned in-scope accuracy is 0.81 points.
+- **Timing.** v2 was written after the candidates and the rule were committed (`0b3e92b`) and before any system ran on it. The development run that applied the rule finished after v2 was written.
+
+`results/e8_test_v2.md` is left as written, because the run-once rule means it is not regenerated.

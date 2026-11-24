@@ -91,7 +91,8 @@ def summarise() -> None:
             for c in CATEGORIES]
     parts = ["# M6 error analysis: router errors read by hand",
              "Written by `scripts/make_error_sheet.py --summarise`. Do not edit by hand. Rows: `results/error_analysis/sheet.csv`; "
-             "Claude's category and note per row: `results/error_analysis/claude_categories.csv`.",
+             "Claude's category and note per row: `results/error_analysis/claude_categories.csv`. **Categorised by a Claude agent, "
+             "not yet checked by a person** unless the owner's check below is filled in.",
              "## Which errors",
              "Banking77: 100 errors drawn at random (seed 0) from all queries S2 handles wrongly on format-controlled test at its "
              "frozen policy v1 threshold. Jeff: every in-scope query S2 gets wrong on the old Jeff test split, plus every out-of-scope "
