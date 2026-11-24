@@ -4,7 +4,7 @@ A cost-aware intent router for a personal finance assistant. Individual universi
 
 This README is the single source of truth for the project. It is written so that Claude Code (or any new collaborator) can pick the work up cold. Read all of it before writing code.
 
-Last updated: 23 Nov 2026.
+Last updated: 24 Nov 2026.
 
 **Status: M5 (the single test run) is done.** Every choice was frozen, and the thresholds were pre-registered in `results/preregistration.md` (commit `6b8a777`), before any test prediction existed. Each test split was then run once per system.
 
@@ -19,15 +19,30 @@ Last updated: 23 Nov 2026.
 | RQ6 | **Not met** | On the Jeff set, S2's coverage at matched risk falls to 1.67%, a drop of 75.8 points against a limit of 20 |
 | RQ3 and RQ5 | Not tested | E4 and E5 were not run |
 
+**After the test: fixing the Jeff failure (E8, 24 Nov 2026; post-hoc, so RQ6 stays "not met").** The steps, in order (section 8.1, E8):
+1. **Diagnose:** saved predictions only (`results/e7_diagnosis.md`). On Jeff, S2's confidence no longer separates right from wrong answers (AUROC 54.3%, against 74.8% on Banking77 test). The encoder matches the topic, or one salient word, instead of the request. Having 10 examples per intent instead of about 120 explains roughly half the gap.
+2. **Fix on development data only:** the old Jeff test split, read during the diagnosis, became development data. 12 candidate fixes were tried and one per tier chosen by a rule fixed beforehand (`results/e8_dev.md`).
+3. **Test once on fresh data:** a new 180-query Jeff test v2 (`results/e8_test_v2.md`, plan in `results/preregistration_e8.md`).
+   - **AURC gain over S2:** fine-tuning the encoder on the 140 support examples, 16.37 points (95% CI 9.25 to 25.69); a logistic-regression head on the frozen embeddings, 14.68 (7.70 to 23.06). Both fixes hold up.
+   - **In-scope accuracy:** 69.29% for S2, 82.43 ± 0.73% fine-tuned.
+   - **Not enough for RQ6:** coverage at matched risk rises from 2.78% to 24.89%, so the drop from Banking77 is still 52.58 points.
+   - **v2 is easier than the old test:** S2 scores 69.29% on it against 56.43%, so the paired gains are the numbers to quote.
+
 **Where the results are:**
 - **Test results:** E1 `results/e1_test.md`, E3 `results/e3_test_fmt.md`, E6 `results/e6_test_fmt.md`, E2 `results/e2_test.md`, E7 `results/e7_jeff.md`.
 - **Validation results:** E1, E3, E6 and E2 on validation (M4, M4b) are in the matching `_val` files. The E2 audit is described in section 8.1.
+- **Error analysis and fixes:** E7 diagnosis `results/e7_diagnosis.md`, E8 `results/e8_dev.md` and `results/e8_test_v2.md`, the 167 router errors read and categorised `results/error_analysis.md`. Every error found in the project and how it was fixed: section 8.2.
 - **S4 replies:** cached in `results/s4_cache/`.
 - **The notebook:** section 6 has the test results. It runs end to end in fast mode and never calls the API.
 
 **Not finished:** the demo router server (`demo/app.py`) answers typed queries offline, but its Jeff screen front end has not been clicked through in a browser yet.
 
-**Next:** M6, which covers error analysis, the summary prose, the demo and the clean-run check.
+**Next (M6):**
+- **The owner's blind check of 20 error rows:** `results/error_analysis/owner_check.csv`.
+- **Notebook:** section 7 (E8) is not yet in the notebook.
+- **Owner's prose:** the summary prose, including one sentence on how the Jeff failure was fixed.
+- **Demo:** the demo and its rehearsal.
+- **Clean-run check.**
 
 ---
 
@@ -204,6 +219,12 @@ Planned as owner-written. **Changed 23 Nov 2026 at the owner's request:** writte
 
 Status: **built 23 Nov 2026.** 14 intents × 20 queries plus 40 out-of-scope (15 unrelated, 25 finance-adjacent): 320 queries, 140 support and 180 test. No support-test pair within an intent is a near-duplicate. A second Claude agent labelled every query blind and agreed with the writer on 320 of 320, marking 6 as unsure (`results/jeff_label_check.md`). It was run once, at M5 (E7, section 8.1; results in `results/e7_jeff.md`). Limitation: the set is model-written, so it is probably cleaner than real traffic, and S4 is a Claude model too, which may make it easier for S4 than real users' messages would be.
 
+**Jeff test v2 (24 Nov 2026, for E8).** After E7, the old test split was read during the diagnosis, so it became E8's development data and a fresh test split was written (`data/jeff/jeff_v2_queries.csv`, split `test_v2`, built by `scripts/make_jeff_set.py --v2`):
+- **How it was written:** a new Claude agent wrote 180 queries from the same brief as v1 (10 per intent, 15 unrelated and 25 finance-adjacent out of scope). The support set stays the 140 v1 support examples.
+- **Closeness to v1:** two runs of the same model from one brief converge, so 54 of the first 180 were within a difflib ratio of 0.70 of a v1 query, 6 of them word for word (one was a v1 support example). The cap of 0.70 matches the closest any v1 test query came to v1 support (0.702). The same agent rewrote those 54 before any system ran, and every v2 query is now within the cap (`results/jeff_v2_label_check.md`).
+- **Labels:** a second agent labelled all 180 blind and agreed on 180 of 180, marking 4 unsure.
+- **Difficulty:** the unchanged S2 found v2 easier than the old test (in-scope accuracy 69.29% against 56.43%).
+
 ### 6.2 Preprocessing pipeline
 
 The rubric marks "preprocessing pipeline quality" directly. All preprocessing lives in `src/router/preprocess.py` as plain functions, is called by every system, and is covered by unit tests. Steps, in order:
@@ -270,6 +291,7 @@ Small encoders are chosen because of the latency requirement (R4) and the comput
 | E5 | Paraphrase robustness | Reworded Banking77 test queries | Flip rate, accuracy drop. Hand-validate 100 paraphrases for meaning preservation and report the pass rate. |
 | E6 | **Headline: risk-coverage and cost** | Banking77 test with OOS mixed in | Risk-coverage curves, AURC, coverage at matched risk, LLM calls avoided, cost per 1,000 queries, latency p50 and p95 |
 | E7 | Domain shift | Jeff test split | E6 metrics, run once |
+| E8 | Fixing the Jeff failure (post-hoc, after RQ6 was not met) | Diagnosis on saved predictions; fixes chosen on the old Jeff test (now development data); one run on the fresh Jeff test v2 | AURC gain over S2 with a paired interval, coverage at matched and fixed risks, the development thresholds applied unchanged |
 
 ### 8.1 Metric definitions
 
@@ -333,6 +355,30 @@ E7 as implemented (`scripts/predict_jeff.py`, `scripts/evaluate_jeff.py`; fixed 
   - coverage and selective risk at the frozen Banking77 thresholds
   - coverage at fixed risks of 1%, 2% and 5%
 
+E8 as implemented (post-hoc; design in `configs/e8_few_shot.yaml`, committed `0b3e92b` before any development run; test plan in `results/preregistration_e8.md`, committed `70adcfb` before any v2 run):
+
+- **Diagnosis** (`scripts/diagnose_jeff.py`, `results/e7_diagnosis.md`): reads the saved E6 and E7 predictions and re-runs S2 on Banking77 validation with 10, 20 and 50 support examples per intent. Nothing is tuned.
+- **Candidate fixes** (`src/router/few_shot.py`): 12 variants of S2, from three choices.
+  - **Encoder:** frozen MiniLM, or MiniLM fine-tuned on the support pairs SetFit-style (Tunstall et al., 2022; SetFit's default settings, five seeds).
+  - **Support:** the 140 examples, or those plus the 14 intent definitions as extra rows.
+  - **Scoring:** the nearest example's cosine (S2), the top-two margin, or a logistic-regression head on the embeddings.
+- **Tiers, by what adding an intent then costs:**
+  - **No training:** add the examples.
+  - **Head only:** refit the head, about a second.
+  - **Encoder fine-tune:** retrain the encoder, about 30 seconds here.
+- **Development data:** the old Jeff test split (matched risk 0.56%), plus a Banking77 validation check with 10 examples per intent (report only).
+- **Selection rule (fixed before the run):** per tier, the lowest mean AURC, with a simpler variant within 0.5 AURC points winning instead.
+- **What the rule chose:**
+  - **No training:** S2 itself. The descriptions moved AURC by 0.1 points. The margin raised the confidence AUROC but made OOS detection collapse (91 to 61).
+  - **Head only:** `frozen/descriptions/head`.
+  - **Encoder fine-tune:** `tuned/examples/nearest`.
+- **Banking77 check (validation, 10 examples per intent):** the head is close to S2 on AURC (13.82% against 14.34%) and covers more at 1% risk (14.41% against 6.53%). Fine-tuning is worse there: coverage at 5% risk is 8.89% against 27.66%. So fine-tuning repairs what the general encoder misses on Jeff, and is not a better router in general.
+- **Final test** (`scripts/evaluate_few_shot.py`, run once, refuses a second run):
+  - **Queries:** the 180 Jeff test v2 queries, format-controlled.
+  - **Systems:** S2 unchanged (the control) and the two chosen fixes.
+  - **Matched risk:** few-shot S4's error on v2. S4 made no errors (0.00%), so coverage at matched risk is the share answered before the first mistake.
+  - **Primary number:** the AURC gain over the control, a paired stratified bootstrap.
+
 E2 as implemented (`scripts/find_label_issues.py`, `scripts/evaluate_label_noise.py`, `configs/e2_label_noise.yaml`, fixed 22 Nov 2026 before the cleaner ran):
 
 - **Rows checked:** all in-scope train and validation rows, pooled (9,992). Test is not checked.
@@ -343,6 +389,21 @@ E2 as implemented (`scripts/find_label_issues.py`, `scripts/evaluate_label_noise
 - **Metrics:** in-scope macro-F1 and accuracy in four cells: train labels {original, cleaned} by validation rows {all, flagged removed}. **Ranking stable (RQ4)** means the same order by mean macro-F1 in all four cells. Training effect per system: cleaned minus original macro-F1, paired bootstrap stratified by intent, 1,000 resamples. S4 is not retrained; its mixed-set error rate (the E6 matched risk) is reported with and without the flagged rows, from cached replies only.
 - **Audit:** 100 flagged rows drawn at random (seed 0), shown blind: the given and suggested labels appear as options A and B in random order, each with 3 unflagged train examples. The key is in a separate file. Scoring, fixed before the audit: a real error is the suggestion or "neither"; "both" is ambiguous; the given label is a false flag. Reported with a Wilson 95% interval.
 - **Who judged (changed 23 Nov 2026 at the owner's request):** the owner judged items 1 to 11; a Claude judge (Opus 5.5, a separate Claude Code subagent) judged all 100 items from a copy of the sheet without the verdict and notes columns. It never saw the key, the flagged list or the owner's verdicts. The sheet's `annotator` column says whose verdict counts for each item (the owner's for 1 to 11, the judge's for 12 to 100); the judge's verdicts on all 100 are in `results/e2_audit_claude.csv`. Results are reported per annotator and together, plus owner-judge agreement on items 1 to 11. Limitation: a model judge may remember public Banking77 labels, which would push it towards the given label (fewer real errors).
+
+### 8.2 Errors found and how each was fixed
+
+Every problem below was found by checking a result that looked wrong. It was fixed on training or validation data, or on development data for E8, never by tuning on a test split. Failed versions are kept (rigour rule 9).
+
+| When | What looked wrong | Cause found | Fix | Effect |
+| --- | --- | --- | --- | --- |
+| M1 | DeBERTa-v3-small training gave NaN after one step | transformers 5 loads it in its stored float16 | Load in float32. It then did not fit in memory, so the S1 rule chose DistilRoBERTa | S1 is DistilRoBERTa; decision log 22 Nov |
+| M2 | S3 scored 11.8% on validation, below the untrained model (80.5%) | Shortcut learning: random positives and most-similar negatives taught it "looks similar = different intent" | Training pairs drawn from each query's own S2 shortlist | S3 90.22 ± 0.26% accuracy; the failed run is in `results/failed_runs/` |
+| M2 | S2, with no training, matched the fine-tuned S1 | 26.1% of validation and 29.0% of test queries have a near-duplicate in train (cosine ≥ 0.95) | Splits kept (the rates are similar, so validation stays a fair proxy); reported as a limitation | `results/near_duplicates.md` |
+| M3 | Out-of-scope AUROCs near 100% | CLINC150 queries are all lowercase and unpunctuated: "starts lowercase" alone scores AUROC 0.971 | Format control: every evaluated query lowercased, punctuation removed | Format-controlled E3 and E6 are the primary numbers |
+| M4 | Zero-shot S4 made a weak bar (18.0% error on validation) | Fine-grained confusions between near-identical intents | Few-shot S4 added under a rule fixed before it ran: the lower-error variant sets the matched risk | Bar of 12.22% on validation |
+| M4b | Possible label noise in Banking77 | 192 rows flagged by confident learning | Retrain on cleaned labels; blind audit of 100 flags (E2) | Ranking stable (RQ4 met) |
+| M5 | RQ6 not met: S2 covers 1.67% of the Jeff set at matched risk | Confidence stops separating right from wrong; the encoder matches topic, not the request; 10 examples per intent (`results/e7_diagnosis.md`) | E8: fixes chosen on development data, then one run on a fresh test set | AURC gain over S2 on fresh data: 16.37 points (9.25 to 25.69) fine-tuned; RQ6 verdict unchanged |
+| M6 | Doubtful "out of scope" labels in the error reading | 3 of the 28 out-of-scope rows in the 100-error sample look in scope for a bank; one is word for word a Banking77 train example | Not relabelled (test labels stay as published); reported as a limitation of borrowing the OOS pool | `results/error_analysis.md` |
 
 ---
 
@@ -427,7 +488,7 @@ No deadline has been supplied yet, so these are ordered phases. Convert to dates
 | M4 | Metrics module with tests, calibration, router policy, S4 baseline | Risk-coverage code unit-tested on toy data, LLM responses cached |
 | M4b | Label cleaning (E2), started only once every core-path item in section 0 works (needs cleanlab, approved 22 Nov 2026) | Flagged list saved, 100 items audited (changed 23 Nov 2026: the owner judged 11, a blind Claude judge the other 89), E1 on original vs cleaned labels. **Done 23 Nov 2026** (`results/e2_val.md`) |
 | M5 | Freeze everything, run E1 to E7 on test | `results/` complete, preregistration file predates the test runs. **Done 23 Nov 2026** (`results/verdicts.md`). E4 and E5 were not built, so RQ3 and RQ5 are reported as not tested |
-| M6 | Error analysis, figures, two-page summary, appendix, demo polish and script, clean-run check | Summary fits two pages and is reviewed by the owner, clean run recorded, demo rehearsed against a timer |
+| M6 | Error analysis, figures, two-page summary, appendix, demo polish and script, clean-run check | Summary fits two pages and is reviewed by the owner, clean run recorded, demo rehearsed against a timer. **In progress 24 Nov 2026:** error analysis first pass done (`results/error_analysis.md`; the owner's blind check of 20 is pending); E8 added after RQ6 failed (section 8.1) |
 
 Cut order if time runs short: policy v2 (REJECT), then E5, then CLINC150 as a second full benchmark, then E4, then E2. Never cut the submission notebook, the demo, the two-page summary, E1 with precision, recall and F1, E6, the seeds or the confidence intervals. Those are where the 100 points are.
 
@@ -538,6 +599,8 @@ Worth 20 points. The rubric asks for a clear, engaging demonstration that explai
 - [ ] Available compute (local GPU, Colab, other). Measured 22 Nov 2026: the owner's Apple M3 Pro (18 GB, MPS) trains one S1 DistilRoBERTa seed in about 5.5 minutes. It cannot train DeBERTa-v3-small in float32 (memory), so larger models need Colab or another GPU
 - [x] The assistant's intent list (8 to 15 intents) and the Jeff set (23 Nov 2026: 14 intents from Jeff's tool belt in `configs/jeff.yaml`; the set was written by a Claude agent at the owner's request, section 6.1)
 - [x] Exact LLM model for S4, its per-token price and a spend cap for the baseline runs (22 Nov 2026: `au.anthropic.claude-sonnet-4-6` on Bedrock, profile `unibucks`; US$3.30 / US$16.50 per million input / output tokens from the AWS Price List API; spend cap US$10 for M4, validation only. Test and Jeff-set runs at M5 need a fresh approval. Given 23 Nov 2026: at most US$10 new for M5. M5 used about US$6.70, for US$9.89 in total across all S4 caches)
+- [ ] The owner's blind check of 20 random rows of the M6 error analysis (`results/error_analysis/owner_check.csv`; Claude's categories are not shown there)
+- [x] S4 spend for E8 (24 Nov 2026: few-shot S4 on Jeff test v2 only, about US$0.15; spent US$0.15, for US$10.04 in total across all S4 caches)
 - [x] Threshold values N, M, K, F, D in section 4 (drafted 23 Nov 2026 by Claude at the owner's request, and confirmed by the owner the same day. In force in `results/preregistration.md`)
 
 ---
@@ -635,6 +698,13 @@ Read the first four before M1. Confirm every figure quoted in this README agains
 | 23 Nov 2026 | **RQ6 not met.** On the 180 Jeff test queries, few-shot S4 gets 1 wrong (0.56%; zero-shot 1.11%). S2 with the Jeff support set: in-scope accuracy 56.43%, OOS AUROC 90.93%, coverage at matched risk 1.67% (0.00 to 6.67), a drop of 75.80 points against D = 20. S3: accuracy 48.00 ± 2.44%, coverage 0.00%. Even at a fixed 5% risk, S2 covers only 1.67%. At the frozen Banking77 thresholds, S2 would handle 61.67% of queries with a selective risk of 45.95% (S3: 59.44% and 53.98%) | The failure does not hinge on S4's very low error, the limitation named before the run: even at a 5% risk bar the router covers almost nothing. Most of S2's errors are neighbouring intents, where the matched support example shares words but not intent (for example, a "what bills come out while I'm away" query matched to a safe-to-spend example). With 10 examples per intent and no intent descriptions, the frozen routers do not transfer to Jeff's 14 overlapping intents; S4 has the descriptions. Banking77 thresholds must not be reused on a new intent set |
 | 23 Nov 2026 | **R4 met:** S2 p95 6.4 ms (Apple M3 Pro, CPU, batch 1, `results/latency.json`, measured at M4). **RQ3 and RQ5 not tested:** E4 and E5 were not built (cut order, section 11) | Against L = 100 ms. S3 (p95 159.7 ms) would not meet R4, but it is not the best router |
 | 23 Nov 2026 | Notebook section 6 (the test results, read from `results/`): FAST mode measured at 1.8 min with saved checkpoints (M3 Pro, MPS) and 8.7 min on CPU only without checkpoints, both with no errors | Section 6 only reads result files, so it adds seconds. Still under 10 min without a GPU |
+| 24 Nov 2026 | **E8 added: fixing the Jeff failure, post-hoc.** The old Jeff test split becomes development data; a fresh Jeff test v2 is the one final test; fine-tuning is allowed as a candidate; few-shot S4 only on v2 (about US$0.15) | Owner's choices (the professor marks how errors are rectified). The pre-registered RQ6 verdict stays "not met". The old split's errors were read during the diagnosis, so it can no longer give a clean test of a fix designed from them |
+| 24 Nov 2026 | **E7 diagnosis** (`results/e7_diagnosis.md`). S2's confidence on Jeff separates right from wrong answers at AUROC 54.3% (Banking77 test 74.8%). The true intent is in S2's top three 88.6% of the time but first only 56.4%. On Banking77 validation, cutting S2's support to 10 examples per intent drops coverage at 5% risk from 55.6% to 27.7%; Jeff is at 1.7% | About half the gap is support size, the rest the Jeff intents themselves: they share topics and differ by the request or the time window |
+| 24 Nov 2026 | Refinement of the RQ6 row's explanation: right and wrong Jeff answers share about the same number of content words with their matched example (0.90 and 0.92), so word overlap cannot flag the errors. Reading them (`results/error_analysis.md`) confirms that many wrong matches hang on the topic or one salient word ("rent", "Kmart", "vet") while the request differs | Claude first called the shared-word explanation wrong on the strength of the overlap number alone. The hand reading showed that was too strong |
+| 24 Nov 2026 | **Jeff test v2 built** (section 6.1). 54 of the first 180 queries were rewritten to stay within a 0.70 difflib ratio of every v1 query (6 had been word for word, one a v1 support example). The blind check agreed on 180 of 180 | Without the rewrite, copies of v1 support examples would give the routers free matches, and copies of the development data would make the final test less independent |
+| 24 Nov 2026 | **E8 development** (`results/e8_dev.md`, clean tree `0b3e92b`). Rule-chosen: no training, S2 itself; head only, `frozen/descriptions/head` (development AURC 16.67% against S2's 42.15%); encoder fine-tune, `tuned/examples/nearest` (14.17 ± 1.63%) | The margin score raised confidence AUROC but made OOS detection collapse (91 to 61), so no fix without training helped. On Banking77 validation (10 examples per intent) fine-tuning is worse than S2 (coverage at 5% risk 8.89% against 27.66%), so it targets what the general encoder misses on Jeff |
+| 24 Nov 2026 | **E8 final test on Jeff test v2** (`results/e8_test_v2.md`, run once, clean tree). Few-shot S4: 0 errors on 180 (US$0.15). AURC gain over S2: fine-tuned 16.37 points (9.25 to 25.69), head 14.68 (7.70 to 23.06); both hold up. In-scope accuracy: S2 69.29%, head 82.14%, fine-tuned 82.43 ± 0.73%. Coverage at matched risk (0% here): 2.78% → 17.22% and 24.89%; at 5% risk: 2.78% → 36.67% and 51.00%. Development thresholds applied unchanged: fine-tuned 16.56% coverage at 0.94% selective risk, head 21.11% at 2.63%, S2 3.33% at 16.67% | The fixes work on unseen queries but do not rescue RQ6: the drop from Banking77 is still 52.58 points against D = 20. v2 was easier than the old test for S2 (69.29% against 56.43%), so the paired gains are the numbers to quote. Thresholds set on 180 development queries are unstable: one fine-tuned seed found no safe threshold and handles nothing on v2, another handles 35.56% at 4.69% risk |
+| 24 Nov 2026 | **M6 error analysis, first pass** (`results/error_analysis.md`): 100 random S2 errors on Banking77 test at the frozen threshold, plus all 67 Jeff errors, categorised by a separate Claude agent. Banking77: same topic 32, ambiguous 25, label error 12, out of scope accepted 28, other 3. Jeff: same topic 35, out of scope accepted 6, other 26 (mostly matches on one shared word), none ambiguous | 37 of the 100 Banking77 errors are ambiguous or mislabelled, so they are not clear router mistakes; the Jeff errors are all genuine misreads. The owner's blind check of 20 rows is pending |
 
 ---
 

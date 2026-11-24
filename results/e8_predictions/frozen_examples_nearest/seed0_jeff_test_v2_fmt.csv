@@ -1,0 +1,181 @@
+text,label,is_oos,pred_label,confidence
+october was a blur what did it cost me all up,month_spending,False,month_spending,0.6630926728248596
+what did i spend on groceries last month woolies aldi the lot,month_spending,False,category_trend,0.7464258074760437
+september total pls,month_spending,False,month_spending,0.6338608264923096
+pretty sure i smashed the entertainment budget in sept by how much,month_spending,False,month_spending,0.7265623807907104
+fuel this month so far feels like i live at the servo,month_spending,False,month_spending,0.7450992465019226
+can you break down august by category for me,month_spending,False,month_spending,0.4009096324443817
+ok be honest how bad was last month total dollars out the door,month_spending,False,month_spending,0.6126442551612854
+am i still under budget for november or have i blown it already,month_spending,False,month_spending,0.6887732744216919
+how much went on takeaway in july felt like a lot of uber eats and maccas,month_spending,False,month_spending,0.6086273193359375
+need the total i spent in june across everything partner reckons we overspent,month_spending,False,month_spending,0.6385672688484192
+show me everything i bought at bunnings this year,find_transactions,False,remember_fact,0.5908645391464233
+need to see each thing i bought on the work trip to brisbane 3rd to 6th nov for my expense report,find_transactions,False,find_transactions,0.49678972363471985
+whats this 49 99 charge from paypal steam,find_transactions,False,find_transactions,0.37763673067092896
+can you list the transactions behind my shopping total for october seems way too high,find_transactions,False,find_transactions,0.6912775039672852
+kmart purchases since sept,find_transactions,False,find_transactions,0.6228028535842896
+who or what is zlr parking on my statement there's a couple of them,find_transactions,False,category_trend,0.3345990777015686
+every uber ride in october pls,find_transactions,False,category_trend,0.5043655037879944
+list all my macca's transactions this month lol i need to see the damage,find_transactions,False,month_spending,0.5863774418830872
+any big purchases over 500 bucks recently,find_transactions,False,find_transactions,0.47313034534454346
+find the payment i made to the dentist sometime in september need the amount for my health fund claim,find_transactions,False,remember_fact,0.4215331971645355
+how much came in vs went out over the last 12 months,cashflow_overview,False,cashflow_overview,0.8401491045951843
+been really careful since my birthday in august has any of that actually turned into money left over,cashflow_overview,False,cashflow_overview,0.5681687593460083
+ever since the school holidays started in late sept ive felt broke can u show what came in and what went out,cashflow_overview,False,project_savings,0.42495596408843994
+where's my money been going since the start of september,cashflow_overview,False,month_spending,0.6734562516212463
+can you give me a summary of income and spending for the last quarter,cashflow_overview,False,month_spending,0.6098251938819885
+been back from the gold coast 6 weeks now whats my in vs out look like since then,cashflow_overview,False,cashflow_overview,0.47220247983932495
+eofy to now income vs spending,cashflow_overview,False,cashflow_overview,0.708041250705719
+since easter am i earning more than i'm spending or the other way round,cashflow_overview,False,project_savings,0.7417882680892944
+over the last six months where does most of my money actually go feels like it's all woolies and fuel,cashflow_overview,False,find_transactions,0.5400732755661011
+centrelink plus my casual shifts am i bringing in more than im spending these last few weeks,cashflow_overview,False,safe_to_spend,0.6920686960220337
+put 2025 and 2026 next to each other for me income spending savings,compare_periods,False,compare_periods,0.6824502348899841
+how does this quarter compare to last quarter for income and spending,compare_periods,False,cashflow_overview,0.6723134517669678
+since i changed jobs in july am i better or worse off than before,compare_periods,False,compare_periods,0.5678660273551941
+compare the first half of 2026 with the second half so far,compare_periods,False,compare_periods,0.5520517230033875
+was i better off last financial year or the one before,compare_periods,False,compare_periods,0.6620380878448486
+we moved out of sydney in may has our spending dropped compared to before the move,compare_periods,False,compare_periods,0.6853451728820801
+christmas period last year vs the same stretch the year before how did we go overall,compare_periods,False,compare_periods,0.5321356058120728
+paid off the car loan in april how does my money look now compared with before,compare_periods,False,simulate_monthly_plan,0.693116307258606
+side by side pls this spring vs last spring,compare_periods,False,compare_periods,0.4918607175350189
+went part time in feb show me income and savings before vs after,compare_periods,False,cashflow_overview,0.5597608685493469
+how has my shopping spending moved month to month lately,category_trend,False,category_trend,0.6908527612686157
+vet and pet food costs have been all over the place can i see them by month for the year,category_trend,False,category_trend,0.697007954120636
+has health stuff like chemist and physio been climbing each month since autumn,category_trend,False,category_trend,0.5125887393951416
+can you show my takeaway spending for each month since january,category_trend,False,find_transactions,0.5766800045967102
+show me what i've spent on power each month since winter feels like its going up,category_trend,False,month_spending,0.5405941605567932
+total spending per month for the last 6 months,category_trend,False,month_spending,0.7783206701278687
+i swear coles and woolies have gotten dearer can you show my grocery spend for each month this year,category_trend,False,find_transactions,0.622912585735321
+bottle o spending month by month since july,category_trend,False,category_trend,0.6824563145637512
+has my spending on the kids' sport crept up over the last 4 months month by month please,category_trend,False,cashflow_overview,0.5175037384033203
+monthly breakdown of public transport since march opal topups etc,category_trend,False,cashflow_overview,0.4432036280632019
+doing a spring clean of my finances which apps and services am i paying for on repeat,recurring_bills,False,recurring_bills,0.6700810194015503
+list all my regular bills please,recurring_bills,False,recurring_bills,0.8743893504142761
+how much am i locked into every month with bills and subs,recurring_bills,False,recurring_bills,0.6375396251678467
+netflix stan spotify what else am i paying for every month give me the full list,recurring_bills,False,recurring_bills,0.7475963234901428
+all my direct debits,recurring_bills,False,recurring_bills,0.4058874547481537
+i think i'm paying for stuff i forgot about like an old kayo sub can you show me every recurring payment going out,recurring_bills,False,recurring_bills,0.5744128227233887
+whats my total fixed costs per month rent phone internet all that,recurring_bills,False,recurring_bills,0.7570896744728088
+every subscription i'm paying for with the amount each want to cut back before chrissy,recurring_bills,False,recurring_bills,0.6128790378570557
+monthly cost of all my streaming and app subs combined,recurring_bills,False,recurring_bills,0.6866945028305054
+my partner and i are trying to work out our fixed costs before we sign a new lease can u pull together every regular bill i pay and what it all comes to monthly,recurring_bills,False,project_savings,0.5265441536903381
+whats due by friday,upcoming_bills,False,upcoming_bills,0.5665090084075928
+what's coming out before payday on thursday,upcoming_bills,False,upcoming_bills,0.6100799441337585
+i always forget when the water rates hit is that soon,upcoming_bills,False,upcoming_bills,0.42363592982292175
+strata levy due date,upcoming_bills,False,upcoming_bills,0.4494875967502594
+when's the phone bill due again,upcoming_bills,False,upcoming_bills,0.6532578468322754
+is my rego coming up soon,upcoming_bills,False,upcoming_bills,0.6872613430023193
+what payments come out tomorrow,upcoming_bills,False,upcoming_bills,0.7971695065498352
+got anything big due before the end of the month council rates maybe,upcoming_bills,False,cashflow_overview,0.46759432554244995
+list the bills hitting in the first week of december pls,upcoming_bills,False,safe_to_spend,0.5910786390304565
+does the electricity come out before or after the 15th,upcoming_bills,False,upcoming_bills,0.5990700125694275
+realistic number i can blow today without regretting it,safe_to_spend,False,project_savings,0.4143279194831848
+just been paid lol so whats actually mine to spend before next payday once the bills are covered,safe_to_spend,False,safe_to_spend,0.6455196738243103
+how much do i have to play with till payday,safe_to_spend,False,safe_to_spend,0.5697733163833618
+splurge allowance for the rest of this pay cycle,safe_to_spend,False,safe_to_spend,0.526594340801239
+footy on saturday whats my spending money for the weekend without screwing up bills,safe_to_spend,False,safe_to_spend,0.6836425065994263
+got 6 days till pay how much can i safely use each day,safe_to_spend,False,safe_to_spend,0.6104243993759155
+pay hits wednesday what can i spend between now and then without going under,safe_to_spend,False,safe_to_spend,0.6386415958404541
+my budget's tight and the kids need stuff for school day to day what can i spend until money comes in on the 28th without going short on bills,safe_to_spend,False,safe_to_spend,0.6656959056854248
+tbh im stressed how much can i realistically spend rn without missing a bill,safe_to_spend,False,safe_to_spend,0.6666756868362427
+is it safe to spend anything today or should i hold off,safe_to_spend,False,safe_to_spend,0.6803309321403503
+the vet quoted 900 for the dog's teeth is that gonna sink me this month,afford_purchase,False,category_trend,0.47289419174194336
+thinking of buying a ps5 for 800 bucks this weekend will that wreck my budget,afford_purchase,False,afford_purchase,0.6000535488128662
+is a 2k flight to bali doable rn,afford_purchase,False,afford_purchase,0.6526222229003906
+if i get a new couch for 1 500 what happens to my budget this month,afford_purchase,False,simulate_monthly_plan,0.5410265922546387
+my car needs new tyres about 650 can i cover that without dipping into savings,afford_purchase,False,simulate_monthly_plan,0.4020373821258545
+could i swing a 300 concert ticket,afford_purchase,False,afford_purchase,0.5898571014404297
+new iphone outright 1800 yes or no,afford_purchase,False,simulate_monthly_plan,0.31577691435813904
+want to grab a 400 cordless drill set at bunnings this arvo can i afford it,afford_purchase,False,find_transactions,0.3872414827346802
+would buying a 90 pair of runners today push me over for the month,afford_purchase,False,afford_purchase,0.7077839970588684
+mum's 60th is coming up and i want to get her a 250 voucher is that ok money wise,afford_purchase,False,remember_fact,0.6002424359321594
+what if i put an extra 200 a month into savings where would i be in a year,simulate_monthly_plan,False,simulate_monthly_plan,0.6518001556396484
+if i pay an extra 100 a fortnight off my car loan how much sooner is it done,simulate_monthly_plan,False,simulate_monthly_plan,0.7426597476005554
+say i chuck 150 a fortnight aside what does that look like by next christmas,simulate_monthly_plan,False,simulate_monthly_plan,0.4481307864189148
+run the numbers on putting an extra 300 a month onto the mortgage for the next year,simulate_monthly_plan,False,simulate_monthly_plan,0.5904468297958374
+if i sign up for a 60 month gym membership how does that affect me over the year,simulate_monthly_plan,False,category_trend,0.6755279898643494
+what would happen if i started putting 500 a month into the offset,simulate_monthly_plan,False,simulate_monthly_plan,0.5182269215583801
+if rent goes up 80 a fortnight how does that play out over the next 6 months,simulate_monthly_plan,False,upcoming_bills,0.7004855871200562
+if i saved an extra 1k every month how long to get to 10k,simulate_monthly_plan,False,simulate_monthly_plan,0.8086853623390198
+me and my partner are thinking of each putting 250 a month into a joint account what would that do to my budget over the next year,simulate_monthly_plan,False,safe_to_spend,0.5336487293243408
+thinking about a 75 monthly donation to the rspca how would that look by the end of the financial year,simulate_monthly_plan,False,simulate_monthly_plan,0.5415850877761841
+at this rate how much will i have saved by christmas,project_savings,False,project_savings,0.7815122604370117
+if i coast along like i am now will i have a decent buffer by mid next year,project_savings,False,project_savings,0.44971293210983276
+where am i heading financially if i keep going like this,project_savings,False,cashflow_overview,0.5880061984062195
+by 30 june roughly how much will i have put away,project_savings,False,project_savings,0.6369492411613464
+projected savings by march,project_savings,False,project_savings,0.6958358883857727
+keeping things exactly as they are will i have more or less money this time next year,project_savings,False,simulate_monthly_plan,0.5667065978050232
+on current spending how much would i have by my birthday in august,project_savings,False,month_spending,0.6619871258735657
+realistically how much will be in savings by the time my lease ends in april if i dont change anything,project_savings,False,project_savings,0.7235544323921204
+ballpark it for me same habits where's my savings sitting in two years,project_savings,False,project_savings,0.6128296256065369
+assuming my pay and bills stay the same what's my savings looking like come next winter,project_savings,False,simulate_monthly_plan,0.6407628655433655
+how am i tracking on my house deposit goal,savings_goals,False,savings_goals,0.7211408019065857
+what goals have i got set up in here again,savings_goals,False,savings_goals,0.567245364189148
+the europe fund is it where it should be by now or am i slipping,savings_goals,False,savings_goals,0.45998457074165344
+rainy day goal honestly how close am i,savings_goals,False,savings_goals,0.44981423020362854
+which of my goals am i behind on,savings_goals,False,savings_goals,0.5932406783103943
+car goal progress,savings_goals,False,savings_goals,0.43876194953918457
+i set a goal for a new laptop a couple months back how's that going,savings_goals,False,savings_goals,0.6818718314170837
+will i hit my wedding savings goal by next october at this pace,savings_goals,False,cashflow_overview,0.5666976571083069
+gap between what i've saved for the new fridge goal and the target,savings_goals,False,savings_goals,0.5318485498428345
+quick check on all my goals pls percentage done for each,savings_goals,False,savings_goals,0.6830123066902161
+feels like you're a day behind my actual bank can you get the newest stuff in,refresh_data,False,refresh_data,0.4884733557701111
+my account looks out of date it's missing yesterday's stuff,refresh_data,False,refresh_data,0.5634427070617676
+bought petrol 20 min ago still not in here can u check the bank again,refresh_data,False,refresh_data,0.46225258708000183
+re sync my bank data please,refresh_data,False,refresh_data,0.5825612545013428
+pull the latest from my bank,refresh_data,False,refresh_data,0.585353672504425
+the refund from myer landed in my bank app but not here yet update,refresh_data,False,refresh_data,0.4850621819496155
+why is everything stuck on last tuesday update pls,refresh_data,False,refresh_data,0.5719829797744751
+numbers look stale can you grab fresh data,refresh_data,False,refresh_data,0.7034957408905029
+my pay came in this arvo but ur still showing the old figures sync again,refresh_data,False,refresh_data,0.6091949343681335
+hey nothing since the weekend is showing not even my afterpay payment can you reload from the bank,refresh_data,False,refresh_data,0.5619935989379883
+pay's switching to monthly from jan last business day of each month,remember_fact,False,upcoming_bills,0.5095822215080261
+i've started salary sacrificing into super so my take home is about 150 less each pay from now on,remember_fact,False,remember_fact,0.5782834887504578
+remember i'm a uni student and only work over summer so my income is patchy,remember_fact,False,remember_fact,0.5374234914779663
+our gym membership is shared so only half of it is mine keep that in mind going forward,remember_fact,False,category_trend,0.5392395853996277
+note the 85 i send my sister every week is board not spending,remember_fact,False,remember_fact,0.49489790201187134
+store this i keep 2k aside in a separate account as an emergency buffer don't count it as spendable,remember_fact,False,simulate_monthly_plan,0.4716508984565735
+school fees are due every term roughly 1 100 each time just so you have it on file,remember_fact,False,upcoming_bills,0.38875532150268555
+my partner pays the electricity so ignore that one,remember_fact,False,remember_fact,0.6545872688293457
+heads up i've paid off my hecs so that won't be coming out of my pay anymore,remember_fact,False,remember_fact,0.44406190514564514
+i'm going on unpaid leave from dec 15 to jan 20 so no salary in that stretch,remember_fact,False,remember_fact,0.5402420163154602
+jumper leads on a flat battery which clamp goes on first,oos,True,find_transactions,0.23142483830451965
+can you give me a recipe for a quick chicken stir fry,oos,True,upcoming_bills,0.17962096631526947
+who won the afl grand final,oos,True,savings_goals,0.19023558497428894
+my sql query keeps returning duplicates when i join two tables any idea why,oos,True,refresh_data,0.2259151190519333
+whats the best way to get from cairns to the daintree without a car,oos,True,compare_periods,0.2653282582759857
+tell me a joke,oos,True,upcoming_bills,0.18670445680618286
+how do i get a red wine stain out of carpet,oos,True,refresh_data,0.20321206748485565
+what's the capital of mongolia,oos,True,category_trend,0.0986585021018982
+can you explain photosynthesis simply year 7 science test tomorrow,oos,True,category_trend,0.23678435385227203
+recommend a good show to watch on netflix,oos,True,recurring_bills,0.4672650694847107
+how long do i boil an egg for a runny yolk,oos,True,project_savings,0.20907464623451233
+how many players on a netball team,oos,True,savings_goals,0.22944055497646332
+write a haiku about monday mornings,oos,True,safe_to_spend,0.28875401616096497
+what's the difference between affect and effect,oos,True,simulate_monthly_plan,0.19295752048492432
+my dog keeps scratching his ears should i be worried,oos,True,category_trend,0.22392189502716064
+move whatever's left in everyday into my holiday account tonight,oos,True,safe_to_spend,0.4980575740337372
+can u just pay the water bill so i dont forget,oos,True,remember_fact,0.4299468994140625
+split the dinner bill with my mates for me send each of them 42,oos,True,remember_fact,0.58966463804245
+can you set up an automatic transfer of 100 every payday into savings,oos,True,simulate_monthly_plan,0.46606823801994324
+lock my card i think i left it at the pub,oos,True,refresh_data,0.2936958074569702
+can you put a travel note on my card i'm in fiji from monday,oos,True,afford_purchase,0.32019561529159546
+cancel my stan subscription for me pls,oos,True,simulate_monthly_plan,0.4571312367916107
+set me up with a joint account for me and my partner,oos,True,remember_fact,0.46969807147979736
+raise my credit card limit to 8k pls,oos,True,remember_fact,0.3605996370315552
+can i get a personal loan for 10k through you,oos,True,simulate_monthly_plan,0.4218841791152954
+dispute this 89 charge never got the item,oos,True,find_transactions,0.45736539363861084
+there's a double charge from coles yesterday can you get it reversed,oos,True,find_transactions,0.4285907447338104
+chargeback on the airbnb that got cancelled pls,oos,True,upcoming_bills,0.41063791513442993
+is ethereum gonna go up next year worth getting in,oos,True,compare_periods,0.48457449674606323
+should i do a voluntary super contribution before june to cut my tax,oos,True,cashflow_overview,0.42377567291259766
+what can i claim on tax for working from home,oos,True,remember_fact,0.36378297209739685
+shares vs property for someone in their 20s what would you do,oos,True,simulate_monthly_plan,0.3580060601234436
+my ex owes me 3 grand from when we split can i take him to small claims,oos,True,remember_fact,0.3403969407081604
+what would it cost to insure my new e bike,oos,True,afford_purchase,0.44293490052223206
+can you get me a quote for contents insurance,oos,True,recurring_bills,0.36354100704193115
+atm ate my card at central station what now,oos,True,refresh_data,0.40330520272254944
+why is my account frozen can't use my card anywhere today,oos,True,project_savings,0.35292160511016846
+forgot my pin,oos,True,refresh_data,0.3103581666946411
+my osko transfer failed this morning but the money's already gone,oos,True,remember_fact,0.327431857585907
+why cant i log into my internet banking,oos,True,refresh_data,0.3476061224937439
