@@ -1,0 +1,242 @@
+{
+  "metadata": {
+    "timestamp_utc": "2026-11-24T01:05:02+00:00",
+    "git_commit": "70adcfb1cf99f6b074a36643e61a7192cde0675a",
+    "git_dirty": false,
+    "seed": null,
+    "dataset_revisions": {},
+    "python": "3.12.4",
+    "platform": "macOS-27.0-arm64-arm-64bit",
+    "packages": {
+      "torch": "2.15.0",
+      "transformers": "5.24.0",
+      "datasets": "5.2.0",
+      "sentence-transformers": "6.3.0",
+      "scikit-learn": "1.9.1",
+      "pandas": "3.1.1",
+      "numpy": "2.5.5",
+      "cleanlab": "2.9.0"
+    },
+    "config": {
+      "encoder_model": "sentence-transformers/all-MiniLM-L6-v2",
+      "supports": [
+        "examples",
+        "descriptions"
+      ],
+      "seeds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "fine_tune": {
+        "pair_iterations": 20,
+        "epochs": 1,
+        "batch_size": 16,
+        "learning_rate": 2e-05,
+        "warmup_fraction": 0.1,
+        "max_grad_norm": 1.0
+      },
+      "head": {
+        "C": 1.0,
+        "max_iter": 2000
+      },
+      "fixed_risks": [
+        0.01,
+        0.02,
+        0.05
+      ],
+      "selection": {
+        "metric": "aurc",
+        "simpler_within": 0.005
+      },
+      "banking77_check": {
+        "split": "val",
+        "per_intent": 10,
+        "draws": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      }
+    }
+  },
+  "r_star_val": 0.12222222222222222,
+  "confidence_quality": {
+    "Banking77 test_fmt (E6)": {
+      "n_in_scope": 3079,
+      "in_scope_accuracy": 0.9214030529392659,
+      "auroc_nearest": 0.7480751696152087,
+      "auroc_margin": 0.8920973441273373,
+      "median_nearest_right": 0.9163442850112915,
+      "median_nearest_wrong": 0.8211857974529266
+    },
+    "Jeff test (E7)": {
+      "n_in_scope": 140,
+      "in_scope_accuracy": 0.5642857142857143,
+      "auroc_nearest": 0.5428512139448018,
+      "auroc_margin": 0.6071799128449885,
+      "median_nearest_right": 0.5667477250099182,
+      "median_nearest_wrong": 0.5493921041488647
+    }
+  },
+  "jeff": {
+    "top_k_accuracy": {
+      "1": 0.5642857142857143,
+      "2": 0.7571428571428571,
+      "3": 0.8857142857142857
+    },
+    "per_intent_accuracy": {
+      "category_trend": 0.3,
+      "simulate_monthly_plan": 0.3,
+      "afford_purchase": 0.4,
+      "find_transactions": 0.4,
+      "remember_fact": 0.4,
+      "compare_periods": 0.5,
+      "month_spending": 0.5,
+      "upcoming_bills": 0.5,
+      "cashflow_overview": 0.6,
+      "recurring_bills": 0.6,
+      "project_savings": 0.7,
+      "refresh_data": 0.8,
+      "safe_to_spend": 0.9,
+      "savings_goals": 1.0
+    },
+    "top_confused_pairs": [
+      {
+        "true": "category_trend",
+        "predicted": "month_spending",
+        "count": 4
+      },
+      {
+        "true": "cashflow_overview",
+        "predicted": "month_spending",
+        "count": 3
+      },
+      {
+        "true": "simulate_monthly_plan",
+        "predicted": "project_savings",
+        "count": 3
+      },
+      {
+        "true": "afford_purchase",
+        "predicted": "simulate_monthly_plan",
+        "count": 2
+      },
+      {
+        "true": "category_trend",
+        "predicted": "find_transactions",
+        "count": 2
+      },
+      {
+        "true": "compare_periods",
+        "predicted": "upcoming_bills",
+        "count": 2
+      },
+      {
+        "true": "find_transactions",
+        "predicted": "remember_fact",
+        "count": 2
+      },
+      {
+        "true": "month_spending",
+        "predicted": "category_trend",
+        "count": 2
+      }
+    ],
+    "overlap_right": 0.8987341772151899,
+    "overlap_wrong": 0.9180327868852459,
+    "oos_median_nearest": 0.3793238550424576
+  },
+  "support_size_check": [
+    {
+      "support": "full train",
+      "per_intent": "all (about 120)",
+      "in_scope_accuracy": 0.908,
+      "macro_f1": 0.9104449301070581,
+      "oos_auroc": 0.9991257142857143,
+      "confidence_auroc": 0.7825129285577475,
+      "aurc": 0.08163254868203401,
+      "coverage_at_matched_risk": 0.7659259259259259,
+      "coverage_at_0.01": 0.10074074074074074,
+      "coverage_at_0.05": 0.5555555555555556
+    },
+    {
+      "support": "5 random draws",
+      "per_intent": "10",
+      "in_scope_accuracy": 0.7996000000000001,
+      "macro_f1": 0.802988989724103,
+      "oos_auroc": 0.9973891428571429,
+      "confidence_auroc": 0.7679316257607706,
+      "aurc": 0.14343847511578933,
+      "coverage_at_matched_risk": 0.5453333333333333,
+      "coverage_at_0.01": 0.06533333333333333,
+      "coverage_at_0.05": 0.27659259259259256,
+      "in_scope_accuracy_std": 0.013720058308913978,
+      "macro_f1_std": 0.01544413499324934,
+      "oos_auroc_std": 0.0005579419909866127,
+      "confidence_auroc_std": 0.006886788325956124,
+      "aurc_std": 0.007482340978578473,
+      "coverage_at_matched_risk_std": 0.037777487290095946,
+      "coverage_at_0.01_std": 0.02783214432787235,
+      "coverage_at_0.05_std": 0.0240830752403332
+    },
+    {
+      "support": "5 random draws",
+      "per_intent": "20",
+      "in_scope_accuracy": 0.8404,
+      "macro_f1": 0.846186866276204,
+      "oos_auroc": 0.9983942857142857,
+      "confidence_auroc": 0.7657076634360644,
+      "aurc": 0.12155879289192888,
+      "coverage_at_matched_risk": 0.6506666666666666,
+      "coverage_at_0.01": 0.08311111111111111,
+      "coverage_at_0.05": 0.30340740740740746,
+      "in_scope_accuracy_std": 0.007914543574963758,
+      "macro_f1_std": 0.005260196892267562,
+      "oos_auroc_std": 0.0005390210324925659,
+      "confidence_auroc_std": 0.012918405763918015,
+      "aurc_std": 0.006079511854210478,
+      "coverage_at_matched_risk_std": 0.027639061045434427,
+      "coverage_at_0.01_std": 0.07105306272714844,
+      "coverage_at_0.05_std": 0.038428955703848376
+    },
+    {
+      "support": "5 random draws",
+      "per_intent": "50",
+      "in_scope_accuracy": 0.8837999999999999,
+      "macro_f1": 0.888104027171565,
+      "oos_auroc": 0.998649142857143,
+      "confidence_auroc": 0.790845146348761,
+      "aurc": 0.09208804162722302,
+      "coverage_at_matched_risk": 0.7413333333333333,
+      "coverage_at_0.01": 0.1834074074074074,
+      "coverage_at_0.05": 0.4905185185185186,
+      "in_scope_accuracy_std": 0.009537295214053101,
+      "macro_f1_std": 0.008983422336010653,
+      "oos_auroc_std": 0.0001861436794192977,
+      "confidence_auroc_std": 0.016591527819744434,
+      "aurc_std": 0.0046830195705714105,
+      "coverage_at_matched_risk_std": 0.011762627105943252,
+      "coverage_at_0.01_std": 0.07369175410295863,
+      "coverage_at_0.05_std": 0.05065150303737421
+    }
+  ],
+  "jeff_s2_e7": {
+    "in_scope_accuracy": 0.5642857142857143,
+    "macro_f1": 0.5667473847593263,
+    "oos_auroc": 0.9092857142857143,
+    "coverage_at_matched_risk": 0.016666666666666666,
+    "selective_risk_at_matched_risk": 0.0,
+    "coverage_frozen_threshold": 0.6166666666666667,
+    "selective_risk_frozen_threshold": 0.4594594594594595,
+    "oos_handled_frozen_threshold": 6.0,
+    "aurc": 0.4214581294647689,
+    "coverage_at_0.01": 0.016666666666666666,
+    "coverage_at_0.02": 0.016666666666666666,
+    "coverage_at_0.05": 0.016666666666666666
+  }
+}
