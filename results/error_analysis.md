@@ -1,6 +1,6 @@
 # M6 error analysis: router errors read by hand
 
-Written by `scripts/make_error_sheet.py --summarise`. Do not edit by hand. Rows: `results/error_analysis/sheet.csv`; Claude's category and note per row: `results/error_analysis/claude_categories.csv`.
+Written by `scripts/make_error_sheet.py --summarise`. Do not edit by hand. Rows: `results/error_analysis/sheet.csv`; Claude's category and note per row: `results/error_analysis/claude_categories.csv`. **Categorised by a Claude agent, not yet checked by a person** unless the owner's check below is filled in.
 
 ## Which errors
 
