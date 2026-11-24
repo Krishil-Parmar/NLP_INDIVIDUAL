@@ -1,0 +1,168 @@
+item_id,source,text,true_label,predicted_label,confidence,matched_example
+1,banking77_test,what are the steps to verify my identity,verify_my_identity,why_verify_identity,0.963,How to verify my identity
+2,jeff_old_test,300 extra into the offset every month run the numbers for 2 years,simulate_monthly_plan,compare_periods,0.457,last 3 months vs the 3 before that
+3,jeff_old_test,paid rent via payid an hour ago and it's not in here yet can you pull the latest,refresh_data,upcoming_bills,0.561,rent goes out when again? the next one i mean
+4,jeff_old_test,bills this week,upcoming_bills,safe_to_spend,0.709,how much have i got to play with this week after bills
+5,jeff_old_test,heads up i cancelled spotify so dont count it anymore,remember_fact,recurring_bills,0.532,"Netflix, Stan, Spotify... what else am I subscribed to?"
+6,jeff_old_test,is my net saving better in the 8 weeks since i started budgeting than the 8 weeks before,compare_periods,project_savings,0.575,"my savings, 9 months from now, if nothing changes?"
+7,jeff_old_test,what's my savings rate been over the past 6 months,cashflow_overview,project_savings,0.676,trajectory of my savings over the next couple of years?
+8,jeff_old_test,went part time in july can you put jan jun next to jul nov so i can see the difference,compare_periods,upcoming_bills,0.42,when is my rego due
+9,jeff_old_test,would a 1200 vet bill for the dog's surgery break me this month,afford_purchase,category_trend,0.644,"Pet spending, has it gone up month to month? Vet bills have been brutal"
+10,banking77_test,remind me of the address for my workplace please,oos,edit_personal_details,0.58,My address needs to be changed.
+11,banking77_test,look up prices for parking at the airport over the weekend,oos,wrong_exchange_rate_for_cash_withdrawal,0.498,what are weekend rates for getting cash
+12,banking77_test,how do i change currencies to euros,fiat_currency_support,exchange_via_app,0.84,How can I change to another currency?
+13,banking77_test,answer the phone,oos,lost_or_stolen_phone,0.504,I no longer have my phone.
+14,banking77_test,can you delete my saved credit card,oos,card_about_to_expire,0.653,Can I keep using my card after it expires?
+15,jeff_old_test,afford a new iphone outright around 1700 don't want to put it on afterpay,afford_purchase,simulate_monthly_plan,0.412,whats the effect of a $35 monthly phone upgrade over 2 years on my savings
+16,jeff_old_test,can i buy the kmart outdoor setting its 249,afford_purchase,find_transactions,0.451,"I'm trying to work out what I bought at Kmart in early November, can you pull up those transactions"
+17,banking77_test,add my wife as an authorized user to checking account 20905432,oos,age_limit,0.538,"I need to set up an account for my daughter, how would I do that?"
+18,banking77_test,what's the highest building in the world,oos,top_up_limits,0.494,What is the maximum top up?
+19,jeff_old_test,all my uber trips last month pls,find_transactions,category_trend,0.621,Has my Uber Eats habit gotten worse since June? Month by month
+20,banking77_test,how come i can't find anywhere to load using cash,top_up_by_cash_or_cheque,declined_cash_withdrawal,0.661,I was not able to use the ATM to get cash
+21,jeff_old_test,there's a charge from a gym i never joined can u get my money back,oos,category_trend,0.518,Gym + fitness costs per month over the last year?
+22,banking77_test,can i deposit a check,oos,top_up_by_cash_or_cheque,0.994,Can I deposit a check?
+23,banking77_test,i am seeing a weird payment showing up that i know i did not make how can i get it cancelled,direct_debit_payment_not_recognised,reverted_card_payment?,0.801,"I just checked and my payment was cancelled, why?"
+24,jeff_old_test,remember my lease ends in august,remember_fact,project_savings,0.698,"based on my usual spending and pay, what will i have in the bank by the time my lease ends in august"
+25,banking77_test,what is the account number to the internet service i have,oos,cancel_transfer,0.593,I used the wrong account number!
+26,jeff_old_test,assuming i keep spending the way i do will i have more or less money in 3 months,project_savings,cashflow_overview,0.712,am i spending more than i earn? like over the last 3 months
+27,banking77_test,trouble transferring transaction contact for help,declined_transfer,failed_transfer,0.635,please help my transfer go through
+28,jeff_old_test,when my housemate moves out my rent goes up 200 a month what does that do to my savings over the year,simulate_monthly_plan,upcoming_bills,0.596,rent goes out when again? the next one i mean
+29,banking77_test,what are some of the most visited countries for people looking to travel abroad,oos,country_support,0.568,What countries are you available in?
+30,banking77_test,the exchange rate seems off on this transaction,card_payment_wrong_exchange_rate,wrong_exchange_rate_for_cash_withdrawal,0.786,Why is the exchange rate different than expected on my transaction?
+31,jeff_old_test,did i pay origin twice this month show me the payments,find_transactions,refresh_data,0.452,"got paid this morning but its not showing in here, resync?"
+32,jeff_old_test,rego health insurance phone gym what do all my regular bills cost me per month combined,recurring_bills,category_trend,0.693,Gym + fitness costs per month over the last year?
+33,jeff_old_test,what's this 47 99 paypal charge from tuesday can't place it,find_transactions,upcoming_bills,0.434,What payments are scheduled between now and Friday?
+34,banking77_test,what are the fees for top ups,top_up_by_bank_transfer_charge,top_up_by_card_charge,0.953,What fees to you have for top ups?
+35,jeff_old_test,send 50 bucks to my sister via payid,oos,remember_fact,0.504,"the weekly $45 PayID to my housemate is my share of the power bill, just so you know"
+36,jeff_old_test,can you set up a 100 a month auto transfer into my savings,oos,simulate_monthly_plan,0.511,how would putting 100 a month into my daughter's account for the next 3 years hit my own savings
+37,jeff_old_test,when does netflix next charge me,upcoming_bills,simulate_monthly_plan,0.449,"Netflix + Stan + Disney = about 45 a month. If I cancelled all three and banked it, what's that over 2 years"
+38,banking77_test,can you freeze my card it was stolen,lost_or_stolen_card,compromised_card,0.861,My card was stolen and used to make several purchases. Please freeze my card so no one can use it.
+39,banking77_test,will amazon ship an order even if there was a pricing mistake,oos,card_payment_wrong_exchange_rate,0.553,I bought an item at the wrong exchange rate.
+40,jeff_old_test,tell me my total for august just the one number,month_spending,cashflow_overview,0.512,"total in, total out, since 15 Sept"
+41,banking77_test,i was attempting to purchase a golf club off ebay yesterday but my credit card was declined i tried multiple times and again this morning can you check into my card please,declined_transfer,reverted_card_payment?,0.722,"I would like to make a purchase, however my card has been declined. I would like to ask the reason for this. The past two weeks, the card has been working fine."
+42,banking77_test,can you check how many steps i have walked in the last week from my phone app,oos,card_arrival,0.522,Was there a number to track that I could get?
+43,jeff_old_test,trying to cut back show me all my recurring charges so i can see what to cancel,recurring_bills,find_transactions,0.412,"Show my Amazon orders from the last couple of months, each one not just the total"
+44,jeff_old_test,should i buy bitcoin right now,oos,afford_purchase,0.52,Thinking about a $2.5k laptop. Can I afford it right now?
+45,banking77_test,can i purchase extra non virtual cards,getting_spare_card,get_disposable_virtual_card,0.816,can i get a virtual card
+46,banking77_test,is it normal to have to wait over a week for my new card,card_arrival,card_delivery_estimate,0.795,How long will I have to wait for my new card?
+47,banking77_test,are there any messages,oos,top_up_failed,0.665,It does not appear that my message went through.
+48,banking77_test,how long does a card delivery take,card_arrival,card_delivery_estimate,0.881,How long does it take for a card to arrive?
+49,banking77_test,i transferred some money but i think it has gotten lost somewhere,balance_not_updated_after_bank_transfer,transfer_not_received_by_recipient,0.85,where has my transferred money gone?
+50,jeff_old_test,if i grab the dyson on sale for 649 will i still be ok this month,afford_purchase,cashflow_overview,0.364,so am i saving or not since my birthday in june
+51,jeff_old_test,how much wiggle room do i have before payday,safe_to_spend,remember_fact,0.42,i'm on 4 days a week now so pay will be lower
+52,banking77_test,why did i get a fee,cash_withdrawal_charge,card_payment_fee_charged,0.853,Why and I being charged this fee?
+53,banking77_test,i want to make a currency exchange to eu,fiat_currency_support,exchange_via_app,0.84,How do I make a currency exchange?
+54,jeff_old_test,electricity costs each month since last winter,category_trend,upcoming_bills,0.478,"Electricity bill, when's the next one due?"
+55,banking77_test,how do i finalize a card payment,pending_card_payment,reverted_card_payment?,0.641,What should I do if my card payment was cancelled?
+56,banking77_test,how long does it take for a transfer,transfer_timing,pending_transfer,0.974,How long does a transfer take?
+57,banking77_test,i am concerned about the security in my account and would like to make a dispute,direct_debit_payment_not_recognised,verify_my_identity,0.742,im worried about fraud how do you protect my account
+58,banking77_test,i don't understand how to top up my account can you please explain the process,transfer_into_account,topping_up_by_card,0.801,How does someone else top up my account
+59,jeff_old_test,heading up to noosa for a week what bills will come out while im gone,upcoming_bills,safe_to_spend,0.562,"Factoring in my upcoming bills, what can I spend between now and Sunday?"
+60,jeff_old_test,is the gym fee coming out this week or next,upcoming_bills,category_trend,0.674,Gym + fitness costs per month over the last year?
+61,jeff_old_test,where am i headed money wise if nothing changes,project_savings,simulate_monthly_plan,0.538,move 20% of every pay into savings - what's that add up to by end of next year?
+62,jeff_old_test,run a scenario i pay my mum 400 every month for board how does that affect me over 6 months,simulate_monthly_plan,remember_fact,0.549,"the 200 transfer to my mum every month is board, not a gift"
+63,banking77_test,there is a charge on my card that i did not make,card_payment_not_recognised,card_payment_fee_charged,0.885,There was a charge applied when I used my card.
+64,banking77_test,i requested a refund from a store but it hasn't arrived,Refund_not_showing_up,request_refund,0.84,i haven't received my order and want a refund
+65,banking77_test,please uninstall this intrusive social media app,oos,contactless_not_working,0.534,Should i uninstall the app before i try it again?
+66,jeff_old_test,please remember i'm on centrelink as well as my part time pay,remember_fact,cashflow_overview,0.59,"been on centrelink since september, how much has come in and gone out since then"
+67,banking77_test,someone has taken my money and i don't know who,direct_debit_payment_not_recognised,card_payment_not_recognised,0.736,A payment in my account was made by someone I don't know
+68,banking77_test,is there a transfer fee,transfer_fee_charged,top_up_by_bank_transfer_charge,0.954,Is there a fee to make a transfer?
+69,banking77_test,can you store a gun in a safe deposit box,oos,top_up_by_cash_or_cheque,0.492,Can I use check to deposit?
+70,banking77_test,areas card is accpeted,card_acceptance,order_physical_card,0.69,What areas are cards delivered to?
+71,banking77_test,how long does it take to post atm with drawl,pending_cash_withdrawal,pending_transfer,0.623,How long is the wait for a money transfer to post?
+72,banking77_test,someone is using my account,compromised_card,card_payment_not_recognised,0.702,Someone else accessed my account and made a payment.
+73,banking77_test,can i top up using my car,topping_up_by_card,top_up_limits,0.736,Can I top up?
+74,jeff_old_test,how did the jan mar quarter stack up against apr jun,compare_periods,upcoming_bills,0.341,when is my rego due
+75,banking77_test,what is bitcoin trading for currently,oos,exchange_rate,0.508,How do you do currency exchanges?
+76,banking77_test,why can't i see my pin,get_physical_card,pin_blocked,0.835,"My PIN is not working, can you help?"
+77,banking77_test,i was supposed to get a refund but my balance hasn't changed why not,Refund_not_showing_up,balance_not_updated_after_bank_transfer,0.736,My balance didn't change after I transferred some money.
+78,jeff_old_test,woolies and coles in september how much all up,month_spending,find_transactions,0.498,show me all my woolies transactions this month
+79,banking77_test,why does it say pending cash withdrawal on my statement,pending_cash_withdrawal,cash_withdrawal_not_recognised,0.895,I have a cash withdrawal in my statement. Why is that?
+80,banking77_test,i need to do a refund,request_refund,Refund_not_showing_up,0.934,I need my refund
+81,jeff_old_test,what would my savings be by june if i started putting away 250 a fortnight from now,simulate_monthly_plan,project_savings,0.682,if i keep going like this how much will i have saved by my holiday in may
+82,jeff_old_test,kmart and target spending per month since jan,category_trend,find_transactions,0.5,"I'm trying to work out what I bought at Kmart in early November, can you pull up those transactions"
+83,banking77_test,on my last transaction it seem that my top up was not successful,top_up_reverted,pending_top_up,0.825,Is there a problem with the top up system? My transaction hasn't gone through properly
+84,banking77_test,can i get a copy of the card by email,getting_virtual_card,order_physical_card,0.755,Can I get an actual card
+85,jeff_old_test,if i put away 200 a month how much will i have by next christmas,simulate_monthly_plan,project_savings,0.604,if i keep going like this how much will i have saved by my holiday in may
+86,jeff_old_test,how much have i earned and spent since eofy,cashflow_overview,month_spending,0.56,how much have i spent this month
+87,jeff_old_test,say i start a 60 month donation to the rspca how does that affect my savings over the next year,simulate_monthly_plan,project_savings,0.49,"my savings, 9 months from now, if nothing changes?"
+88,jeff_old_test,where does all my money go,cashflow_overview,month_spending,0.526,"Can you give me a rundown of where my money went in October, by category?"
+89,jeff_old_test,what happens to my budget if i drop 600 at bunnings on garden stuff,afford_purchase,remember_fact,0.542,"From now on, treat the Bunnings spending as business expenses, it's for my side hustle"
+90,banking77_test,is it a good time to exchange,exchange_rate,exchange_charge,0.497,I exchange my currency quite a bit. Do I get an exchange price break?
+91,banking77_test,where is the closest driving range,oos,atm_support,0.522,How far is the closest ATM from me?
+92,jeff_old_test,list everything at bunnings since july,find_transactions,remember_fact,0.535,"From now on, treat the Bunnings spending as business expenses, it's for my side hustle"
+93,banking77_test,is there a way to change your houses address,oos,edit_personal_details,0.806,Is it possible to change my address?
+94,banking77_test,how can i top up my card,top_up_by_cash_or_cheque,topping_up_by_card,0.964,How do I top up on my card?
+95,banking77_test,how many push ups do i need to do to get ripped,oos,top_up_limits,0.532,How many top-ups am I allowed to do?
+96,banking77_test,i transferred some money but the receiver can't pick it up for some reason,transfer_not_received_by_recipient,transfer_fee_charged,0.823,I tried to transfer money to a receiver and they didn't get the right amount. What is going on and who do I contact to help me?
+97,banking77_test,how do i make money,oos,receiving_money,0.616,How can I receive money?
+98,jeff_old_test,was march a big month for me spending wise feels like it was,month_spending,project_savings,0.563,am i going to be ok by jan if i keep spending like this? want to know what i'll have left
+99,banking77_test,i'm starting to think my card is lost because it still hasn't arrived can you help,card_arrival,lost_or_stolen_card,0.874,I think my card is lost. What do I do?
+100,jeff_old_test,what were my 5 biggest purchases last month,find_transactions,month_spending,0.621,What was my total spending last month?
+101,jeff_old_test,is my nrma car insurance due soon,upcoming_bills,compare_periods,0.392,Has my position improved since I paid off the car in February? Compare before and after
+102,banking77_test,do i need to replace my card if it didn't work when i tried to pay contactless at the shop today,contactless_not_working,declined_card_payment,0.754,My card wasn't working in a shop
+103,jeff_old_test,i feel like my woolies bill creeps up every month can you show me how it's moved since july,category_trend,find_transactions,0.592,show me all my woolies transactions this month
+104,banking77_test,how can someone add money to my account,topping_up_by_card,transfer_into_account,0.817,How can I add money to my account from another account I have?
+105,banking77_test,my transfer is pending,balance_not_updated_after_bank_transfer,pending_transfer,0.971,My transfer is still pending
+106,banking77_test,im so mad right now theres several charges that i think my x boyfriend made on my card the companys on the website wouldn't refund me my money they told me to contact my bank do something please,direct_debit_payment_not_recognised,card_payment_not_recognised,0.661,"There are charges on my card from the past few day I am pretty sure I didnt make, can you please freeze it for me? How do I get my money returned since it wasnt me?"
+107,jeff_old_test,find the payid payment i made to my landlord last week,find_transactions,remember_fact,0.494,"the weekly $45 PayID to my housemate is my share of the power bill, just so you know"
+108,banking77_test,i need to add a person to my bank account,oos,transfer_into_account,0.679,How can I add money to my account from another account I have?
+109,jeff_old_test,missing a couple of servo transactions from the weekend please refresh,refresh_data,find_transactions,0.57,any transactions at the servo over $100?
+110,banking77_test,i am missing some funds from my account i tried to transfer them using my credit card number and it disappeared,topping_up_by_card,balance_not_updated_after_bank_transfer,0.763,The funds I transferred are not in my account
+111,banking77_test,how can i repair a broken watch,oos,card_not_working,0.487,How do I fix my card if it is broken?
+112,banking77_test,is it possible for me to get a virtual card,getting_virtual_card,get_disposable_virtual_card,0.968,can i get a virtual card
+113,banking77_test,how can i check the exchange rate applied to my transaction,card_payment_wrong_exchange_rate,exchange_rate,0.755,How do I know what the exchange rate will be when I make an exchange.
+114,banking77_test,is there a fee for topping up,top_up_by_card_charge,top_up_by_bank_transfer_charge,0.842,For topping-up is there a charge?
+115,banking77_test,why don't i have my transfer,balance_not_updated_after_bank_transfer,beneficiary_not_allowed,0.887,Why can I not do a transfer
+116,jeff_old_test,fy25 vs fy26 income and spending side by side pls,compare_periods,cashflow_overview,0.519,income vs spending for the past 12 months
+117,banking77_test,there is a fraudulent charge on my statement,card_payment_not_recognised,transaction_charged_twice,0.757,I have been charged twice on my statement.
+118,jeff_old_test,we've got a second kid on the way in march so childcare costs will kick in from mid next year,remember_fact,compare_periods,0.414,Since we had the baby our spending's gone through the roof I reckon. Can you compare before and after she was born in May?
+119,jeff_old_test,dispute this 89 charge from netflix i cancelled ages ago,oos,simulate_monthly_plan,0.592,"Netflix + Stan + Disney = about 45 a month. If I cancelled all three and banked it, what's that over 2 years"
+120,banking77_test,my card is just not working at this time,virtual_card_not_working,card_not_working,0.948,My card is not working.
+121,banking77_test,i went to top up and it is no longer there was it sent back,top_up_reverted,topping_up_by_card,0.793,my top up isnt there yet where do i find it
+122,jeff_old_test,total monthly commitments,recurring_bills,month_spending,0.507,What was my total spending last month?
+123,jeff_old_test,car service quote came in at 650 can i afford it,afford_purchase,simulate_monthly_plan,0.485,"Taking on a $650/month car repayment, how would my money look over the next 12 months?"
+124,jeff_old_test,how much did i spend on gifts each month since aug,category_trend,month_spending,0.63,What was my total spending last month?
+125,banking77_test,how long do transfer pend for,pending_transfer,balance_not_updated_after_bank_transfer,0.665,How long do transfers take to go though
+126,banking77_test,when will i get my card,card_arrival,card_delivery_estimate,0.945,How soon will I get my card?
+127,banking77_test,my funding to my card didn't go through,top_up_failed,declined_card_payment,0.788,My card payment didn't go through.
+128,banking77_test,what is needed to prove my identity,verify_my_identity,unable_to_verify_identity,0.958,What do I have to do to prove my identity?
+129,banking77_test,how do i know if my top up was unsuccessful,top_up_failed,pending_top_up,0.882,How do I know if my top-up went through?
+130,banking77_test,why was my payment declined,declined_card_payment,declined_transfer,0.981,Why did my payment get declined?
+131,banking77_test,please activate a wireless hotspot so i can use the internet,oos,activate_my_card,0.498,My card needs to be activated.
+132,banking77_test,can you tell me why my top up didn't work,top_up_failed,top_up_reverted,0.954,Why didn't my top up work?
+133,jeff_old_test,has entertainment been steady or all over the place the past few months,category_trend,month_spending,0.554,entertainment budget for november - am i over yet
+134,banking77_test,what is the process for setting up a pin,get_physical_card,change_pin,0.79,Tell me how to setup a new PIN.
+135,banking77_test,i'm out of money can i add money with my bank,transfer_into_account,top_up_by_cash_or_cheque,0.788,Can I add money to my account with cash?
+136,jeff_old_test,hey jeff can u tell me what i spent on uber eats in oct,month_spending,category_trend,0.569,Has my Uber Eats habit gotten worse since June? Month by month
+137,banking77_test,how long does a funds transfer take from one back to another,transfer_timing,balance_not_updated_after_bank_transfer,0.768,How long does a bank transfer take to show up in available funds?
+138,jeff_old_test,i'm thinking of a new 80 month gym membership what does that do to my savings over the year,simulate_monthly_plan,category_trend,0.641,Gym + fitness costs per month over the last year?
+139,banking77_test,request a refund on the car wax i bought yesterday,oos,request_refund,0.634,Can I request a refund
+140,jeff_old_test,on current trends am i going to end up broke by xmas lol,project_savings,month_spending,0.515,entertainment budget for november - am i over yet
+141,banking77_test,i really need money from my card today but my card is getting declined please help,top_up_failed,declined_card_payment,0.782,My card payment is being declined and I've tried several times.
+142,banking77_test,i am waiting for my card to arrive,card_delivery_estimate,card_arrival,0.851,I am still waiting on my card?
+143,banking77_test,why can't i see the top up amount i just added to my account,topping_up_by_card,top_up_reverted,0.79,"I tried to add a topup to my account but the money isn't there, anymore. Did I do something wrong?"
+144,banking77_test,are there restrictions for my disposable card since it does not seem to be working,virtual_card_not_working,disposable_card_limits,0.846,Are there any restrictions for the disposable cards that I need to be aware of?
+145,banking77_test,why is my transfer not done yet,pending_transfer,transfer_not_received_by_recipient,0.915,Why has my transfer not arrived yet?
+146,banking77_test,is there a fee for exchanging cash,wrong_exchange_rate_for_cash_withdrawal,exchange_charge,0.794,Is there a fee for exchanging currency?
+147,banking77_test,my card's frozen what can i do,pin_blocked,card_not_working,0.879,Is my card frozen?
+148,banking77_test,do i have overdraft protection,oos,transaction_charged_twice,0.552,I have been overcharged.
+149,jeff_old_test,my car rego is due every march keep that in mind,remember_fact,upcoming_bills,0.762,when is my rego due
+150,jeff_old_test,note that my health insurance is paid yearly in july not monthly,remember_fact,category_trend,0.524,Are my medical costs trending down since I finished physio in August? Show each month
+151,jeff_old_test,did i save more in the first half of this year than in the second half of last year,compare_periods,savings_goals,0.566,what % of my holiday goal have i saved
+152,banking77_test,cannot access my top up,topping_up_by_card,top_up_failed,0.829,My top up is not working
+153,jeff_old_test,last month i set a 600 grocery budget for aldi and woolies how close did i come,month_spending,category_trend,0.709,how has my aldi grocery spending changed over the last 6 months
+154,banking77_test,can i set up mobile deposits,oos,apple_pay_or_google_pay,0.6,Can I deposit money using Apple Pay?
+155,banking77_test,can you sign out of my bank login,oos,terminate_account,0.585,Are you able to delete my account?
+156,banking77_test,i would like a refund on the extra pound i was charged,extra_charge_on_statement,request_refund,0.759,I have an incorrect charge and would like a refund.
+157,jeff_old_test,is now a good time to fix my mortgage rate or stay variable,oos,project_savings,0.492,"my savings, 9 months from now, if nothing changes?"
+158,banking77_test,how can i verify my indentity,verify_my_identity,why_verify_identity,0.834,I am not comfortable verifying my indentity.
+159,jeff_old_test,can you show where my money's been going over the last 60 days,cashflow_overview,month_spending,0.633,"Can you give me a rundown of where my money went in October, by category?"
+160,jeff_old_test,can you show me every direct debit coming out regularly,recurring_bills,find_transactions,0.446,show me all my woolies transactions this month
+161,jeff_old_test,monthly total spending for the past year please,category_trend,month_spending,0.769,What was my total spending last month?
+162,banking77_test,is there a fee for cancelling a flight i've booked,oos,request_refund,0.662,I am interested in cancelling a purchase
+163,jeff_old_test,is my servo spending going up show the last few months,category_trend,month_spending,0.629,spent how much at the servo in august? petrol is killing me
+164,banking77_test,how do i get a virtual card for one time use,get_disposable_virtual_card,getting_virtual_card,0.871,How can I obtain a virtual card?
+165,banking77_test,i know i entered the right info but my top up isn't in my balance,topping_up_by_card,top_up_reverted,0.79,I did a topup successfully but its not showing in balance. I think there is some problem in system.
+166,banking77_test,how many virtual cards do i get,disposable_card_limits,getting_virtual_card,0.889,"how many virtual cards can i have, i want 8"
+167,banking77_test,look up the conversion rate for the euro to dollar exchange,oos,exchange_rate,0.769,What is the exchange rate for EUR?

@@ -5,6 +5,7 @@ Run from the project root (the llm dependency group holds the Anthropic SDK):
     uv run --group llm python scripts/run_s4.py --split val              # the whole validation set
     uv run --group llm python scripts/run_s4.py --split val --config s4_llm_fewshot   # few-shot variant
     uv run --group llm python scripts/run_s4.py --split test --config s4_jeff          # the Jeff set (E7)
+    uv run --group llm python scripts/run_s4.py --split test_v2 --config s4_jeff_fewshot   # Jeff test v2 (E8)
 
 A config with "dataset: jeff" runs S4 on the Jeff set instead of Banking77: the
 14 Jeff intents with their definitions from configs/jeff.yaml, few-shot examples
@@ -40,12 +41,12 @@ from router.systems.base import PREDICTIONS_DIR, label_names_in_id_order, save_p
 def dataset_inputs(cfg: dict, split: str) -> dict:
     """What S4 is given and asked about for this config's dataset (Banking77 unless "dataset: jeff")."""
     if cfg.get("dataset", "banking77") == "jeff":
-        if split != "test":
-            sys.exit("The Jeff set has no validation split: use --split test.")
+        if split not in ("test", "test_v2"):
+            sys.exit("The Jeff set has no validation split: use --split test (E7) or --split test_v2 (E8).")
         jeff_cfg = data.load_config("jeff")
         return {"label_names": jeff.intent_names(jeff_cfg), "example_pool": jeff.load_jeff("support"),
                 "descriptions": jeff.intent_descriptions(jeff_cfg), "oos_description": jeff.oos_description(jeff_cfg),
-                "eval_df": jeff.load_jeff("test"), "out_split": f"jeff_{split}_fmt"}
+                "eval_df": jeff.load_jeff(split), "out_split": f"jeff_{split}_fmt"}
     return {"label_names": label_names_in_id_order(), "example_pool": data.load_split("train"),
             "descriptions": None, "oos_description": "",
             "eval_df": data.load_eval_set(split, with_oos=True), "out_split": f"{split}_fmt"}
@@ -54,6 +55,8 @@ def dataset_inputs(cfg: dict, split: str) -> dict:
 def main(split: str, limit: int | None, config: str, show_prompt: bool = False) -> None:
     if split == "test" and not show_prompt and not (data.RESULTS_DIR / "preregistration.md").exists():
         sys.exit("Refusing to run S4 on the test split: results/preregistration.md does not exist yet (rigour rule 1).")
+    if split == "test_v2" and not show_prompt and not (data.RESULTS_DIR / "preregistration_e8.md").exists():
+        sys.exit("Refusing to run S4 on Jeff test v2: results/preregistration_e8.md does not exist yet.")
     cfg = data.load_config(config)
     inputs = dataset_inputs(cfg, split)
     label_names = inputs["label_names"]
@@ -135,7 +138,7 @@ def main(split: str, limit: int | None, config: str, show_prompt: bool = False) 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--split", choices=["val", "test"], default="val")
+    parser.add_argument("--split", choices=["val", "test", "test_v2"], default="val")  # test_v2: Jeff configs only (E8)
     parser.add_argument("--limit", type=int, default=None, help="only the first N queries (smoke test)")
     parser.add_argument("--config", choices=["s4_llm", "s4_llm_fewshot", "s4_jeff", "s4_jeff_fewshot"], default="s4_llm",
                         help="which S4 variant (and dataset)")

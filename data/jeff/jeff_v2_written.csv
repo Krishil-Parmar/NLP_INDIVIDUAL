@@ -1,0 +1,181 @@
+text,intent,notes
+"October was a blur. What did it cost me all up?",month_spending,
+"What did I spend on groceries last month? Woolies, Aldi, the lot",month_spending,
+"september total pls",month_spending,
+"pretty sure i smashed the entertainment budget in sept, by how much",month_spending,
+"fuel this month so far? feels like i live at the servo",month_spending,
+"Can you break down August by category for me",month_spending,
+"ok be honest how bad was last month. total dollars out the door",month_spending,
+"am i still under budget for november or have i blown it already",month_spending,
+"how much went on takeaway in july, felt like a lot of uber eats and maccas",month_spending,
+"Need the total I spent in June across everything, partner reckons we overspent",month_spending,
+"show me everything i bought at bunnings this year",find_transactions,
+"Need to see each thing I bought on the work trip to Brisbane, 3rd to 6th Nov, for my expense report",find_transactions,
+"whats this $49.99 charge from PAYPAL *STEAM",find_transactions,
+"Can you list the transactions behind my shopping total for October? Seems way too high",find_transactions,
+"kmart purchases since sept",find_transactions,
+"who or what is ZLR*PARKING on my statement, there's a couple of them",find_transactions,
+"every uber ride in october pls",find_transactions,
+"list all my macca's transactions this month lol i need to see the damage",find_transactions,
+"any big purchases over 500 bucks recently?",find_transactions,
+"Find the payment I made to the dentist sometime in September, need the amount for my health fund claim",find_transactions,
+"how much came in vs went out over the last 12 months",cashflow_overview,
+"Been really careful since my birthday in August. Has any of that actually turned into money left over?",cashflow_overview,
+"ever since the school holidays started in late sept ive felt broke, can u show what came in and what went out",cashflow_overview,
+"where's my money been going since the start of september",cashflow_overview,
+"Can you give me a summary of income and spending for the last quarter?",cashflow_overview,
+"been back from the gold coast 6 weeks now, whats my in vs out look like since then",cashflow_overview,
+"EOFY to now, income vs spending?",cashflow_overview,
+"Since Easter, am I earning more than I'm spending or the other way round?",cashflow_overview,
+"Over the last six months, where does most of my money actually go? Feels like it's all Woolies and fuel",cashflow_overview,
+"centrelink plus my casual shifts... am i bringing in more than im spending these last few weeks",cashflow_overview,
+"Put 2025 and 2026 next to each other for me. Income, spending, savings",compare_periods,
+"How does this quarter compare to last quarter for income and spending?",compare_periods,
+"Since I changed jobs in July, am I better or worse off than before?",compare_periods,
+"compare the first half of 2026 with the second half so far",compare_periods,
+"Was I better off last financial year or the one before?",compare_periods,
+"we moved out of sydney in may, has our spending dropped compared to before the move",compare_periods,
+"christmas period last year vs the same stretch the year before, how did we go overall",compare_periods,
+"Paid off the car loan in April. How does my money look now compared with before?",compare_periods,
+"side by side pls, this spring vs last spring",compare_periods,
+"went part time in feb. show me income and savings before vs after",compare_periods,
+"how has my shopping spending moved month to month lately",category_trend,
+"Vet and pet food costs have been all over the place. Can I see them by month for the year?",category_trend,
+"has health stuff like chemist and physio been climbing each month since autumn",category_trend,
+"Can you show my takeaway spending for each month since January",category_trend,
+"show me what i've spent on power each month since winter, feels like its going up",category_trend,
+"total spending per month for the last 6 months",category_trend,
+"I swear Coles and Woolies have gotten dearer, can you show my grocery spend for each month this year",category_trend,
+"bottle-o spending month by month since july",category_trend,
+"Has my spending on the kids' sport crept up over the last 4 months? Month by month please",category_trend,
+"monthly breakdown of public transport since march, opal topups etc",category_trend,
+"doing a spring clean of my finances, which apps and services am i paying for on repeat?",recurring_bills,
+"List all my regular bills please",recurring_bills,
+"How much am I locked into every month with bills and subs?",recurring_bills,
+"netflix stan spotify... what else am i paying for every month, give me the full list",recurring_bills,
+"all my direct debits?",recurring_bills,
+"I think I'm paying for stuff I forgot about, like an old Kayo sub. Can you show me every recurring payment going out?",recurring_bills,
+"whats my total fixed costs per month, rent phone internet all that",recurring_bills,
+"Every subscription I'm paying for with the amount each, want to cut back before Chrissy",recurring_bills,
+"monthly cost of all my streaming and app subs combined?",recurring_bills,
+"my partner and i are trying to work out our fixed costs before we sign a new lease, can u pull together every regular bill i pay and what it all comes to monthly",recurring_bills,
+"whats due by friday",upcoming_bills,
+"What's coming out before payday on Thursday?",upcoming_bills,
+"I always forget when the water rates hit. Is that soon?",upcoming_bills,
+"strata levy due date?",upcoming_bills,
+"when's the phone bill due again",upcoming_bills,
+"Is my rego coming up soon?",upcoming_bills,
+"what payments come out tomorrow",upcoming_bills,
+"Got anything big due before the end of the month? Council rates maybe?",upcoming_bills,
+"list the bills hitting in the first week of december pls",upcoming_bills,
+"does the electricity come out before or after the 15th",upcoming_bills,
+"Realistic number I can blow today without regretting it?",safe_to_spend,
+"just been paid lol. so whats actually mine to spend before next payday once the bills are covered",safe_to_spend,
+"how much do i have to play with till payday",safe_to_spend,
+"Splurge allowance for the rest of this pay cycle?",safe_to_spend,
+"footy on saturday, whats my spending money for the weekend without screwing up bills",safe_to_spend,
+"Got 6 days till pay. How much can I safely use each day?",safe_to_spend,
+"Pay hits Wednesday. What can I spend between now and then without going under?",safe_to_spend,
+"My budget's tight and the kids need stuff for school. Day to day, what can I spend until money comes in on the 28th without going short on bills?",safe_to_spend,
+"tbh im stressed, how much can i realistically spend rn without missing a bill",safe_to_spend,
+"is it safe to spend anything today or should i hold off",safe_to_spend,
+"the vet quoted 900 for the dog's teeth, is that gonna sink me this month",afford_purchase,
+"Thinking of buying a PS5 for 800 bucks this weekend. Will that wreck my budget?",afford_purchase,
+"is a 2k flight to bali doable rn",afford_purchase,
+"If I get a new couch for $1,500, what happens to my budget this month?",afford_purchase,
+"My car needs new tyres, about $650. Can I cover that without dipping into savings?",afford_purchase,
+"could i swing a $300 concert ticket",afford_purchase,
+"new iphone outright, ~$1800, yes or no?",afford_purchase,
+"Want to grab a $400 cordless drill set at Bunnings this arvo, can I afford it?",afford_purchase,
+"would buying a $90 pair of runners today push me over for the month",afford_purchase,
+"Mum's 60th is coming up and I want to get her a $250 voucher, is that ok money wise?",afford_purchase,
+"what if i put an extra $200 a month into savings, where would i be in a year",simulate_monthly_plan,
+"If I pay an extra $100 a fortnight off my car loan, how much sooner is it done?",simulate_monthly_plan,
+"say i chuck 150 a fortnight aside, what does that look like by next christmas",simulate_monthly_plan,
+"Run the numbers on putting an extra $300 a month onto the mortgage for the next year",simulate_monthly_plan,
+"if i sign up for a $60/month gym membership how does that affect me over the year",simulate_monthly_plan,
+"What would happen if I started putting $500 a month into the offset?",simulate_monthly_plan,
+"If rent goes up 80 a fortnight, how does that play out over the next 6 months?",simulate_monthly_plan,
+"if i saved an extra 1k every month how long to get to 10k",simulate_monthly_plan,
+"Me and my partner are thinking of each putting $250 a month into a joint account. What would that do to my budget over the next year?",simulate_monthly_plan,
+"Thinking about a $75 monthly donation to the RSPCA, how would that look by the end of the financial year?",simulate_monthly_plan,
+"at this rate how much will i have saved by christmas",project_savings,
+"If I coast along like I am now, will I have a decent buffer by mid next year?",project_savings,
+"where am i heading financially if i keep going like this",project_savings,
+"By 30 June, roughly how much will I have put away?",project_savings,
+"projected savings by march?",project_savings,
+"Keeping things exactly as they are, will I have more or less money this time next year?",project_savings,
+"on current spending how much would i have by my birthday in august",project_savings,
+"realistically how much will be in savings by the time my lease ends in april if i dont change anything",project_savings,
+"Ballpark it for me: same habits, where's my savings sitting in two years",project_savings,
+"Assuming my pay and bills stay the same, what's my savings looking like come next winter?",project_savings,
+"how am i tracking on my house deposit goal",savings_goals,
+"what goals have i got set up in here again",savings_goals,
+"The Europe fund, is it where it should be by now or am I slipping?",savings_goals,
+"rainy day goal... honestly how close am i",savings_goals,
+"which of my goals am i behind on",savings_goals,
+"car goal progress?",savings_goals,
+"I set a goal for a new laptop a couple months back, how's that going",savings_goals,
+"Will I hit my wedding savings goal by next October at this pace?",savings_goals,
+"Gap between what I've saved for the new fridge goal and the target?",savings_goals,
+"Quick check on all my goals pls, percentage done for each",savings_goals,
+"Feels like you're a day behind my actual bank. Can you get the newest stuff in?",refresh_data,
+"My account looks out of date, it's missing yesterday's stuff",refresh_data,
+"bought petrol 20 min ago, still not in here. can u check the bank again",refresh_data,
+"Re-sync my bank data please",refresh_data,
+"pull the latest from my bank",refresh_data,
+"the refund from Myer landed in my bank app but not here yet, update?",refresh_data,
+"why is everything stuck on last tuesday? update pls",refresh_data,
+"Numbers look stale. Can you grab fresh data?",refresh_data,
+"my pay came in this arvo but ur still showing the old figures, sync again",refresh_data,
+"Hey, nothing since the weekend is showing, not even my Afterpay payment. Can you reload from the bank?",refresh_data,
+"Pay's switching to monthly from Jan, last business day of each month",remember_fact,
+"I've started salary sacrificing into super, so my take-home is about $150 less each pay from now on",remember_fact,
+"remember i'm a uni student and only work over summer, so my income is patchy",remember_fact,
+"Our gym membership is shared, so only half of it is mine. Keep that in mind going forward",remember_fact,
+"note: the $85 i send my sister every week is board, not spending",remember_fact,
+"Store this: I keep $2k aside in a separate account as an emergency buffer, don't count it as spendable",remember_fact,
+"school fees are due every term, roughly $1,100 each time, just so you have it on file",remember_fact,
+"my partner pays the electricity so ignore that one",remember_fact,
+"Heads up, I've paid off my HECS so that won't be coming out of my pay anymore",remember_fact,
+"i'm going on unpaid leave from dec 15 to jan 20 so no salary in that stretch",remember_fact,
+"jumper leads on a flat battery, which clamp goes on first",oos,unrelated
+"Can you give me a recipe for a quick chicken stir fry?",oos,unrelated
+"who won the afl grand final",oos,unrelated
+"My SQL query keeps returning duplicates when I join two tables, any idea why?",oos,unrelated
+"whats the best way to get from cairns to the daintree without a car",oos,unrelated
+"tell me a joke",oos,unrelated
+"how do i get a red wine stain out of carpet",oos,unrelated
+"What's the capital of Mongolia?",oos,unrelated
+"Can you explain photosynthesis simply? Year 7 science test tomorrow",oos,unrelated
+"recommend a good show to watch on netflix",oos,unrelated
+"How long do I boil an egg for a runny yolk?",oos,unrelated
+"how many players on a netball team",oos,unrelated
+"Write a haiku about Monday mornings",oos,unrelated
+"what's the difference between affect and effect",oos,unrelated
+"my dog keeps scratching his ears, should i be worried",oos,unrelated
+"move whatever's left in everyday into my holiday account tonight",oos,finance-adjacent
+"can u just pay the water bill so i dont forget",oos,finance-adjacent
+"Split the dinner bill with my mates for me, send each of them $42",oos,finance-adjacent
+"Can you set up an automatic transfer of $100 every payday into savings?",oos,finance-adjacent
+"lock my card, i think i left it at the pub",oos,finance-adjacent
+"Can you put a travel note on my card? I'm in Fiji from Monday",oos,finance-adjacent
+"cancel my stan subscription for me pls",oos,finance-adjacent
+"set me up with a joint account for me and my partner",oos,finance-adjacent
+"raise my credit card limit to 8k pls",oos,finance-adjacent
+"Can I get a personal loan for $10k through you?",oos,finance-adjacent
+"dispute this $89 charge, never got the item",oos,finance-adjacent
+"There's a double charge from Coles yesterday, can you get it reversed?",oos,finance-adjacent
+"chargeback on the airbnb that got cancelled pls",oos,finance-adjacent
+"is ethereum gonna go up next year, worth getting in?",oos,finance-adjacent
+"Should I do a voluntary super contribution before June to cut my tax?",oos,finance-adjacent
+"what can i claim on tax for working from home",oos,finance-adjacent
+"Shares vs property for someone in their 20s, what would you do",oos,finance-adjacent
+"my ex owes me 3 grand from when we split, can i take him to small claims",oos,finance-adjacent
+"What would it cost to insure my new e-bike?",oos,finance-adjacent
+"Can you get me a quote for contents insurance?",oos,finance-adjacent
+"ATM ate my card at Central station, what now",oos,finance-adjacent
+"Why is my account frozen? Can't use my card anywhere today",oos,finance-adjacent
+"forgot my pin",oos,finance-adjacent
+"My Osko transfer failed this morning but the money's already gone",oos,finance-adjacent
+"why cant i log into my internet banking",oos,finance-adjacent

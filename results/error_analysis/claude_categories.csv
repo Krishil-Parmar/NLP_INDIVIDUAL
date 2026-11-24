@@ -1,0 +1,168 @@
+item_id,category,note
+1,same_topic,"asks how to verify, not why verification is needed"
+2,other,unrelated intent; a repeating monthly extra payment is a clear monthly plan
+3,other,matched only on the word rent; a missing recent payment needs a refresh
+4,same_topic,"asks which bills fall due this week, not how much is left to spend"
+5,same_topic,tells a lasting change to a subscription rather than asking for the list
+6,same_topic,"compares two past 8 week windows, not a forecast"
+7,same_topic,"looks back over the past 6 months, not a forecast"
+8,other,unrelated intent; clearly two periods side by side around a job change
+9,other,matched on vet and pet words; asks if one bill is affordable
+10,oos_accepted,workplace address is not a banking request
+11,oos_accepted,airport parking prices
+12,label_error,"asks how to exchange into euros, which is exchange_via_app"
+13,oos_accepted,"phone command, not banking"
+14,oos_accepted,"deleting a saved card is a merchant or browser task, not card expiry"
+15,same_topic,"one-off outright purchase, not a monthly phone plan"
+16,other,"matched on Kmart; asks if a purchase is affordable, not past transactions"
+17,oos_accepted,adding an authorised user is not covered by any intent
+18,oos_accepted,general knowledge question
+19,same_topic,"wants the individual trips in one month, not a monthly trend"
+20,same_topic,"wants to load cash, not withdraw it"
+21,oos_accepted,disputing a charge is out of scope for Jeff
+22,oos_accepted,identical text is a labelled top_up_by_cash_or_cheque example so the oos label is doubtful
+23,same_topic,"unrecognised payment they want stopped, not a reverted payment"
+24,other,matched on lease ends in august; an explicit request to remember a fact
+25,oos_accepted,account number for an internet provider
+26,same_topic,"forecast 3 months ahead, not a look back over 3 months"
+27,ambiguous,trouble transferring fits a declined or a failed transfer
+28,other,matched on rent; asks what a monthly rent rise does over a year
+29,oos_accepted,travel trivia
+30,ambiguous,does not say whether the transaction was a card payment or cash withdrawal
+31,other,unrelated intent; asks to see specific payments to one merchant
+32,same_topic,"wants the combined monthly cost of regular bills, not a category trend"
+33,other,unrelated intent; asks what a past charge was
+34,ambiguous,top up fee question without saying card or bank transfer
+35,oos_accepted,making a payment is out of scope for Jeff
+36,oos_accepted,"setting up a transfer is an action, not a what-if"
+37,other,matched on Netflix; asks the next charge date
+38,same_topic,stolen card with no mention of misuse
+39,oos_accepted,retailer shipping policy
+40,same_topic,"one calendar month total, not a custom window"
+41,other,true label looks wrong (card purchase declined) but reverted payment is wrong too
+42,oos_accepted,fitness app data
+43,same_topic,"wants the list of recurring charges, not individual purchases"
+44,oos_accepted,investment advice
+45,same_topic,"asks for extra physical cards, explicitly not virtual"
+46,ambiguous,card not arrived and how long delivery should take both fit
+47,oos_accepted,messages request unrelated to banking
+48,label_error,"asks how long delivery takes, which is card_delivery_estimate"
+49,ambiguous,does not say whether the sender balance or the recipient is missing it
+50,other,unrelated intent; asks about one specific purchase
+51,other,matched on pay; asks how much is safe to spend before payday
+52,ambiguous,generic fee question that does not say what the fee was for
+53,ambiguous,fits both making an exchange and whether euros are supported
+54,other,"matched on electricity; asks monthly costs over several months, not a due date"
+55,same_topic,"asks how to complete a pending payment, not a reverted one"
+56,same_topic,general timing question with nothing pending
+57,other,identity verification does not fit a dispute; matched on security worry
+58,ambiguous,"top up method not stated, so card top up or transfer in both fit"
+59,same_topic,"asks which bills come out while away, not spending money"
+60,other,matched on gym; asks when one bill is due
+61,same_topic,"no change assumed, so a projection not a what-if"
+62,other,matched on board to mum; explicitly asks to run a monthly scenario
+63,same_topic,"unrecognised charge, not a fee"
+64,same_topic,"refund already requested and missing, not a new request"
+65,oos_accepted,phone app management
+66,other,matched on Centrelink; explicit request to remember an income source
+67,ambiguous,does not say whether a card payment or direct debit took the money
+68,ambiguous,fits a fee for sending a transfer or for topping up by transfer
+69,oos_accepted,safe deposit box contents
+70,same_topic,"asks where the card is accepted, not where it is delivered"
+71,same_topic,"about a cash withdrawal posting, not a transfer"
+72,ambiguous,account misuse fits a compromised card or an unrecognised payment
+73,same_topic,"typo for card; asks how to top up by card, not limits"
+74,other,unrelated intent; clearly two quarters side by side
+75,oos_accepted,crypto price lookup
+76,other,neither name fits a PIN that cannot be seen; not a blocked PIN
+77,same_topic,"missing refund, not a missing transfer"
+78,same_topic,"wants a total for one month, not individual transactions"
+79,same_topic,"says pending, not unrecognised"
+80,same_topic,"wants to make a refund request, not chase a missing refund"
+81,same_topic,"adds a new fortnightly saving, so a what-if not a projection"
+82,same_topic,"monthly totals over several months, not individual purchases"
+83,ambiguous,an unsuccessful top up could be reverted or still pending
+84,same_topic,"a card sent by email is virtual, not physical"
+85,same_topic,"adds a new 200 a month saving, so a what-if not a projection"
+86,same_topic,"window since EOFY with income, not one calendar month"
+87,same_topic,"a new monthly donation is a what-if, not a projection"
+88,same_topic,no single month named; where money goes is cashflow_overview
+89,other,matched on Bunnings; asks what one purchase does to the budget
+90,same_topic,"about timing the rate, not exchange fees"
+91,oos_accepted,local directions to a driving range
+92,other,matched on Bunnings; asks to list transactions
+93,oos_accepted,changing a house's address is not a bank detail; near edit_personal_details
+94,label_error,no cash or cheque mentioned; a card top up fits topping_up_by_card
+95,oos_accepted,fitness question matched on the word up
+96,same_topic,"recipient cannot collect it, nothing about a fee"
+97,oos_accepted,general life question
+98,other,asks about one past month; prediction is a forward forecast
+99,ambiguous,card never arrived but user also says it is lost
+100,same_topic,"wants the biggest individual purchases, not a total"
+101,other,matched on car; asks when a bill is due
+102,same_topic,"contactless failure, not a declined payment"
+103,same_topic,"asks how one category moved since July, not individual transactions"
+104,ambiguous,"method not stated, so card top up or transfer in both fit"
+105,label_error,"says pending, which is pending_transfer"
+106,label_error,"charges on the card fit card_payment_not_recognised, no direct debit"
+107,other,matched on PayID; asks to find one payment
+108,oos_accepted,adding a person to an account is not covered by any intent
+109,same_topic,"explicit refresh for missing transactions, not a search"
+110,ambiguous,card top up whose funds went missing fits both partly
+111,oos_accepted,watch repair
+112,same_topic,no mention of disposable
+113,ambiguous,checking the applied rate fits exchange_rate as well as a wrong rate
+114,ambiguous,top up fee question without saying card or bank transfer
+115,same_topic,"transfer not showing, not a blocked beneficiary"
+116,same_topic,two financial years side by side
+117,same_topic,"fraudulent charge, not a duplicate"
+118,other,"matched on new baby; a fact to remember, not a comparison"
+119,oos_accepted,disputing a charge is out of scope for Jeff
+120,label_error,nothing says virtual; card_not_working fits
+121,same_topic,"asks if the top up was sent back, not how to top up"
+122,same_topic,"regular monthly commitments, not one month of spending"
+123,same_topic,"one-off service cost, not a monthly repayment"
+124,same_topic,"each month since August, not one month"
+125,same_topic,"how long transfers stay pending, not a balance not updating"
+126,ambiguous,when will it arrive fits both arrival and delivery estimate
+127,same_topic,"funding the card is a top up, not a payment"
+128,same_topic,"asks what is needed, has not failed to verify"
+129,ambiguous,checking whether a top up failed overlaps with a pending top up
+130,ambiguous,payment could be a card payment or a transfer
+131,oos_accepted,device hotspot command
+132,same_topic,"says it did not work, not that it was reverted"
+133,same_topic,"how one category moved over months, not one month"
+134,label_error,setting up a PIN fits change_pin better than getting a physical card
+135,same_topic,"adding money from a bank, not cash or cheque"
+136,same_topic,"one category in one month, not a trend"
+137,same_topic,"general timing question, not a missing balance"
+138,other,matched on gym; asks a what-if for a new monthly fee
+139,oos_accepted,"store refund for a purchase, not a bank refund"
+140,other,forecast to Xmas; prediction is a one-month budget check
+141,ambiguous,could be a declined card top up or a declined card payment
+142,label_error,waiting for the card to arrive fits card_arrival
+143,label_error,no card mentioned; a missing top up fits top_up_reverted better
+144,ambiguous,mentions both restrictions and the card not working
+145,same_topic,"transfer not completed yet, nothing about the recipient"
+146,label_error,"asks about an exchange fee, which is exchange_charge"
+147,label_error,no PIN mentioned; a frozen card fits card_not_working
+148,oos_accepted,overdraft product not covered
+149,same_topic,tells a lasting bill due date rather than asking when it is due
+150,other,matched on health costs; a fact to remember about billing frequency
+151,same_topic,"compares saving across two half years, no named goal"
+152,label_error,no card mentioned; a top up problem fits top_up_failed
+153,same_topic,"one month against budget, not a trend"
+154,oos_accepted,mobile cheque deposit not offered
+155,oos_accepted,"sign out request, not account closure"
+156,ambiguous,fits both an extra charge and a refund request
+157,oos_accepted,mortgage advice
+158,same_topic,"asks how to verify, not why"
+159,same_topic,"a 60 day window, not one calendar month"
+160,same_topic,"wants the regular debits list, not individual purchases"
+161,same_topic,"month by month over a year, not one month"
+162,oos_accepted,airline cancellation fee
+163,same_topic,"trend over the last few months, not one month"
+164,same_topic,one time use means disposable
+165,ambiguous,"entered info hints a card top up, but the missing balance fits reverted"
+166,ambiguous,asks a limit on number of cards but does not say disposable
+167,oos_accepted,rate lookup fits exchange_rate so the oos label is doubtful

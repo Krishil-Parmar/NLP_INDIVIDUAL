@@ -152,7 +152,9 @@ def report(result: dict) -> str:
         "Most frequent confusions:", md_table(pair_rows),
         f"Content words shared with the matched support example (scikit-learn English stop words removed): "
         f"{a['overlap_right']:.2f} on average for right answers, {a['overlap_wrong']:.2f} for wrong ones. "
-        "Shared words do not explain the errors. Median S2 confidence on the out-of-scope queries: "
+        "So the number of shared words cannot tell a right answer from a wrong one. Reading the errors shows what goes wrong: "
+        "many wrong matches share the topic or one salient word with the query but answer a different request "
+        "(`results/error_analysis.md`). Median S2 confidence on the out-of-scope queries: "
         f"{a['oos_median_nearest']:.3f}.",
     ]) + "\n"
 

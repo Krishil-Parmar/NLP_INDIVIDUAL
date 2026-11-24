@@ -36,7 +36,8 @@ prices_usd_per_million_tokens:
 price_checked: "2026-11-22"
 
 spend_cap_usd: 13.20         # hard stop, counted over every call in all the budget cache files below:
-                             # US$3.19 spent on validation (M4) + US$10 approved for M5 (owner, 23 Nov 2026)
+                             # US$3.19 spent on validation (M4) + US$10 approved for M5 (owner, 23 Nov 2026).
+                             # E8 (Jeff test v2, about US$0.15, owner 24 Nov 2026) fits inside the same cap.
 requests_per_minute: 45      # account quota is 50 per minute for this model and profile
 max_workers: 4               # calls in flight at once (the rate limit still applies)
 sdk_max_retries: 4           # the SDK retries throttling (429) and server errors with backoff

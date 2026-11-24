@@ -105,6 +105,8 @@ def test_verdict_rule():
     ("predict_jeff", lambda m: m.main(None)),
     ("evaluate_jeff", lambda m: m.main()),
     ("run_s4", lambda m: m.main("test", None, "s4_jeff")),
+    ("run_s4", lambda m: m.main("test_v2", None, "s4_jeff_fewshot")),  # E8: needs preregistration_e8.md
+    ("evaluate_few_shot", lambda m: m.main()),
 ])
 def test_every_new_test_path_refuses_without_preregistration(tmp_path, monkeypatch, script, call):
     module = load_script(script)
