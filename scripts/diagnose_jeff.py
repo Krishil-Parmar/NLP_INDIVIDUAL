@@ -146,7 +146,10 @@ def report(result: dict) -> str:
         md_table(size_rows),
         f"For comparison, on the Jeff test split (10 support examples per intent) S2 covers {pct(result['jeff_s2_e7']['coverage_at_0.05'])}% "
         f"at 5% risk and {pct(result['jeff_s2_e7']['coverage_at_0.01'])}% at 1% risk (`results/e7_jeff.json`). Cutting Banking77 "
-        "to 10 examples per intent costs about half the coverage at 5% risk; the rest of the Jeff gap comes from the Jeff intents themselves.",
+        "to 10 examples per intent halves the coverage at 5% risk. **Correction (24 Nov 2026):** the first version of this report said "
+        "the rest of the Jeff gap comes from the Jeff intents themselves. That is not supported. At the same cosine distance from the "
+        "nearest labelled example, S2 is about as accurate on Jeff as on Banking77 (`results/headline_reanalysis.md`, section C). "
+        "Banking77 looks easy because most of its test queries have a close paraphrase in train, and Jeff's do not.",
         "## 4. Where the Jeff errors are",
         "Accuracy per intent (S2, Jeff test split):", md_table(intent_rows),
         "Most frequent confusions:", md_table(pair_rows),
