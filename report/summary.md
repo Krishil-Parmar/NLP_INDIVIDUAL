@@ -27,7 +27,7 @@ Krishil Parmar (BS24DMU022) \quad November 2026 \quad \url{https://github.com/Kr
 ```
 
 <!--
-Prose drafted by Claude Code at the owner's request on 24 Nov 2026 (disclosed in section 6 and report/ai_use_log.md).
+Prose drafted by Claude Code at the owner's request on 24 Nov 2026 (recorded in report/ai_use_log.md; the AI-use sentence in section 6 was removed at the owner's request on 25 Nov 2026).
 Word budgets per section (from the M1 skeleton): 1: 130, 2: 120, 3: 130, 4: 110, 5: 150, 6: 90.
 Build:  uv run python scripts/build_summary.py          (the normal build)
         uv run python scripts/build_summary.py --fill   (only for placeholders written as [TODO N words: ...])
@@ -72,8 +72,8 @@ At S4's error rate (10.27%), S2, the router chosen on validation, handles **77.4
 
 **What it does.** A query typed into Jeff's chat screen is routed in about 6 ms on a laptop CPU: answered directly, with the matched example shown, or escalated to the LLM, with a running count of calls and dollars saved. **Why it works.** Banking77 is dense with paraphrases: 97.7% of in-scope test queries have a train example at cosine 0.7 or more, so the similarity to that example is a usable confidence. **Limitations.** (1) Out-of-scope queries come from another dataset, so they may be easier to spot than real ones. (2) At the frozen threshold the router answers 111 of 1,000 out-of-scope queries, the LLM 24; a stricter threshold (0.85) fixes this at 59% coverage. (3) The Jeff set is small, Claude-written and graded against a Claude LLM; only 11.4% of its in-scope queries have a close example, and fine-tuning on its 140 examples recovers part of the gap. (4) 61 of 100 audited label flags were real errors. (5) One domain, English only, no slot filling.
 
-## 6. Code, how to run, AI use, references
+## 6. Code, how to run, references
 
-**Code** (repository linked at the top): `src/router/` (systems, metrics, policy), one script per experiment in `scripts/`, 115 unit tests, pinned dependencies. **How to run:** open `notebooks/00_submission.ipynb` and choose Restart and Run All. The default `FAST = True` needs no GPU, API key or paid call, runs in about 2 minutes on a laptop, and shows every reported number from `results/`. **AI use:** Claude Code (Anthropic) wrote the code, ran the experiments and drafted this summary at my direction; Claude agents also wrote the Jeff set and judged 89 of the 100 audit items. Every session is logged in `report/ai_use_log.md`.
+**Code** (repository linked at the top): `src/router/` (systems, metrics, policy), one script per experiment in `scripts/`, 115 unit tests, pinned dependencies. **How to run:** open `notebooks/00_submission.ipynb` and choose Restart and Run All. The default `FAST = True` needs no GPU, API key or paid call, runs in about 2 minutes on a laptop, and shows every reported number from `results/`.
 
 **References.** Casanueva et al. (2020), Banking77. Larson et al. (2019), CLINC150, EMNLP. Zhang et al. (2020), discriminative nearest neighbour few-shot intent detection, EMNLP. Hendrycks and Gimpel (2017), maximum softmax probability baseline. Geifman and El-Yaniv (2017), selective classification. Guo et al. (2017), temperature scaling. Northcutt et al. (2021), confident learning.
