@@ -21,7 +21,7 @@ header-includes:
 \begin{center}
 {\large\bfseries Router Before the LLM}\\[2pt]
 A cost-aware intent router for a personal finance assistant\\[2pt]
-Krishil Parmar \quad November 2026
+Krishil Parmar (BS24DMU022) \quad November 2026 \quad \url{https://github.com/Krishil-Parmar/NLP_INDIVIDUAL}
 \end{center}
 \vspace{-4pt}
 ```
@@ -74,6 +74,6 @@ At S4's error rate (10.27%), S2, the router chosen on validation, handles **77.4
 
 ## 6. Code, how to run, AI use, references
 
-**Code** (submitted with this summary): `src/router/` (systems, metrics, policy), one script per experiment in `scripts/`, 115 unit tests, pinned dependencies. **How to run:** open `notebooks/00_submission.ipynb` and choose Restart and Run All. The default `FAST = True` needs no GPU, API key or paid call, runs in about 2 minutes on a laptop, and shows every reported number from `results/`. **AI use:** Claude Code (Anthropic) wrote the code, ran the experiments and drafted this summary at my direction; Claude agents also wrote the Jeff set and judged 89 of the 100 audit items. Every session is logged in `report/ai_use_log.md`.
+**Code** (repository linked at the top): `src/router/` (systems, metrics, policy), one script per experiment in `scripts/`, 115 unit tests, pinned dependencies. **How to run:** open `notebooks/00_submission.ipynb` and choose Restart and Run All. The default `FAST = True` needs no GPU, API key or paid call, runs in about 2 minutes on a laptop, and shows every reported number from `results/`. **AI use:** Claude Code (Anthropic) wrote the code, ran the experiments and drafted this summary at my direction; Claude agents also wrote the Jeff set and judged 89 of the 100 audit items. Every session is logged in `report/ai_use_log.md`.
 
 **References.** Casanueva et al. (2020), Banking77. Larson et al. (2019), CLINC150, EMNLP. Zhang et al. (2020), discriminative nearest neighbour few-shot intent detection, EMNLP. Hendrycks and Gimpel (2017), maximum softmax probability baseline. Geifman and El-Yaniv (2017), selective classification. Guo et al. (2017), temperature scaling. Northcutt et al. (2021), confident learning.
