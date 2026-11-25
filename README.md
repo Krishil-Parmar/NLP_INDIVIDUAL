@@ -1,38 +1,4 @@
----
-papersize: a4
-geometry: margin=2cm
-fontsize: 10pt
-header-includes:
-  - |
-    ```{=latex}
-    \usepackage{caption}
-    \captionsetup{font=small,skip=3pt}
-    \makeatletter
-    \renewcommand\subsection{\@startsection{subsection}{2}{\z@}{-1.6ex \@plus -.4ex \@minus -.2ex}{.4ex}{\normalfont\normalsize\bfseries}}
-    \makeatother
-    \setlength{\LTpre}{6pt}
-    \setlength{\LTpost}{2pt}
-    \usepackage{etoolbox}
-    \AtBeginEnvironment{longtable}{\small}
-    ```
----
-```{=latex}
-\begin{center}
-{\large\bfseries Router Before the LLM}\\[2pt]
-A cost-aware intent router for a personal finance assistant\\[2pt]
-Krishil Parmar (BS24DMU022) \quad November 2026 \quad \url{https://github.com/Krishil-Parmar/NLP_INDIVIDUAL}
-\end{center}
-\vspace{-4pt}
-```
 
-<!--
-Prose drafted by Claude Code at the owner's request on 24 Nov 2026 (disclosed in section 6 and report/ai_use_log.md).
-Word budgets per section (from the M1 skeleton): 1: 130, 2: 120, 3: 130, 4: 110, 5: 150, 6: 90.
-Build:  uv run python scripts/build_summary.py          (the normal build)
-        uv run python scripts/build_summary.py --fill   (only for placeholders written as [TODO N words: ...])
-Hard limit: 2 pages (the build fails above that).
-Layout follows README section 12.1; the rubric category for each part is in brackets.
--->
 
 ## 1. Problem and constraints
 
